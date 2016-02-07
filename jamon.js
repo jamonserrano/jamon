@@ -6,6 +6,8 @@
 
 // TODO clean up attr and prop => get, set
 // TODO store all listeners and remove them with remove()
+// TODO add touch events
+// TODO create with options
 "use strict";
 {
     // event listener index
