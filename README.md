@@ -18,6 +18,9 @@ $("a > span");
 $(".menu");
 ```
 
+## Supported browsers
+Evergreen browsers with decent ES2015 support: Chrome, Firefox, Edge.
+
 ## API
 Jamón currently supports the following methods:
 
@@ -169,6 +172,24 @@ Removes the standard or delegated event listeners from the elements.
 
 #### trigger(event [, data])
 Triggers an event on each element. The additional event data can be accessed in the event.detail property. Supported native events: mouse, focus and keyboard events.
+
+### Working with Jamón instances
+
+#### Iteration
+You can iterate Jamón instances with both `for ... of` loops and the `forEach()` method:
+
+```javascript
+const anchors = $$("a");
+
+for (const item of anchors) {
+	console.log(item.href);
+}
+
+anchors.forEach(function(item, index) {
+	console.log(item.href);
+});
+
+```
 
 ### Utilities
 
