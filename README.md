@@ -8,7 +8,7 @@ Use `$(selector)` or `jamon(selector)` to select a single element:
 ```
 $("div");
 $(".menu");
-$("#Header")
+$("#Header");
 ```
 
 Use `$$(selector)` or `jamon.es(selector)` to select multiple elements:
