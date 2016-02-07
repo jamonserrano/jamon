@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Test page</title>
+        <style>
+            div {
+                width: 200px;
+                height: 200px;
+                background: green;
+            }
+
+            div > div {
+                height: 20px;
+                background: red;
+            }
+
+            span {
+                display: block;
+                width: 20px;
+                height: 20px;
+                background: yellow;
+            }
+
+            #id2 {
+                position: absolute;
+                left: 250px;
+                top: 250px;
+                box-sizing: border-box;
+                padding: 10px;
+            }
+
+            #id3 {
+                position: relative;
+                left: 20px;
+                top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="id1">a
+            <span class="class1 class2">b</span>
+            <span class="class1" id="id3">c</span>
+            <div class="class3" id="id4">d</div>
+        </div>
+        <div id="id2">
+            <input type="text" value="textInput"/>
+            asdas
+        </div>
+        <span class="class3">d</span>
+        <script src="jamon.js"></script>
+    </body>
+</html>
