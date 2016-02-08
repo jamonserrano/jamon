@@ -247,6 +247,11 @@
             return this;
         },
 
+        // Checks if the element has the provided class name
+        hasClass (className) {
+            return this.element.classList.contains(className);
+        },
+
         // Show the element
         show () {
             return this.removeClass(hiddenClassName);
