@@ -175,6 +175,9 @@ Triggers an event on each element. The additional event data can be accessed in 
 
 ### Working with Jamón instances
 
+#### Elements
+You can access the first (and sometimes only) element with the `element` property, the array of matched elements with the `elements` property, and the length of the array with the `length` property.
+
 #### Iteration
 You can iterate Jamón instances with both `for ... of` loops and the `forEach()` method:
 
