@@ -159,6 +159,7 @@
                 }
             }
         }
+        // return the subject or the target (whichever thisArg points to)
         return arguments[thisArg];
     };
 
@@ -215,8 +216,9 @@
 
         // Add class name(s)
         addClass (className) {
+            const classNames = className.split(" ");
             for (const element of this) {
-                element.classList.add(...className.split(" "));
+                element.classList.add(...classNames);
             }
 
             return this;
@@ -224,9 +226,9 @@
 
         // Remove class name(s)
         removeClass (className) {
+            const classNames = className.split(" ");
             for (const element of this) {
-                const classList = element.classList;
-                classList.remove(...className.split(" "));
+                element.classList.remove(...classNames);
             }
 
             return this;
