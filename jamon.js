@@ -8,7 +8,6 @@
 // TODO store all listeners and remove them with remove()
 // TODO add touch events
 // TODO create() with options
-// TODO add 'this' argument to forEach()
 "use strict";
 {
     // event listener index
@@ -206,12 +205,8 @@
         },
 
         // provide forEach iteration on the instance
-        forEach (callback) {
-            let index = 0;
-
-            for (const element of this) {
-                callback.call(null, element, index++);
-            }
+        forEach (callback, thisArg) {
+            this.elements.forEach(callback, thisArg);
         },
 
         // Add class name(s)
@@ -649,7 +644,12 @@
             }
 
             return this;
-        }
+        },
+
+        find (selector) {
+
+        },
+
     };
 
     // Utility: do something when the document is ready
