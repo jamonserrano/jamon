@@ -120,6 +120,12 @@ Gets all children (including text nodes) of each element.
 #### closest([selector])
 Gets the closest parent (matching the optional selector) of each element.
 
+#### find(selector)
+Finds the first descendant that matches the selector in any of the elements.
+
+#### findAll(selector)
+Finds all descendants that match the selector in each element.
+
 ### Manipulation
 >These methods only work with one subject i.e. the first element in the collection.
 
@@ -158,6 +164,10 @@ Clones each element.
 
 #### remove()
 Removes each element from the DOM.
+
+#### filter(selector)
+Returns a new Jamón instance containing only the elements that match the selector.
+
 
 ### Events
 
