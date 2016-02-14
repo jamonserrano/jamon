@@ -32,6 +32,7 @@
     // Regular expressions to find proper event types
     const eventRegExps = {
         focus: /^(blur|change|focus)$/,
+        form: /^(reset|submit)$/,
         keyboard: /^key(down|press|up)$/,
         mouse: /^(click|dblclick|contextmenu)|(mouse(down|enter|leave|move|out|over|up))$/,
         pointer: /^pointer(cancel|down|enter|leave|move|out|over|up)$/,
@@ -693,6 +694,13 @@
                 if (event === "change") {
                     bubbles = true;
                 }
+            } else if (eventRegExps.form.test(event)) {
+                bubbles = true;
+                cacelable = true;
+            } else if (eventRegExps.keyboard.test(event)) {
+                   type = "KeyboardEvent";
+                   bubbles = true;
+                   cancelable = true;
             } else if (eventRegExps.touch.test(event)) {
                 type = "TouchEvent";
                 bubbles = true;
@@ -700,10 +708,6 @@
                 if (event !== "touchcancel") {
                     cancelable = true;
                 }
-            } else if (eventRegExps.keyboard.test(event)) {
-                type = "KeyboardEvent";
-                bubbles = true;
-                cancelable = true;
             } else if (eventRegexps.pointer.test(event)) {
                 let exceptions = ["pointerenter", "pointerleave"];
                 type = "PointerEvent";
