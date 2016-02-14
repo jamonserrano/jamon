@@ -185,7 +185,7 @@
         // Assign temporary ID if not present
         if (!id) {
             temporaryId = true;
-            id = `proton-id-${Date.now()}`;
+            id = `jamon-temporary-id-${Date.now()}`;
             element.id = id;
         }
         // Prepend selector with the element's ID
