@@ -4,10 +4,11 @@
  *  https://github.com/jamonserrano/jamon
  */
 
-// TODO clean up attr and prop => get, set
+// TODO ?clean up attr and prop => get, set
 // TODO store all listeners and remove them with remove()
 // TODO add touch events
-// TODO create() with options
+// TODO ?create() with options
+// TODO ?concat()
 "use strict";
 {
     // event listener index
@@ -167,6 +168,29 @@
         return `${listener[listenerProperty]}|${selector}`;
     };
 
+    // Runs querySelectorAll WITHIN the element (unlike native qSA)
+    const findInElement = function (element, selector) {
+        let results,
+            temporaryId = false,
+            id = element.id;
+        // Assign temporary ID if not present
+        if (!id) {
+            temporaryId = true;
+            id = `proton-id-${Date.now()}`;
+            element.id = id;
+        }
+        // Prepend selector with the element's ID
+        selector = `#${id} ${selector}`;
+        // Get the results
+        results = element.querySelectorAll(selector);
+        // Remove temporary ID
+        if (temporaryId) {
+            element.removeAttribute(id);
+        }
+        // Return the results in Array form
+        return Array.from(results);
+    };
+
     // base class
     const Jamon = function (elements) {
         // element list
@@ -207,6 +231,21 @@
         // provide forEach iteration on the instance
         forEach (callback, thisArg) {
             this.elements.forEach(callback, thisArg);
+        },
+
+        // Find in the elements (jQuery-style instead of qSA-style, returns a new Jamón instance)
+        find (selector) {
+            let results = [];
+            for (const element of this) {
+                results = results.concat(findInElement(element, selector));
+            }
+            return new Jamon(new Set(results));
+        },
+
+        // Filter the elements (returns a new Jamón instance)
+        filter (selector) {
+            const elements = this.elements.filter((element) => element.matches(selector));
+            return new Jamon(elements);
         },
 
         // Add class name(s)
@@ -644,11 +683,7 @@
             }
 
             return this;
-        },
-
-        find (selector) {
-
-        },
+        }
 
     };
 
