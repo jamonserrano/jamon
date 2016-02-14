@@ -177,10 +177,11 @@
     };
 
     // Runs querySelectorAll WITHIN the element (unlike native qSA)
-    const findInElement = function (element, selector) {
-        let results,
+    const findInElement = function (element, selector, one) {
+        let result,
             temporaryId = false,
             id = element.id;
+        const method = one ? "querySelector" : "querySelectorAll";
         // Assign temporary ID if not present
         if (!id) {
             temporaryId = true;
@@ -190,13 +191,13 @@
         // Prepend selector with the element's ID
         selector = `#${id} ${selector}`;
         // Get the results
-        results = element.querySelectorAll(selector);
+        result = element[method](selector);
         // Remove temporary ID
         if (temporaryId) {
             element.removeAttribute(id);
         }
         // Return the results in Array form
-        return Array.from(results);
+        return result;
     };
 
     // base class
@@ -219,7 +220,7 @@
             return this.elements[0];
         },
 
-        // provide for...of iteration on the instance
+        // Provide for...of iteration on the instance
         [Symbol.iterator] () {
             const elements = this.elements,
                 length = elements.length;
@@ -236,16 +237,27 @@
             };
         },
 
-        // provide forEach iteration on the instance
+        // Provide forEach iteration on the instance
         forEach (callback, thisArg) {
             this.elements.forEach(callback, thisArg);
         },
 
-        // Find in the elements (jQuery-style instead of qSA-style, returns a new Jamón instance)
+        // Find the first descendant that matches the selector in any of the elements
         find (selector) {
+            let result;
+            for (const element of this) {
+                result = findInElement(element, selector, true);
+                if (result) {
+                    return new Jamon([result]);
+                }
+            }
+        },
+
+        // Find all descendants that match the selector within each element
+        findAll (selector) {
             let results = [];
             for (const element of this) {
-                results = results.concat(findInElement(element, selector));
+                results = results.concat(Array.from(findInElement(element, selector)));
             }
             return new Jamon(new Set(results));
         },
