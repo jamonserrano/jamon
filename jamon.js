@@ -29,6 +29,7 @@
     // event listener proxy storage
     const proxyMap = new Map();
 
+    // Regular expressions to find proper event types
     const eventRegExps = {
         focus: /^(blur|change|focus)$/,
         keyboard: /^key(down|press|up)$/,
