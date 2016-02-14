@@ -105,7 +105,7 @@
     };
 
     // Handle all node insertion operations
-    const insertNode = function (subject, target, operation, thisArg) {
+    const insertNode = function (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
         target = target.isJamon ? target : jamon(target);
 
@@ -167,8 +167,8 @@
                 }
             }
         }
-        // return the subject or the target (whichever thisArg points to)
-        return arguments[thisArg];
+        // return the subject or the target (whichever contextIndex points to)
+        return arguments[contextIndex];
     };
 
     // Get the proxyID for the given listener-selector combination
@@ -238,8 +238,8 @@
         },
 
         // Provide forEach iteration on the instance
-        forEach (callback, thisArg) {
-            this.elements.forEach(callback, thisArg);
+        forEach (callback, context) {
+            this.elements.forEach(callback, context);
         },
 
         // Find the first descendant that matches the selector in any of the elements
