@@ -6,7 +6,6 @@
 
 // TODO ?clean up attr and prop => get, set
 // TODO store all listeners and remove them with remove()
-// TODO add touch events
 // TODO ?create() with options
 // TODO ?concat()
 "use strict";
@@ -29,6 +28,14 @@
 
     // event listener proxy storage
     const proxyMap = new Map();
+
+    const eventRegExps = {
+        focus: /^(blur|change|focus)$/,
+        keyboard: /^key(down|press|up)$/,
+        mouse: /^(click|dblclick|contextmenu)|(mouse(down|enter|leave|move|out|over|up))$/,
+        pointer: /^pointer(cancel|down|enter|leave|move|out|over|up)$/,
+        touch: /^touch(cancel|end|move|start)$/
+    };
 
     // save current $ for no conflict mode
     const previou$ = window.$;
@@ -661,21 +668,39 @@
                 bubbles = false,
                 cancelable = false;
 
+            // Set up event properties based on event type
             if (defined(detail)) {
                 type = "CustomEvent";
-            } else if (["click", "dblclick", "contextmenu"].includes(event) || event.startsWith("mouse")) {
+            } else if (eventRegExps.mouse.test(event)) {
                 type = "MouseEvent";
                 bubbles = true;
                 cancelable = true;
-            } else if (["blur", "change", "focus"].includes(event)) {
+            } else if (eventRegExps.focus.test(event)) {
                 type = "FocusEvent";
                 if (event === "change") {
                     bubbles = true;
                 }
-            } else if (event.startsWith("key")) {
+            } else if (eventRegExps.touch.test(event)) {
+                type = "TouchEvent";
+                bubbles = true;
+
+                if (event !== "touchcancel") {
+                    cancelable = true;
+                }
+            } else if (eventRegExps.keyboard.test(event)) {
                 type = "KeyboardEvent";
                 bubbles = true;
                 cancelable = true;
+            } else if (eventRegexps.pointer.test(event)) {
+                let exceptions = ["pointerenter", "pointerleave"];
+                type = "PointerEvent";
+                if (!exceptions.include(event)) {
+                    bubbles = true;
+                }
+                exceptions.push("pointercancel");
+                if (!exceptions.include(event)) {
+                    cancelable = true;
+                }
             }
 
             for (const element of this) {
