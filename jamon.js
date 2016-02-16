@@ -4,8 +4,6 @@
  *  https://github.com/jamonserrano/jamon
  */
 
-// TODO store all listeners and remove them with remove()
-// TODO ?create() with options
 "use strict";
 {
     // event listener index
@@ -694,7 +692,7 @@
                 }
             } else if (eventRegExps.form.test(event)) {
                 bubbles = true;
-                cacelable = true;
+                cancelable = true;
             } else if (eventRegExps.keyboard.test(event)) {
                    type = "KeyboardEvent";
                    bubbles = true;
@@ -706,7 +704,7 @@
                 if (event !== "touchcancel") {
                     cancelable = true;
                 }
-            } else if (eventRegexps.pointer.test(event)) {
+            } else if (eventRegExps.pointer.test(event)) {
                 let exceptions = ["pointerenter", "pointerleave"];
                 type = "PointerEvent";
                 if (!exceptions.include(event)) {

@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint jamon.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,15 @@
     "eslint": "^2.1.0",
     "karma": "^0.13.21",
     "mocha": "^2.4.5"
+  },
+  "eslintConfig": {
+    "strict": "global",
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6
+    }
   }
 }
