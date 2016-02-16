@@ -4,10 +4,8 @@
  *  https://github.com/jamonserrano/jamon
  */
 
-// TODO ?clean up attr and prop => get, set
 // TODO store all listeners and remove them with remove()
 // TODO ?create() with options
-// TODO ?concat()
 "use strict";
 {
     // event listener index
@@ -201,7 +199,7 @@
         return result;
     };
 
-    // base class
+    // Jamón collection
     const Jamon = function (elements) {
         // element list
         this.elements = Array.from(elements);
