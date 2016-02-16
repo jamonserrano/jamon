@@ -1,0 +1,32 @@
+{
+  "name": "jamon",
+  "version": "0.1.0",
+  "description": "Another DOM library",
+  "main": "jamon.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamonserrano/jamon.git"
+  },
+  "keywords": [
+    "DOM",
+    "ES6"
+  ],
+  "author": "Viktor Honti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamonserrano/jamon/issues"
+  },
+  "homepage": "https://github.com/jamonserrano/jamon",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.1.0",
+    "karma": "^0.13.21",
+    "mocha": "^2.4.5"
+  }
+}
