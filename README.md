@@ -60,15 +60,20 @@ Removes the attribute from each element.
 Gets the value of the data attribute for the first element or sets the data attribute value for each element.
 
 ### Styling
+> For show(), hide() and toggle() to work you need to include the following line in your CSS:
+```css
+.hidden {display: none !important;}
+```
+You can change the `hidden` class name with `jamon.setHiddenClassName()`
 
 #### show()
-Shows the element(s) by adding the `hidden` class name (can be overridden with `jamon.setHiddenClassName()`).
+Shows the element(s) by adding the `hidden` class name.
 
 #### hide()
-Hides the element(s) by removing the `hidden` class name (can be overridden with `jamon.setHiddenClassName()`).
+Hides the element(s) by removing the `hidden` class name.
 
 #### toggle()
-Toggles the element(s) by toggling the `hidden` class name (can be overridden with `jamon.setHiddenClassName()`).
+Toggles the element(s) by toggling the `hidden` class name.
 
 #### css(property [, value])
 Gets the computed value of the CSS property for the first element or sets the value of the CSS property for each element.
