@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/karma/bin/karma start --single-run",
     "lint": "./node_modules/eslint/bin/eslint.js jamon.js"
   },
   "repository": {
@@ -28,7 +28,16 @@
     "chai": "^3.5.0",
     "eslint": "^2.1.0",
     "karma": "^0.13.21",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "karma-eslint": "~2.0.1",
+    "sinon": "~1.17.3",
+    "sinon-chai": "~2.8.0",
+    "blanket": "~1.2.1",
+    "karma-fixture": "~0.2.6",
+    "karma-mocha": "~0.2.2",
+    "karma-chrome-launcher": "~0.2.2",
+    "karma-firefox-launcher": "~0.1.7",
+    "karma-chai": "~0.1.0"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
