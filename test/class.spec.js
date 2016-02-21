@@ -26,6 +26,7 @@ describe("Classes", function () {
 
         it("should not create an empty class attribute with an empty string", function () {
             $el.addClass("");
+
             expect(el).to.not.have.attribute("class");
         });
 
@@ -90,6 +91,7 @@ describe("Classes", function () {
 
         it("should return the Jamón instance", function () {
             var returnValue = $el.addClass("test1");
+
             expect(returnValue).to.equal($el);
         });
     });
