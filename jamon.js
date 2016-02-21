@@ -73,13 +73,17 @@
         return text.replace(/-([a-z])/g, (_, match) => match.toUpperCase());
     };
 
-    const defined = function (variable) {
-        return variable !== undefined;
+    const isUndefined = function (variable) {
+        return variable === undefined;
+    };
+
+    const isString = function (variable) {
+        return typeof variable === "string";
     };
 
     // Get & set properties
     const getSetProperty = function (context, property, value) {
-        if (defined(value)) {
+        if (isUndefined(value)) {
             return context.element[property];
         }
 
@@ -267,9 +271,20 @@
 
         // Add class name(s)
         addClass (className) {
-            const classNames = className.split(" ");
-            for (const element of this) {
-                element.classList.add(...classNames);
+            if (isUndefined(className)) {
+                throw new ReferenceError(`Invalid class name parameter: ${className}`);
+            }
+
+            if (!isString(className)) {
+                throw new TypeError(`Class name parameter must be a String`);
+            }
+            // Split by spaces, then remove empty elements caused by extra whitespace
+            const classNames = className.split(" ").filter(item => item.length);
+
+            if (classNames.length) {
+                for (const element of this) {
+                    element.classList.add(...classNames);
+                }
             }
 
             return this;
@@ -345,7 +360,7 @@
 
         // Get or set attributes
         attr (attribute, value) {
-            if (defined(value)) { // get
+            if (isUndefined(value)) { // get
                 return this.element.getAttribute(attribute);
             }
 
@@ -369,7 +384,7 @@
         css (style, value) {
             if (typeof style === "string") {
                 // set single style
-                if (defined(value)) {
+                if (!isUndefined(value)) {
                     for (const element of this) {
                         element.style[kebabToCamel(style)] = value;
                     }
@@ -400,12 +415,12 @@
 
         // Get or set data attributes
         data (attribute, value) {
-            if (defined(value)) { // get
+            if (isUndefined(value)) { // get
                 const element = this.element,
                     storage = dataMap.get(element);
                 let data;
                 // look it up in the storage first, then in the data-attribute
-                if (storage && (defined(storage.get(attribute)))) {
+                if (storage && (!isUndefined(storage.get(attribute)))) {
                     data = storage.get(attribute);
                 } else {
                     data = element.dataset[attribute];
@@ -483,11 +498,11 @@
                 }
 
                 // subtract the offsets of the element and its parent to get the absolute position
-                if (defined(left)) {
+                if (!isUndefined(left)) {
                     style.left = left - originalLeft - parentRect.left + "px";
                 }
 
-                if (defined(top)) {
+                if (!isUndefined(top)) {
                     style.top = top - originalTop - parentRect.top + "px";
                 }
             }
@@ -679,7 +694,7 @@
                 cancelable = false;
 
             // Set up event properties based on event type
-            if (defined(detail)) {
+            if (!isUndefined(detail)) {
                 type = "CustomEvent";
             } else if (eventRegExps.mouse.test(event)) {
                 type = "MouseEvent";
