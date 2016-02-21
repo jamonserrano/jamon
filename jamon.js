@@ -81,6 +81,26 @@
         return typeof variable === "string";
     };
 
+    const addRemoveClass = function (context, className, method) {
+        if (isUndefined(className)) {
+            throw new ReferenceError(`Invalid parameter: ${className}`);
+        }
+
+        if (!isString(className)) {
+            throw new TypeError(`Parameter must be a String`);
+        }
+        // Split by spaces, then remove empty elements caused by extra whitespace
+        const classNames = className.split(" ").filter(item => item.length);
+
+        if (classNames.length) {
+            for (const element of context) {
+                element.classList[method](...classNames);
+            }
+        }
+
+        return context;
+    };
+
     // Get & set properties
     const getSetProperty = function (context, property, value) {
         if (isUndefined(value)) {
@@ -271,33 +291,12 @@
 
         // Add class name(s)
         addClass (className) {
-            if (isUndefined(className)) {
-                throw new ReferenceError(`Invalid class name parameter: ${className}`);
-            }
-
-            if (!isString(className)) {
-                throw new TypeError(`Class name parameter must be a String`);
-            }
-            // Split by spaces, then remove empty elements caused by extra whitespace
-            const classNames = className.split(" ").filter(item => item.length);
-
-            if (classNames.length) {
-                for (const element of this) {
-                    element.classList.add(...classNames);
-                }
-            }
-
-            return this;
+            return addRemoveClass(this, className, "add");
         },
 
         // Remove class name(s)
         removeClass (className) {
-            const classNames = className.split(" ");
-            for (const element of this) {
-                element.classList.remove(...classNames);
-            }
-
-            return this;
+            return addRemoveClass(this, className, "remove");
         },
 
         // Toggle class name(s)
