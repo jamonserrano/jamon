@@ -14,8 +14,9 @@ $("#Header");
 Use `$$(selector)` or `jamon.es(selector)` to select multiple elements:
 
 ```
-$("a > span");
-$(".menu");
+$$("a > span");
+$$(".menu");
+$$("#section-1, #section2");
 ```
 
 ## Supported browsers
