@@ -11,11 +11,11 @@ describe("Classes", function () {
             el2.removeAttribute("class");
         });
 
-        it("should throw error without arguments", function () {
+        it("should throw reference error without arguments", function () {
             expect(calling($el.addClass).withArgs()).to.throw(ReferenceError);
         });
 
-        it("should throw error with invalid type", function () {
+        it("should throw type error with invalid type", function () {
             expect(calling($el.addClass).withArgs(null)).to.throw(TypeError);
             expect(calling($el.addClass).withArgs({})).to.throw(TypeError);
         });
