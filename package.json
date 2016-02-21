@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --single-run",
-    "lint": "./node_modules/eslint/bin/eslint.js jamon.js"
+    "lint": "./node_modules/eslint/bin/eslint.js jamon.js",
+    "pack": "./node_modules/packer/cli.js -i jamon.js -o jamon.min.js"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,8 @@
     "karma-chrome-launcher": "~0.2.2",
     "karma-firefox-launcher": "~0.1.7",
     "karma-chai": "~0.1.0",
-    "chai-dom": "~1.4.0"
+    "chai-dom": "~1.4.0",
+    "packer": "0.0.6"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
