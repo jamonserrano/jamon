@@ -81,7 +81,7 @@
         return typeof variable === "string";
     };
 
-    const addRemoveClass = function (context, className, method) {
+    const addRemoveToggleClass = function (context, className, method) {
         if (isUndefined(className)) {
             throw new ReferenceError(`Invalid parameter: ${className}`);
         }
@@ -94,7 +94,13 @@
 
         if (classNames.length) {
             for (const element of context) {
-                element.classList[method](...classNames);
+                if (method !== "toggle") {
+                    element.classList[method](...classNames);
+                } else {
+                    for (const className of classNames) {
+                        element.classList.toggle(className);
+                    }
+                }
             }
         }
 
@@ -291,25 +297,17 @@
 
         // Add class name(s)
         addClass (className) {
-            return addRemoveClass(this, className, "add");
+            return addRemoveToggleClass(this, className, "add");
         },
 
         // Remove class name(s)
         removeClass (className) {
-            return addRemoveClass(this, className, "remove");
+            return addRemoveToggleClass(this, className, "remove");
         },
 
         // Toggle class name(s)
         toggleClass (className) {
-            const classNames = className.split(" ");
-
-            for (const element of this) {
-                for (const className of classNames) {
-                    element.classList.toggle(className);
-                }
-            }
-
-            return this;
+            return addRemoveToggleClass(this, className, "toggle");
         },
 
         // Checks if the element has the provided class name
