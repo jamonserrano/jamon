@@ -6,26 +6,55 @@
 
 "use strict";
 {
-    // event listener index
-    let listenerIndex = 1;
-
-    // class name used for hiding elements - can be overriden
+    /**
+     * Class name used for hiding elements - can be overriden
+     * @private
+     * @type {String}
+     */
     let hiddenClassName = "hidden";
 
-    // event listener property name
+    /**
+     * Event listener index (used to indentify proxied listeners)
+     * @private
+     * @type {Number}
+     */
+    let listenerIndex = 1;
+
+    /**
+     * Unique property name to attach to proxied event listeners
+     * @private
+     * @type {Symbol}
+     */
     const listenerProperty = Symbol("listenerProperty");
 
-    // CSS properties that accept numbers (to know when to not append "px"), list taken from jQuery
+    /**
+     * CSS properties that accept numbers (to know when to not append "px"), list taken from jQuery
+     * @private
+     * @type {Set}
+     */
     const cssNumberProperties = new Set(["columnCount", "fillOpacity", "fontWeight",
         "lineHeight", "opacity", "order", "orphans", "widows", "zIndex","zoom"]);
 
-    // element data storage
+    /**
+     * Storage for element data
+     * @private
+     * @type {WeakMap}
+     */
     const dataMap = new WeakMap();
 
-    // event listener proxy storage
+    /**
+     * Storage for proxied event listeners
+     * @private
+     * @type {Map}
+     */
     const proxyMap = new Map();
 
-    // Regular expressions to find proper event types
+    /**
+     * Regular expressions to indentify event types
+     * @private
+     * @type {Object}
+     * @todo This too might be better as a Map
+     */
     const eventRegExps = {
         focus: /^(blur|change|focus)$/,
         form: /^(reset|submit)$/,
@@ -35,17 +64,34 @@
         touch: /^touch(cancel|end|move|start)$/
     };
 
-    // save current $ for no conflict mode
+    /**
+     * Previous global $ variable for no conflict mode
+     * @private
+     * @type {*}
+     */
     const previou$ = window.$;
+
+    /**
+     * Previous global $$ variable for no conflict mode
+     * @private
+     * @type {*}
+     */
     const previou$$ = window.$$;
 
-    // Get a single element
+    /**
+     * Get a single element
+     * @private
+     * @param  {String|HTMLElement|Text|HTMLDocument|Jamon} selector
+     * @param  {HTMLElement|HTMLDocument} context
+     * @return {Jamon} New Jamón instance
+     * @todo   Remove context now that we have find()
+     */
     const jamon = function (selector, context) {
         // selector string
         if (typeof selector === "string") {
             const element = (context || document).querySelector(selector);
             return element ? new Jamon([element]) : new Jamon([]);
-        // elementNode, textNode, or documentNode
+        // element node, text node, or document node
         } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
             return new Jamon([selector]);
         // Jamon instance
@@ -54,7 +100,14 @@
         }
     };
 
-    // Get multiple elements
+    /**
+     * Get multiple elements
+     * @private
+     * @param  {String|NodeList|HTMLCollection|Jamon} selector
+     * @param  {HTMLElement|HTMLDocument} context
+     * @return {Jamon} New Jamón instance
+     * @todo   Remove context now that we have find()
+     */
     const jamones = function (selector, context) {
         // selector string
         if (typeof selector === "string") {
@@ -68,22 +121,44 @@
         }
     };
 
-    // Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
-    const kebabToCamel = function (text) {
-        return text.replace(/-([a-z])/g, (_, match) => match.toUpperCase());
+    /**
+     * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
+     * @private
+     * @param  {String} property CSS property name
+     * @return {String} JS property name
+     */
+    const kebabToCamel = function (property) {
+        return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
     };
 
-    // Check if a reference is undefined
-    const isUndefined = function (variable) {
-        return variable === undefined;
+    /**
+     * Check if a reference is undefined
+     * @private
+     * @param  {*}  reference
+     * @return {Boolean} The undefinedness of the reference
+     */
+    const isUndefined = function (reference) {
+        return reference === undefined;
     };
 
-    // Check if a reference is a String
-    const isString = function (variable) {
-        return typeof variable === "string";
+    /**
+     * Check if a reference is a String
+     * @private
+     * @param  {*}  reference
+     * @return {Boolean} The stringness of the reference
+     */
+    const isString = function (reference) {
+        return typeof reference === "string";
     };
 
-    // Add, remove, or toggle class names
+    /**
+     * Add, remove, or toggle class names
+     * @private
+     * @param {Jamon} context The Jamón instance
+     * @param {String} className Space-separated class names
+     * @param {('add'|'remove'|'toggle')} method Method to use on the class name(s)
+     * @return {Jamon}
+     */
     const addRemoveToggleClass = function (context, className, method) {
         if (isUndefined(className)) {
             throw new ReferenceError(`Invalid parameter: ${className}`);
@@ -98,8 +173,10 @@
         if (classNames.length) {
             for (const element of context) {
                 if (method !== "toggle") {
+                    // add and remove accept multiple parameters…
                     element.classList[method](...classNames);
                 } else {
+                    // while toggle accepts only one
                     for (const className of classNames) {
                         element.classList.toggle(className);
                     }
@@ -110,7 +187,14 @@
         return context;
     };
 
-    // Get & set properties
+    /**
+     * Get & set element properties
+     * @private
+     * @param  {Jamon} context The Jamón instance
+     * @param  {String} property Property name
+     * @param  {*} value Property value
+     * @return {Jamon}
+     */
     const getSetProperty = function (context, property, value) {
         if (isUndefined(value)) {
             return context.element[property];
@@ -123,7 +207,13 @@
         return context;
     };
 
-    // Get relatives of the element
+    /**
+     * Get relatives of the element
+     * @private
+     * @param  {Jamon} context
+     * @param  {('parentElement'|'firstElementChild'|'lastElementChild')} relative
+     * @return {Jamon} New Jamón instance containing the found elements
+     */
     const getRelative = function (context, relative) {
         const relatives = [];
 
@@ -135,6 +225,15 @@
     };
 
     // Handle all node insertion operations
+    /**
+     * Handle all node insertion operations
+     * @private
+     * @param  {Jamon|String} subject The element/string that we are using
+     * @param  {String|Element|Text|Document|Jamon} target The target we are using the subject with
+     * @param  {('before'|'after'|'prepend'|'append'|'replace')} operation Name of the operation
+     * @param  {(0|1)} contextIndex Index of the paramater to be returned
+     * @return {Jamon} The Jamón instance (referenced by contextIndex)
+     */
     const insertNode = function (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
         target = target.isJamon ? target : jamon(target);
@@ -144,7 +243,8 @@
             subjectIsText = false;
 
         // make sure the subject is an element
-        if (typeof subject === "string") { // insert string as textNode
+        if (typeof subject === "string") {
+            // insert string as textNode
             subject = document.createTextNode(subject);
             subjectIsText = true;
         } else {
@@ -154,8 +254,9 @@
         // before, insertBefore, after, insertAfter
         if (operation === "before" || operation === "after") {
             for (const element of target) {
+                // use a clone of the subject for all but the last target
                 element.parentElement.insertBefore(
-                    (index++ < lastIndex) ? subject.cloneNode(true) : subject, // clone
+                    (index++ < lastIndex) ? subject.cloneNode(true) : subject,
                     operation === "before" ? element : element.nextSibling
                 );
                 // remove adjacent textNodes
@@ -166,8 +267,9 @@
         // prepend, prependTo
         } else if (operation === "prepend") {
             for (const element of target) {
+                // use a clone of the subject for all but the last target
                 element.insertBefore(
-                    (index++ < lastIndex) ? subject.cloneNode(true) : subject,  // clone subject
+                    (index++ < lastIndex) ? subject.cloneNode(true) : subject,
                     element.firstChild
                 );
                 // remove adjacent textNodes
@@ -178,7 +280,8 @@
         // append, appendTo
         } else if (operation === "append") {
             for (const element of target) {
-                element.appendChild((index < lastIndex) ? subject.cloneNode(true) : subject); // clone subject
+                // use a clone of the subject for all but the last target
+                element.appendChild((index < lastIndex) ? subject.cloneNode(true) : subject);
                 // remove adjacent textNodes
                 if (subjectIsText) {
                     element.normalize();
@@ -187,8 +290,9 @@
         // replace, replaceWith
         } else if (operation === "replace") {
             for (const element of target) {
+                // use a clone of the subject for all but the last target
                 element.parentElement.replaceChild(
-                    index < lastIndex ? subject.cloneNode(true) : subject, // clone subject
+                    index < lastIndex ? subject.cloneNode(true) : subject,
                     element
                 );
                 // remove adjacent textNodes
@@ -201,17 +305,32 @@
         return arguments[contextIndex];
     };
 
-    // Get the proxyID for the given listener-selector combination
+    /**
+     * Generate a unique proxy id for the given listener-selector combination
+     * @private
+     * @param  {Function} listener The event listener function
+     * @param  {String} selector The selector used for the delegation
+     * @return {String} Unique proxy id
+     */
     const getProxyId = function (listener, selector) {
+        // The proxy id consists of the unique index attached the function and the selector string
         return `${listener[listenerProperty]}|${selector}`;
     };
 
-    // Runs querySelectorAll WITHIN the element (unlike native qSA)
+    /**
+     * Runs querySelectorAll WITHIN the element (unlike native qSA)
+     * @private
+     * @param  {HTMLElement} element The search context
+     * @param  {String} selector The selector to use in the query
+     * @param  {Boolean} one Do we want only one result?
+     * @return {HTMLElement|NodeList} The result of the query
+     */
     const findInElement = function (element, selector, one) {
         let result,
             temporaryId = false,
             id = element.id;
         const method = one ? "querySelector" : "querySelectorAll";
+
         // Assign temporary ID if not present
         if (!id) {
             temporaryId = true;
@@ -226,7 +345,8 @@
         if (temporaryId) {
             element.removeAttribute(id);
         }
-        // Return the results in Array form
+        
+        // Return the result
         return result;
     };
 
@@ -300,7 +420,6 @@
 
         /**
          * Add class name(s)
-         * @method addClass
          * @param {String} className Space-separated class names
          * @return {Jamon} The instance
          */
@@ -310,7 +429,6 @@
 
         /**
          * Remove class name(s)
-         * @method removeClass
          * @param  {String} className Space-separated class names
          * @return {Jamon} The instance
          */
@@ -320,7 +438,6 @@
 
         /**
          * Toggle class name(s)
-         * @method toggleClass
          * @param  {String} className Space-separated class names
          * @return {Jamon} The instance
          */
