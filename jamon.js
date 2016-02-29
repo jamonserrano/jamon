@@ -14,7 +14,7 @@
     let hiddenClassName = "hidden";
 
     /**
-     * Event listener index (used to indentify proxied listeners)
+     * Event listener index (used for indentifying proxied listeners)
      * @private
      * @type {number}
      */
@@ -233,6 +233,7 @@
      * @param  {('before'|'after'|'prepend'|'append'|'replace')} operation Name of the operation
      * @param  {(0|1)} contextIndex Index of the paramater to be returned
      * @return {Jamon} The Jamón instance (referenced by contextIndex)
+     * @todo   Separate this monster into 4 parts
      */
     const insertNode = function (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
