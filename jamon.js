@@ -73,14 +73,17 @@
         return text.replace(/-([a-z])/g, (_, match) => match.toUpperCase());
     };
 
+    // Check if a reference is undefined
     const isUndefined = function (variable) {
         return variable === undefined;
     };
 
+    // Check if a reference is a String
     const isString = function (variable) {
         return typeof variable === "string";
     };
 
+    // Add, remove, or toggle class names
     const addRemoveToggleClass = function (context, className, method) {
         if (isUndefined(className)) {
             throw new ReferenceError(`Invalid parameter: ${className}`);
