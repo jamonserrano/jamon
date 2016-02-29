@@ -9,21 +9,21 @@
     /**
      * Class name used for hiding elements - can be overriden
      * @private
-     * @type {String}
+     * @type {string}
      */
     let hiddenClassName = "hidden";
 
     /**
      * Event listener index (used to indentify proxied listeners)
      * @private
-     * @type {Number}
+     * @type {number}
      */
     let listenerIndex = 1;
 
     /**
      * Unique property name to attach to proxied event listeners
      * @private
-     * @type {Symbol}
+     * @type {symbol}
      */
     const listenerProperty = Symbol("listenerProperty");
 
@@ -81,7 +81,7 @@
     /**
      * Get a single element
      * @private
-     * @param  {String|HTMLElement|Text|HTMLDocument|Jamon} selector
+     * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
      * @param  {HTMLElement|HTMLDocument} context
      * @return {Jamon} New Jamón instance
      * @todo   Remove context now that we have find()
@@ -103,7 +103,7 @@
     /**
      * Get multiple elements
      * @private
-     * @param  {String|NodeList|HTMLCollection|Jamon} selector
+     * @param  {string|NodeList|HTMLCollection|Jamon} selector
      * @param  {HTMLElement|HTMLDocument} context
      * @return {Jamon} New Jamón instance
      * @todo   Remove context now that we have find()
@@ -124,8 +124,8 @@
     /**
      * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
      * @private
-     * @param  {String} property CSS property name
-     * @return {String} JS property name
+     * @param  {string} property CSS property name
+     * @return {string} JS property name
      */
     const kebabToCamel = function (property) {
         return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
@@ -135,7 +135,7 @@
      * Check if a reference is undefined
      * @private
      * @param  {*}  reference
-     * @return {Boolean} The undefinedness of the reference
+     * @return {boolean} The undefinedness of the reference
      */
     const isUndefined = function (reference) {
         return reference === undefined;
@@ -145,7 +145,7 @@
      * Check if a reference is a String
      * @private
      * @param  {*}  reference
-     * @return {Boolean} The stringness of the reference
+     * @return {boolean} The stringness of the reference
      */
     const isString = function (reference) {
         return typeof reference === "string";
@@ -155,7 +155,7 @@
      * Add, remove, or toggle class names
      * @private
      * @param {Jamon} context The Jamón instance
-     * @param {String} className Space-separated class names
+     * @param {string} className Space-separated class names
      * @param {('add'|'remove'|'toggle')} method Method to use on the class name(s)
      * @return {Jamon}
      */
@@ -191,7 +191,7 @@
      * Get & set element properties
      * @private
      * @param  {Jamon} context The Jamón instance
-     * @param  {String} property Property name
+     * @param  {string} property Property name
      * @param  {*} value Property value
      * @return {Jamon}
      */
@@ -228,8 +228,8 @@
     /**
      * Handle all node insertion operations
      * @private
-     * @param  {Jamon|String} subject The element/string that we are using
-     * @param  {String|Element|Text|Document|Jamon} target The target we are using the subject with
+     * @param  {Jamon|string} subject The element/string that we are using
+     * @param  {string|Element|Text|Document|Jamon} target The target we are using the subject with
      * @param  {('before'|'after'|'prepend'|'append'|'replace')} operation Name of the operation
      * @param  {(0|1)} contextIndex Index of the paramater to be returned
      * @return {Jamon} The Jamón instance (referenced by contextIndex)
@@ -308,9 +308,9 @@
     /**
      * Generate a unique proxy id for the given listener-selector combination
      * @private
-     * @param  {Function} listener The event listener function
-     * @param  {String} selector The selector used for the delegation
-     * @return {String} Unique proxy id
+     * @param  {function} listener The event listener function
+     * @param  {string} selector The selector used for the delegation
+     * @return {string} Unique proxy id
      */
     const getProxyId = function (listener, selector) {
         // The proxy id consists of the unique index attached the function and the selector string
@@ -321,8 +321,8 @@
      * Runs querySelectorAll WITHIN the element (unlike native qSA)
      * @private
      * @param  {HTMLElement} element The search context
-     * @param  {String} selector The selector to use in the query
-     * @param  {Boolean} one Do we want only one result?
+     * @param  {string} selector The selector to use in the query
+     * @param  {boolean} one Do we want only one result?
      * @return {HTMLElement|NodeList} The result of the query
      */
     const findInElement = function (element, selector, one) {
@@ -345,7 +345,7 @@
         if (temporaryId) {
             element.removeAttribute(id);
         }
-        
+
         // Return the result
         return result;
     };
