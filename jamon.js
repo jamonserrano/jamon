@@ -298,17 +298,32 @@
             return new Jamon(elements);
         },
 
-        // Add class name(s)
+        /**
+         * Add class name(s)
+         * @method addClass
+         * @param {String} className Space-separated class names
+         * @return {Jamon} The instance
+         */
         addClass (className) {
             return addRemoveToggleClass(this, className, "add");
         },
 
-        // Remove class name(s)
+        /**
+         * Remove class name(s)
+         * @method removeClass
+         * @param  {String} className Space-separated class names
+         * @return {Jamon} The instance
+         */
         removeClass (className) {
             return addRemoveToggleClass(this, className, "remove");
         },
 
-        // Toggle class name(s)
+        /**
+         * Toggle class name(s)
+         * @method toggleClass
+         * @param  {String} className Space-separated class names
+         * @return {Jamon} The instance
+         */
         toggleClass (className) {
             return addRemoveToggleClass(this, className, "toggle");
         },
