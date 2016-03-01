@@ -373,19 +373,7 @@
 
         // Provide for...of iteration on the instance
         [Symbol.iterator] () {
-            const elements = this.elements,
-                length = elements.length;
-            let index = 0;
-
-            return {
-                next () {
-                    if (index < length) {
-                        return {value: elements[index++]};
-                    } else {
-                        return {done: true};
-                    }
-                }
-            };
+            return this.elements[Symbol.iterator]();
         },
 
         // Provide forEach iteration on the instance
