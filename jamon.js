@@ -65,20 +65,6 @@
     };
 
     /**
-     * Previous global $ variable for no conflict mode
-     * @private
-     * @type {*}
-     */
-    const previou$ = window.$;
-
-    /**
-     * Previous global $$ variable for no conflict mode
-     * @private
-     * @type {*}
-     */
-    const previou$$ = window.$$;
-
-    /**
      * Get a single element
      * @private
      * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
@@ -351,9 +337,12 @@
         return result;
     };
 
-    // Jamón collection
+    /**
+     * Jamón constructor
+     * @constructor
+     * @param {Iterable} elements The element collection
+     */
     const Jamon = function (elements) {
-        // element list
         this.elements = Array.from(elements);
     };
 
@@ -883,17 +872,6 @@
         return new Jamon([element]);
     };
 
-    // Utility: no conflict mode, jQuery style: reset & release globals $ and $$.
-    jamon.noConflict = function () {
-        if (window.$ === jamon) {
-            window.$ = previou$;
-        }
-        if (window.$$ === jamones) {
-            window.$$ = previou$$;
-        }
-        return [jamon, jamones];
-    };
-
     // Utility: add a method to the Jamon prototype
     jamon.extend = function (name, func) {
         Jamon.prototype[name] = func;
@@ -907,6 +885,10 @@
     };
 
     // Assign global variables
-    window.$ = window.jamon = jamon;
-    window.$$ = jamon.es = jamones;
+    window.jamon = jamon;
+    jamon.es = jamones;
+    if (isUndefined(window.$) && isUndefined(window.$$)) {
+        window.$ = jamon;
+        window.$$ = jamones;
+    }
 }
