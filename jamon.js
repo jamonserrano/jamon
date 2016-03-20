@@ -81,7 +81,7 @@
         } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
             return new Jamon([selector]);
         // Jamon instance
-        } else if (selector.isJamon) {
+    } else if (selector.constructor.name === "Jamon") {
             return selector;
         }
     };
@@ -99,7 +99,7 @@
         if (typeof selector === "string") {
             return new Jamon((context || document).querySelectorAll(selector));
         // Jamon instance
-        } else if (selector.isJamon) {
+        } else if (selector.constructor.name === "Jamon") {
             return selector;
         // NodeList or HTMLCollection
         } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
@@ -223,7 +223,7 @@
      */
     const insertNode = function (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
-        target = target.isJamon ? target : jamon(target);
+        target = target.constructor.name === "Jamon" ? target : jamon(target);
 
         const lastIndex = target.length - 1;
         let index = 0,
@@ -342,33 +342,31 @@
      * @constructor
      * @param {Iterable} elements The element collection
      */
-    const Jamon = function (elements) {
-        this.elements = Array.from(elements);
-    };
-
-    Jamon.prototype = {
-        // proof that this is a Jamon instance
-        isJamon: true,
+    class Jamon {
+        // constructor
+        constructor (elements) {
+            this.elements = Array.from(elements);
+        }
 
         // Read-only length property
         get length () {
             return this.elements.length;
-        },
+        }
 
         // Read-only element property
         get element () {
             return this.elements[0];
-        },
+        }
 
         // Provide for...of iteration on the instance
         [Symbol.iterator] () {
             return this.elements[Symbol.iterator]();
-        },
+        }
 
         // Provide forEach iteration on the instance
         forEach (callback, context) {
             this.elements.forEach(callback, context);
-        },
+        }
 
         // Find the first descendant that matches the selector in any of the elements
         find (selector) {
@@ -379,7 +377,7 @@
                     return new Jamon([result]);
                 }
             }
-        },
+        }
 
         // Find all descendants that match the selector within each element
         findAll (selector) {
@@ -388,13 +386,13 @@
                 results = results.concat(Array.from(findInElement(element, selector)));
             }
             return new Jamon(new Set(results));
-        },
+        }
 
         // Filter the elements (returns a new Jamón instance)
         filter (selector) {
             const elements = this.elements.filter((element) => element.matches(selector));
             return new Jamon(elements);
-        },
+        }
 
         /**
          * Add class name(s)
@@ -403,7 +401,7 @@
          */
         addClass (className) {
             return addRemoveToggleClass(this, className, "add");
-        },
+        }
 
         /**
          * Remove class name(s)
@@ -412,7 +410,7 @@
          */
         removeClass (className) {
             return addRemoveToggleClass(this, className, "remove");
-        },
+        }
 
         /**
          * Toggle class name(s)
@@ -421,52 +419,52 @@
          */
         toggleClass (className) {
             return addRemoveToggleClass(this, className, "toggle");
-        },
+        }
 
         // Checks if the element has the provided class name
         hasClass (className) {
             return this.element.classList.contains(className);
-        },
+        }
 
         // Show the element
         show () {
             return this.removeClass(hiddenClassName);
-        },
+        }
 
         // Hide the element
         hide () {
             return this.addClass(hiddenClassName);
-        },
+        }
 
         // Toggle the visibility of the element
         toggle () {
             return this.toggleClass(hiddenClassName);
-        },
+        }
 
         // Get or set value
         val (value) {
             return getSetProperty(this, "value", value);
-        },
+        }
 
         // Get or set HTML content
         html (html) {
             return getSetProperty(this, "innerHTML", html);
-        },
+        }
 
         // Get or set text content
         text (text) {
             return getSetProperty(this, "textContent", text);
-        },
+        }
 
         // Get or set property
         prop (property, value) {
             return getSetProperty(this, property, value);
-        },
+        }
 
         // Remove property
         removeProp (property) {
             return getSetProperty(this, property, null);
-        },
+        }
 
         // Get or set attributes
         attr (attribute, value) {
@@ -479,7 +477,7 @@
             }
 
             return this;
-        },
+        }
 
         // Remove attribute
         removeAttr (attribute) {
@@ -488,7 +486,7 @@
             }
 
             return this;
-        },
+        }
 
         // Get or set inline styles
         css (style, value) {
@@ -521,7 +519,7 @@
 
                 return this;
             }
-        },
+        }
 
         // Get or set data attributes
         data (attribute, value) {
@@ -544,27 +542,27 @@
             }
 
             return this;
-        },
+        }
 
         // Get width
         width () {
             return this.element.getBoundingClientRect().height;
-        },
+        }
 
         // Get height
         height () {
             return this.element.getBoundingClientRect().width;
-        },
+        }
 
         // Get scroll width
         scrollWidth () {
             return this.element.scrollWidth;
-        },
+        }
 
         //Get scroll height
         scrollHeight () {
             return this.element.scrollHeight;
-        },
+        }
 
         // Get position relative to the parent
         offset () {
@@ -573,7 +571,7 @@
                 left: element.offsetLeft,
                 top: element.offsetTop
             };
-        },
+        }
 
         // Get or set position relative to the document
         position (position) {
@@ -616,32 +614,32 @@
                     style.top = top - originalTop - parentRect.top + "px";
                 }
             }
-        },
+        }
 
         // Get or set horizontal scroll position
         scrollLeft (value) {
             return getSetProperty(this, "scrollLeft", value);
-        },
+        }
 
         // Get or set vertical scroll position
         scrollTop (value) {
             return getSetProperty(this, "scrollTop", value);
-        },
+        }
 
         // Get the parent of the element
         parent () {
             return getRelative(this, "parentElement");
-        },
+        }
 
         // Get the first child of the element
         firstChild () {
             return getRelative(this, "firstElementChild");
-        },
+        }
 
         // Get the last child of the element
         lastChild () {
             return getRelative(this, "lastElementChild");
-        },
+        }
 
         // Get the children of the element
         children () {
@@ -652,7 +650,7 @@
             }
 
             return new Jamon(children);
-        },
+        }
 
         contents () {
             const contents = [];
@@ -661,7 +659,7 @@
             }
 
             return new Jamon(contents);
-        },
+        }
 
         // Get the first ancestor that matches the selector
         closest (selector) {
@@ -672,57 +670,57 @@
             }
 
             return new Jamon(closests);
-        },
+        }
 
         // Prepend something to the element
         prepend (subject) {
             return insertNode(subject, this, "prepend", 1);
-        },
+        }
 
         // Prepend the element to something
         prependTo (target) {
             return insertNode(this, target, "prepend", 0);
-        },
+        }
 
         // Append something to the element
         append (subject) {
             return insertNode(subject, this, "append", 1);
-        },
+        }
 
         // Append the element to something
         appendTo (target) {
             return insertNode(this, target, "append", 0);
-        },
+        }
 
         // Insert something before the element
         before (subject) {
             return insertNode(subject, this, "before", 1);
-        },
+        }
 
         // Insert the element before something
         insertBefore (target) {
             return insertNode(this, target, "before", 0);
-        },
+        }
 
         // Insert something after the element
         after (subject) {
             return insertNode(subject, this, "after", 1);
-        },
+        }
 
         // Insert the element after something
         insertAfter (target) {
             return insertNode(this, target, "after", 0);
-        },
+        }
 
         // Replace the element with something
         replaceWith (subject) {
             return insertNode(subject, this, "replace", 1);
-        },
+        }
 
         // Replace something with the element
         replaceAll (target) {
             return insertNode(this, target, "replace", 0);
-        },
+        }
 
         // Clone the element
         clone (deep) {
@@ -733,7 +731,7 @@
             }
 
             return new Jamon(clones);
-        },
+        }
 
         // Remove the element from the DOM
         remove () {
@@ -743,7 +741,7 @@
             }
 
             return this;
-        },
+        }
 
         // Add event listener
         on (events, listener) {
@@ -756,7 +754,7 @@
             }
 
             return this;
-        },
+        }
 
         // Remove event listener
         off (events, selector, listener) {
@@ -777,7 +775,7 @@
             }
 
             return this;
-        },
+        }
 
         // Delegates an event
         delegate (event, selector, listener) {
@@ -795,7 +793,7 @@
             proxyMap.set(getProxyId(listener, selector), proxy);
 
             return this.on(event, proxy);
-        },
+        }
 
         // Trigger event on the element
         trigger (event, detail) {
