@@ -321,16 +321,18 @@
         // Assign temporary ID if not present
         if (!id) {
             temporaryId = true;
-            id = `jamon-temporary-id-${Date.now()}`;
+            id = `jamon-temporary-id`;
             element.id = id;
         }
+
         // Prepend selector with the element's ID
         selector = `#${id} ${selector}`;
         // Get the results
         result = element[method](selector);
+
         // Remove temporary ID
         if (temporaryId) {
-            element.removeAttribute(id);
+            element.removeAttribute("id");
         }
 
         // Return the result
@@ -338,34 +340,15 @@
     };
 
     /**
-     * Jamón constructor
-     * @constructor
-     * @param {Iterable} elements The element collection
+     * Jamón class definition
      */
-    class Jamon {
-        // constructor
+    class Jamon extends Array {
+        /**
+         * constructor
+         * @param  {iterable} elements
+         */
         constructor (elements) {
-            this.elements = Array.from(elements);
-        }
-
-        // Read-only length property
-        get length () {
-            return this.elements.length;
-        }
-
-        // Read-only element property
-        get element () {
-            return this.elements[0];
-        }
-
-        // Provide for...of iteration on the instance
-        [Symbol.iterator] () {
-            return this.elements[Symbol.iterator]();
-        }
-
-        // Provide forEach iteration on the instance
-        forEach (callback, context) {
-            this.elements.forEach(callback, context);
+            super(...Array.from(elements));
         }
 
         // Find the first descendant that matches the selector in any of the elements
@@ -390,7 +373,7 @@
 
         // Filter the elements (returns a new Jamón instance)
         filter (selector) {
-            const elements = this.elements.filter((element) => element.matches(selector));
+            const elements = this.filter((element) => element.matches(selector));
             return new Jamon(elements);
         }
 
@@ -423,7 +406,7 @@
 
         // Checks if the element has the provided class name
         hasClass (className) {
-            return this.element.classList.contains(className);
+            return this[0].classList.contains(className);
         }
 
         // Show the element
@@ -469,7 +452,7 @@
         // Get or set attributes
         attr (attribute, value) {
             if (isUndefined(value)) { // get
-                return this.element.getAttribute(attribute);
+                return this[0].getAttribute(attribute);
             }
 
             for (const element of this) { // set
@@ -500,7 +483,7 @@
                 // get style
                 } else {
                     const property = kebabToCamel(style);
-                    value = window.getComputedStyle(this.element)[property];
+                    value = window.getComputedStyle(this[0])[property];
                     return cssNumberProperties.has(property) ? value : parseFloat(value);
                 }
             // set multiple styles
@@ -524,7 +507,7 @@
         // Get or set data attributes
         data (attribute, value) {
             if (isUndefined(value)) { // get
-                const element = this.element,
+                const element = this[0],
                     storage = dataMap.get(element);
                 let data;
                 // look it up in the storage first, then in the data-attribute
@@ -546,27 +529,27 @@
 
         // Get width
         width () {
-            return this.element.getBoundingClientRect().height;
+            return this[0].getBoundingClientRect().height;
         }
 
         // Get height
         height () {
-            return this.element.getBoundingClientRect().width;
+            return this[0].getBoundingClientRect().width;
         }
 
         // Get scroll width
         scrollWidth () {
-            return this.element.scrollWidth;
+            return this[0].scrollWidth;
         }
 
         //Get scroll height
         scrollHeight () {
-            return this.element.scrollHeight;
+            return this[0].scrollHeight;
         }
 
         // Get position relative to the parent
         offset () {
-            const element = this.element;
+            const element = this[0];
             return {
                 left: element.offsetLeft,
                 top: element.offsetTop
@@ -575,7 +558,7 @@
 
         // Get or set position relative to the document
         position (position) {
-            const rect = this.element.getBoundingClientRect();
+            const rect = this[0].getBoundingClientRect();
             if (!position) {
                 return {
                     left: rect.left,
