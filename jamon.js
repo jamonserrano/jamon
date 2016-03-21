@@ -70,7 +70,7 @@
      * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
      * @param  {HTMLElement|HTMLDocument} context
      * @return {Jamon} New Jamón instance
-     * @todo   Remove context now that we have find()
+     * @todo   Remove context now that we have $()
      */
     const jamon = function (selector, context) {
         // selector string
@@ -94,7 +94,7 @@
      * @param  {string|NodeList|HTMLCollection|Jamon} selector
      * @param  {HTMLElement|HTMLDocument} context
      * @return {Jamon} New Jamón instance
-     * @todo   Remove context now that we have find()
+     * @todo   Remove context now that we have $()
      */
     const jamones = function (selector, context) {
         // selector string
@@ -346,7 +346,7 @@
      */
     class Jamon extends Array {
         // Find the first descendant that matches the selector in any of the elements
-        find (selector) {
+        $ (selector) {
             let result;
             for (const element of this) {
                 result = findInElement(element, selector, true);
@@ -357,7 +357,7 @@
         }
 
         // Find all descendants that match the selector within each element
-        findAll (selector) {
+        $$ (selector) {
             let results = [];
             for (const element of this) {
                 results = results.concat(Array.from(findInElement(element, selector)));
