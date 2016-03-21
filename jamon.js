@@ -75,13 +75,15 @@
     const jamon = function (selector, context) {
         // selector string
         if (typeof selector === "string") {
-            const element = (context || document).querySelector(selector);
-            return element ? new Jamon([element]) : new Jamon([]);
+            let element = (context || document).querySelector(selector);
+            // Array.from cannot use undefined or null
+            element = element ? [element] : [];
+            return Jamon.from(element);
         // element node, text node, or document node
         } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
-            return new Jamon([selector]);
+            return Jamon.from(selector);
         // Jamon instance
-    } else if (selector.constructor.name === "Jamon") {
+        } else if (selector.constructor.name === "Jamon") {
             return selector;
         }
     };
@@ -97,13 +99,13 @@
     const jamones = function (selector, context) {
         // selector string
         if (typeof selector === "string") {
-            return new Jamon((context || document).querySelectorAll(selector));
+            return Jamon.from((context || document).querySelectorAll(selector));
         // Jamon instance
         } else if (selector.constructor.name === "Jamon") {
             return selector;
         // NodeList or HTMLCollection
         } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
-            return new Jamon(selector);
+            return Jamon.from(selector);
         }
     };
 
@@ -343,14 +345,6 @@
      * Jamón class definition
      */
     class Jamon extends Array {
-        /**
-         * constructor
-         * @param  {iterable} elements
-         */
-        constructor (elements) {
-            super(...Array.from(elements));
-        }
-
         // Find the first descendant that matches the selector in any of the elements
         find (selector) {
             let result;
