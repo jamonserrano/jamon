@@ -126,10 +126,10 @@ Gets all children (including text nodes) of each element.
 #### closest([selector])
 Gets the closest parent (matching the optional selector) of each element.
 
-#### find(selector)
+#### $(selector)
 Finds the first descendant that matches the selector in any of the elements.
 
-#### findAll(selector)
+#### $$(selector)
 Finds all descendants that match the selector in each element.
 
 ### Manipulation
@@ -190,25 +190,7 @@ Removes the standard or delegated event listeners from the elements.
 Triggers an event on each element. The additional event data can be accessed in the event.detail property. Supported native events: mouse, focus and keyboard events.
 
 ### Working with Jamón instances
-
-#### Elements
-You can access the first (and sometimes only) element with the `element` property, the array of matched elements with the `elements` property, and the length of the array with the `length` property.
-
-#### Iteration
-You can iterate Jamón instances with both `for ... of` loops and the `forEach()` method:
-
-```javascript
-const anchors = $$("a");
-
-for (const item of anchors) {
-	console.log(item.href);
-}
-
-anchors.forEach(function(item, index) {
-	console.log(item.href);
-});
-
-```
+Jamón is a subclass of the built-in Array so instances behave just like regular arrays. You can use all the prototype methods like `forEach`, `map`, `push`, `join`, etc, or iterate with `for...of` loops.
 
 ### Utilities
 
