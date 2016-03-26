@@ -6,33 +6,18 @@
 </head>
 <body>
     <div id="mocha"></div>
-    <!-- This is where any fixtures we need for the test will be inserted into. Naturally, we won't want to cover the mocha test results so we position this bad boy off screen. -->
     <div id="fixtures" style="position: absolute; top: 0; left: -99999px;">
-        <div id="id1"></id>
-        <div id="id2"></id>
+        <!--<div id="id1"></id>
+        <div id="id2"></id>-->
     </div>
     <script src="../node_modules/chai/chai.js"></script>
     <script src="../node_modules/chai-dom/chai-dom.js"></script>
     <!--<script src="../node_modules/sinon-chai/lib/sinon-chai.js"></script>
     <script src="../node_modules/sinon/pkg/sinon.js"></script>-->
     <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="helpers.js"></script>
     <script>
         var expect = chai.expect;
-
-        /*
-        http://stackoverflow.com/a/34590246
-        https://github.com/jamonserrano/jamon/issues/2
-        */
-        var calling = function (func) {
-            return {
-                withArgs: function () {
-                    var args = Array.prototype.slice.call(arguments);
-                    return function() {
-                        func.apply(null, args);
-                    };
-                }
-            };
-        };
 
         mocha.setup("bdd");
 

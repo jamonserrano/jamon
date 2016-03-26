@@ -10,13 +10,15 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'fixture', 'chai-dom', 'chai'],
 
 
     // list of files / patterns to load in the browser
     files: [
+      'test/helpers.js',
       'jamon.js',
-      'test/**/*.spec.js'
+      'test/*.spec.js',
+      'test/fixtures/**/*'
     ],
 
 
@@ -28,6 +30,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      '**/*.html'   : ['html2js'],
+      '**/*.json'   : ['json_fixtures']
     },
 
 
@@ -36,6 +40,10 @@ module.exports = function(config) {
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: ['progress'],
 
+
+    jsonFixturesPreprocessor: {
+      variableName: '__json__'
+    },
 
     // web server port
     port: 9876,
