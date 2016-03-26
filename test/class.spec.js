@@ -15,10 +15,6 @@ describe("Classes", function () {
             fixture.cleanup();
         });
 
-        it("asd", function () {
-             expect(this.el).to.equal(this.$el[0]);
-        });
-
         it("should throw reference error without arguments", function () {
             expect(calling(this.$el.addClass).withArgs()).to.throw(ReferenceError);
         });
@@ -105,13 +101,5 @@ describe("Classes", function () {
     });
 
     describe("removeClass()", function () {
-        /*it("should not throw error without arguments");
-        it("should not throw error with an empty string");
-        it("should remove the class name from the element");
-        it("should keep the other class names of the element")
-        it("should remove space-separated class names to the element");
-        it("should remove duplicate class names");
-        it("should remove class names from all elements");
-        it("should return the Jamón instance");*/
     });
 });

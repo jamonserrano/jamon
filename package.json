@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "karma start --single-run",
+    "test": "karma start",
     "lint": "eslint jamon.js",
     "pack": "packer -i jamon.js -o jamon.min.js"
   },
@@ -43,7 +43,8 @@
     "packer": "0.0.6",
     "karma-html2js-preprocessor": "~0.1.0",
     "karma-json-fixtures-preprocessor": "0.0.6",
-    "karma-chai-dom": "~1.1.0"
+    "karma-chai-dom": "~1.1.0",
+    "karma-mocha-debug": "~0.1.2"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
