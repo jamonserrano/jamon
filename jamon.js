@@ -345,6 +345,12 @@
      */
     class Jamon extends Array {
 
+        static setHiddenClassName (className) {
+            if (typeof className === "string") {
+                hiddenClassName = className;
+            }
+        }
+
         // Find the first descendant that matches the selector in any of the elements
         findOne (selector) {
             let result;
@@ -852,16 +858,8 @@
         Jamon.prototype[name] = func;
     };
 
-    // Utility: set hidden class name (used in show, hide, and toggle)
-    jamon.setHiddenClassName = function (className) {
-        if (typeof className === "string") {
-            hiddenClassName = className;
-        }
-    };
-
     // Assign global variables
-    window.jamon = jamon;
-    jamon.es = jamones;
+    window.Jamon = Jamon;
     if (isUndefined(window.$) && isUndefined(window.$$)) {
         window.$ = jamon;
         window.$$ = jamones;
