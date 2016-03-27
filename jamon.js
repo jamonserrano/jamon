@@ -345,6 +345,16 @@
      */
     class Jamon extends Array {
 
+        static ready () {
+            return new Promise(function (resolve) {
+                if (document.readyState === "ready") {
+                    resolve();
+                } else {
+                    document.addEventListener("DOMContentLoaded", resolve);
+                }
+            });
+        }
+
         static setHiddenClassName (className) {
             if (typeof className === "string") {
                 hiddenClassName = className;
@@ -829,17 +839,6 @@
             return this;
         }
 
-    };
-
-    // Utility: do something when the document is ready
-    jamon.ready = function () {
-        return new Promise(function (resolve) {
-            if (document.readyState === "ready") {
-                resolve();
-            } else {
-                document.addEventListener("DOMContentLoaded", resolve);
-            }
-        });
     };
 
     // Utility: create a new element
