@@ -180,7 +180,7 @@
      */
     const insertNode = function (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
-        target = target.constructor.name === "Jamon" ? target : Jamon.$(target);
+        target = target instanceof Jamon ? target : Jamon.$(target);
 
         const lastIndex = target.length - 1;
         let index = 0,
@@ -346,7 +346,7 @@
             } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
                 // element node, text node, or document node
                 return Jamon.from([selector]);
-            } else if (selector.constructor.name === "Jamon") {
+            } else if (selector instanceof Jamon) {
                 // Jamon instance
                 return selector;
             }
@@ -358,14 +358,14 @@
          * @return {Jamon} New Jamón instance
          */
         static $$ (selector) {
-            // selector string
             if (typeof selector === "string") {
+                // selector string
                 return Jamon.from(document.querySelectorAll(selector));
-            // Jamon instance
-            } else if (selector.constructor.name === "Jamon") {
+            } else if (selector instanceof Jamon) {
+                // Jamon instance
                 return selector;
-            // NodeList or HTMLCollection
             } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
+                // NodeList or HTMLCollection
                 return Jamon.from(selector);
             }
         }
