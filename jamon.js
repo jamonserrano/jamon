@@ -358,7 +358,10 @@
          * @return {Jamon} New Jamón instance
          */
         static $$ (selector) {
-            if (isString(selector)) {
+            if (isUndefined(selector)) {
+                // empty collection
+                return Jamon.from([]);
+            } else if (isString(selector)) {
                 // selector string
                 return Jamon.from(document.querySelectorAll(selector));
             } else if (selector instanceof Jamon) {
