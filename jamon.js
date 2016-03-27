@@ -394,7 +394,7 @@
         }
 
         // Filter the elements (returns a new Jamón instance)
-        filter (selector) {
+        filterBy (selector) {
             const elements = this.filter((element) => element.matches(selector));
             return Jamon.from(elements);
         }
