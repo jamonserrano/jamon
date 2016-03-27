@@ -355,6 +355,17 @@
             });
         }
 
+        // Utility: create a new element
+        static create (type, options) {
+            const element = document.createElement(type);
+            if (options) {
+                for (const key of Object.keys(options)) {
+                    element.setAttribute(key, options[key]);
+                }
+            }
+            return Jamon.from([element]);
+        };
+
         static setHiddenClassName (className) {
             if (typeof className === "string") {
                 hiddenClassName = className;
@@ -839,17 +850,6 @@
             return this;
         }
 
-    };
-
-    // Utility: create a new element
-    jamon.create = function (type, options) {
-        const element = document.createElement(type);
-        if (options) {
-            for (const key of Object.keys(options)) {
-                element.setAttribute(key, options[key]);
-            }
-        }
-        return new Jamon([element]);
     };
 
     // Assign global variables
