@@ -65,25 +65,6 @@
     };
 
     /**
-     * Get multiple elements
-     * @private
-     * @param  {string|NodeList|HTMLCollection|Jamon} selector
-     * @return {Jamon} New Jamón instance
-     */
-    const jamones = function (selector, context) {
-        // selector string
-        if (typeof selector === "string") {
-            return Jamon.from(document.querySelectorAll(selector));
-        // Jamon instance
-        } else if (selector.constructor.name === "Jamon") {
-            return selector;
-        // NodeList or HTMLCollection
-        } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
-            return Jamon.from(selector);
-        }
-    };
-
-    /**
      * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
      * @private
      * @param  {string} property CSS property name
@@ -368,6 +349,24 @@
             } else if (selector.constructor.name === "Jamon") {
                 // Jamon instance
                 return selector;
+            }
+        }
+
+        /**
+         * Get multiple elements
+         * @param  {string|NodeList|HTMLCollection|Jamon} selector
+         * @return {Jamon} New Jamón instance
+         */
+        static $$ (selector) {
+            // selector string
+            if (typeof selector === "string") {
+                return Jamon.from(document.querySelectorAll(selector));
+            // Jamon instance
+            } else if (selector.constructor.name === "Jamon") {
+                return selector;
+            // NodeList or HTMLCollection
+            } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
+                return Jamon.from(selector);
             }
         }
 
@@ -855,6 +854,6 @@
     window.Jamon = Jamon;
     if (isUndefined(window.$) && isUndefined(window.$$)) {
         window.$ = Jamon.$;
-        window.$$ = jamones;
+        window.$$ = Jamon.$$;
     }
 }
