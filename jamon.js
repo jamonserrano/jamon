@@ -853,11 +853,6 @@
         return new Jamon([element]);
     };
 
-    // Utility: add a method to the Jamon prototype
-    jamon.extend = function (name, func) {
-        Jamon.prototype[name] = func;
-    };
-
     // Assign global variables
     window.Jamon = Jamon;
     if (isUndefined(window.$) && isUndefined(window.$$)) {
