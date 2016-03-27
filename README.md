@@ -3,7 +3,7 @@ My take on a DOM library (aka jQuery, the good parts)
 
 ## Usage
 
-Use `$(selector)` or `jamon(selector)` to select a single element:
+Use `$(selector)` or `Jamon.$(selector)` to select a single element:
 
 ```
 $("div");
@@ -11,7 +11,7 @@ $(".menu");
 $("#Header");
 ```
 
-Use `$$(selector)` or `jamon.es(selector)` to select multiple elements:
+Use `$$(selector)` or `Jamon.$$(selector)` to select multiple elements:
 
 ```
 $$("a > span");
@@ -126,10 +126,10 @@ Gets all children (including text nodes) of each element.
 #### closest([selector])
 Gets the closest parent (matching the optional selector) of each element.
 
-#### $(selector)
+#### findOne(selector)
 Finds the first descendant that matches the selector in any of the elements.
 
-#### $$(selector)
+#### findAll(selector)
 Finds all descendants that match the selector in each element.
 
 ### Manipulation
@@ -171,7 +171,7 @@ Clones each element.
 #### remove()
 Removes each element from the DOM.
 
-#### filter(selector)
+#### filterBy(selector)
 Returns a new Jamón instance containing only the elements that match the selector.
 
 
@@ -194,17 +194,11 @@ Jamón is a subclass of the built-in Array so instances behave just like regular
 
 ### Utilities
 
-#### jamon.ready()
+#### Jamon.ready()
 A Promise that is resolved when the document is loaded.
 
-#### jamon.create(type)
+#### Jamon.create(type)
 Creates a new HTML element.
 
-#### jamon.extend(name, function)
-Adds a new method with the provided name to Jamón.
-
-#### jamon.setHiddenClassName(className)
+#### Jamon.setHiddenClassName(className)
 Overrides the default class name ('hidden') used for hiding elements.
-
-#### jamon.noConflict()
-Frees up the $ and $$ global variables.
