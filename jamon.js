@@ -68,22 +68,23 @@
      * Get a single element
      * @private
      * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
-     * @param  {HTMLElement|HTMLDocument} context
      * @return {Jamon} New Jamón instance
-     * @todo   Remove context now that we have $()
      */
-    const jamon = function (selector, context) {
-        // selector string
-        if (typeof selector === "string") {
-            let element = (context || document).querySelector(selector);
+    const jamon = function (selector) {
+        if (isUndefined(selector)) {
+            // empty collection
+            return Jamon.from([]);
+        } else if (typeof selector === "string") {
+            // selector
+            let element = document.querySelector(selector);
             // Array.from cannot use undefined or null
             element = element ? [element] : [];
             return Jamon.from(element);
-        // element node, text node, or document node
         } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
-            return Jamon.from(selector);
-        // Jamon instance
+            // element node, text node, or document node
+            return Jamon.from([selector]);
         } else if (selector.constructor.name === "Jamon") {
+            // Jamon instance
             return selector;
         }
     };
@@ -92,14 +93,12 @@
      * Get multiple elements
      * @private
      * @param  {string|NodeList|HTMLCollection|Jamon} selector
-     * @param  {HTMLElement|HTMLDocument} context
      * @return {Jamon} New Jamón instance
-     * @todo   Remove context now that we have $()
      */
     const jamones = function (selector, context) {
         // selector string
         if (typeof selector === "string") {
-            return Jamon.from((context || document).querySelectorAll(selector));
+            return Jamon.from(document.querySelectorAll(selector));
         // Jamon instance
         } else if (selector.constructor.name === "Jamon") {
             return selector;
@@ -345,13 +344,14 @@
      * Jamón class definition
      */
     class Jamon extends Array {
+
         // Find the first descendant that matches the selector in any of the elements
         $ (selector) {
             let result;
             for (const element of this) {
                 result = findInElement(element, selector, true);
                 if (result) {
-                    return new Jamon([result]);
+                    return Jamon.from([result]);
                 }
             }
         }
@@ -362,13 +362,13 @@
             for (const element of this) {
                 results = results.concat(Array.from(findInElement(element, selector)));
             }
-            return new Jamon(new Set(results));
+            return Jamon.from(new Set(results));
         }
 
         // Filter the elements (returns a new Jamón instance)
         filter (selector) {
             const elements = this.filter((element) => element.matches(selector));
-            return new Jamon(elements);
+            return Jamon.from(elements);
         }
 
         /**
