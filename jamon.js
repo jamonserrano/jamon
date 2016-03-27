@@ -65,31 +65,6 @@
     };
 
     /**
-     * Get a single element
-     * @private
-     * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
-     * @return {Jamon} New Jamón instance
-     */
-    const jamon = function (selector) {
-        if (isUndefined(selector)) {
-            // empty collection
-            return Jamon.from([]);
-        } else if (typeof selector === "string") {
-            // selector
-            let element = document.querySelector(selector);
-            // Array.from cannot use undefined or null
-            element = element ? [element] : [];
-            return Jamon.from(element);
-        } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
-            // element node, text node, or document node
-            return Jamon.from([selector]);
-        } else if (selector.constructor.name === "Jamon") {
-            // Jamon instance
-            return selector;
-        }
-    };
-
-    /**
      * Get multiple elements
      * @private
      * @param  {string|NodeList|HTMLCollection|Jamon} selector
@@ -224,7 +199,7 @@
      */
     const insertNode = function (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
-        target = target.constructor.name === "Jamon" ? target : jamon(target);
+        target = target.constructor.name === "Jamon" ? target : Jamon.$(target);
 
         const lastIndex = target.length - 1;
         let index = 0,
@@ -236,7 +211,7 @@
             subject = document.createTextNode(subject);
             subjectIsText = true;
         } else {
-            subject = jamon(subject).element;
+            subject = Jamon.$(subject).element;
         }
 
         // before, insertBefore, after, insertAfter
@@ -369,6 +344,30 @@
         static setHiddenClassName (className) {
             if (typeof className === "string") {
                 hiddenClassName = className;
+            }
+        }
+
+        /**
+         * Get a single element
+         * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
+         * @return {Jamon} New Jamón instance
+         */
+        static $ (selector) {
+            if (isUndefined(selector)) {
+                // empty collection
+                return Jamon.from([]);
+            } else if (typeof selector === "string") {
+                // selector
+                let element = document.querySelector(selector);
+                // Array.from cannot use undefined or null
+                element = element ? [element] : [];
+                return Jamon.from(element);
+            } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
+                // element node, text node, or document node
+                return Jamon.from([selector]);
+            } else if (selector.constructor.name === "Jamon") {
+                // Jamon instance
+                return selector;
             }
         }
 
@@ -855,7 +854,7 @@
     // Assign global variables
     window.Jamon = Jamon;
     if (isUndefined(window.$) && isUndefined(window.$$)) {
-        window.$ = jamon;
+        window.$ = Jamon.$;
         window.$$ = jamones;
     }
 }
