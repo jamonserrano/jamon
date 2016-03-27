@@ -1,11 +1,11 @@
 describe("Classes", function () {
     describe("addClass()", function () {
-        before(function(){
+        before(function () {
             fixture.setBase("test/fixtures");
         });
 
         beforeEach(function () {
-            this.result = fixture.load('basic_elements.html');
+            fixture.load('basic_elements.html');
             this.$el = $("#id1");
             this.el = this.$el[0];
             this.$el2 = $("#id2");
