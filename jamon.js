@@ -187,7 +187,7 @@
             subjectIsText = false;
 
         // make sure the subject is an element
-        if (typeof subject === "string") {
+        if (isString(subject)) {
             // insert string as textNode
             subject = document.createTextNode(subject);
             subjectIsText = true;
@@ -323,7 +323,7 @@
         };
 
         static setHiddenClassName (className) {
-            if (typeof className === "string") {
+            if (isString(className)) {
                 hiddenClassName = className;
             }
         }
@@ -337,7 +337,7 @@
             if (isUndefined(selector)) {
                 // empty collection
                 return Jamon.from([]);
-            } else if (typeof selector === "string") {
+            } else if (isString(selector)) {
                 // selector
                 let element = document.querySelector(selector);
                 // Array.from cannot use undefined or null
@@ -358,7 +358,7 @@
          * @return {Jamon} New Jamón instance
          */
         static $$ (selector) {
-            if (typeof selector === "string") {
+            if (isString(selector)) {
                 // selector string
                 return Jamon.from(document.querySelectorAll(selector));
             } else if (selector instanceof Jamon) {
@@ -492,7 +492,7 @@
 
         // Get or set inline styles
         css (style, value) {
-            if (typeof style === "string") {
+            if (isString(style)) {
                 // set single style
                 if (!isUndefined(value)) {
                     for (const element of this) {
