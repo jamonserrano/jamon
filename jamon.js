@@ -346,7 +346,7 @@
     class Jamon extends Array {
 
         // Find the first descendant that matches the selector in any of the elements
-        $ (selector) {
+        findOne (selector) {
             let result;
             for (const element of this) {
                 result = findInElement(element, selector, true);
@@ -357,7 +357,7 @@
         }
 
         // Find all descendants that match the selector within each element
-        $$ (selector) {
+        findAll (selector) {
             let results = [];
             for (const element of this) {
                 results = results.concat(Array.from(findInElement(element, selector)));
