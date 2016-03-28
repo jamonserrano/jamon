@@ -3,11 +3,11 @@
 
 module.exports = function(config) {
   var customLaunchers = {
-     sl_chrome: {
+     sl_chrome_latest: {
         base: 'SauceLabs',
         browserName: 'chrome',
-        platform: 'Windows 7',
-        version: '35'
+        platform: 'Windows 10',
+        version: 'latest'
     }/*,
       sl_firefox: {
         base: 'SauceLabs',
