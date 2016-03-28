@@ -1,4 +1,4 @@
-# Jamón
+# Jamón [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon)
 My take on a DOM library (aka jQuery, the good parts)
 
 ## Usage
