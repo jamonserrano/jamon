@@ -23,6 +23,7 @@
     /**
      * Unique property name to attach to proxied event listeners
      * @private
+     * @const
      * @type {symbol}
      */
     const listenerProperty = Symbol("listenerProperty");
@@ -30,6 +31,7 @@
     /**
      * CSS properties that accept numbers (to know when to not append "px"), list taken from jQuery
      * @private
+     * @const
      * @type {Set}
      */
     const cssNumberProperties = new Set(["columnCount", "fillOpacity", "fontWeight",
@@ -38,13 +40,15 @@
     /**
      * Storage for element data
      * @private
-     * @type {WeakMap}
+     * @const
+     * @type {Map}
      */
-    const dataMap = new WeakMap();
+    const dataMap = new Map();
 
     /**
      * Storage for proxied event listeners
      * @private
+     * @const
      * @type {Map}
      */
     const proxyMap = new Map();
@@ -52,7 +56,8 @@
     /**
      * Regular expressions to indentify event types
      * @private
-     * @type {Object}
+     * @const
+     * @enum {RegExp}
      * @todo This too might be better as a Map
      */
     const EventRegExp = {
@@ -67,6 +72,7 @@
     /**
      * Enum for node operations.
      * @private
+     * @const
      * @enum {number}
      */
     const NodeMethod = {
@@ -80,6 +86,7 @@
     /**
      * Enum for class name operations.
      * @private
+     * @const
      * @enum {string}
      */
     const ClassListMethod = {
@@ -91,6 +98,7 @@
     /**
      * Enum for node relatives.
      * @private
+     * @const
      * @enum {string}
      */
     const Relative = {
@@ -190,7 +198,7 @@
      * @private
      * @param  {Jamon} context
      * @param  {Relative} relative
-     * @return {Jamon} New Jamón instance containing the found elements
+     * @return {Array|Jamon} New Jamón instance containing the found elements
      */
     function getRelative (context, relative) {
         const relatives = [];
@@ -342,7 +350,7 @@
          * Create a new element
          * @param  {string} type - Element type
          * @param  {Object=} attributes - Attributes
-         * @return {Jamon} The element wrapped in a Jamón instance
+         * @return {Array|Jamon} The element wrapped in a Jamón instance
          */
         static create (type, attributes) {
             const element = document.createElement(type);
@@ -366,15 +374,15 @@
 
         /**
          * Get a single element
-         * @param  {string|HTMLElement|Text|HTMLDocument|Jamon} selector
-         * @return {Jamon} New Jamón instance
+         * @param  {string|Element|Text|Document|Jamon} selector
+         * @return {Array|Jamon|undefined} New Jamón instance
          */
         static $ (selector) {
             let result;
             if (isUndefined(selector)) {
                 // empty collection
                 result = Jamon.from([]);
-            } else if (isString(selector)) {
+            } else if (typeof selector === "string") {
                 // selector
                 let element = document.querySelector(selector);
                 // Array.from cannot use undefined or null
@@ -394,14 +402,14 @@
         /**
          * Get multiple elements
          * @param  {string|NodeList|HTMLCollection|Jamon} selector
-         * @return {Jamon} New Jamón instance
+         * @return {Array|Jamon|undefined} New Jamón instance
          */
         static $$ (selector) {
             let result;
             if (isUndefined(selector)) {
                 // empty collection
                 result = Jamon.from([]);
-            } else if (isString(selector)) {
+            } else if (typeof selector === "string") {
                 // selector string
                 result = Jamon.from(document.querySelectorAll(selector));
             } else if (selector instanceof Jamon) {
