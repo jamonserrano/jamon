@@ -66,6 +66,7 @@
 
     /**
      * Enum for node operations.
+     * @private
      * @enum {number}
      */
     const NodeMethod = {
@@ -78,6 +79,7 @@
 
     /**
      * Enum for class name operations.
+     * @private
      * @enum {string}
      */
     const ClassListMethod = {
@@ -88,6 +90,7 @@
 
     /**
      * Enum for node relatives.
+     * @private
      * @enum {string}
      */
     const Relative = {
@@ -331,6 +334,7 @@
     /**
      * Jamón class definition
      * @extends {Array}
+     * @unrestricted
      */
     class Jamon extends Array {
 
