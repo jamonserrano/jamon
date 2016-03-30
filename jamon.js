@@ -55,13 +55,13 @@
      * @type {Object}
      * @todo This too might be better as a Map
      */
-    const eventRegExps = {
-        focus: /^(blur|change|focus)$/,
-        form: /^(reset|submit)$/,
-        keyboard: /^key(down|press|up)$/,
-        mouse: /^(click|dblclick|contextmenu)|(mouse(down|enter|leave|move|out|over|up))$/,
-        pointer: /^pointer(cancel|down|enter|leave|move|out|over|up)$/,
-        touch: /^touch(cancel|end|move|start)$/
+    const EventRegExp = {
+        FOCUS: /^(blur|change|focus)$/,
+        FORM: /^(reset|submit)$/,
+        KEYBOARD: /^key(down|press|up)$/,
+        MOUSE: /^(click|dblclick|contextmenu)|(mouse(down|enter|leave|move|out|over|up))$/,
+        POINTER: /^pointer(cancel|down|enter|leave|move|out|over|up)$/,
+        TOUCH: /^touch(cancel|end|move|start)$/
     };
 
     /**
@@ -439,29 +439,29 @@
 
         /**
          * Add class name(s)
-         * @param {String} className - Space-separated class names
+         * @param {string} className - Space-separated class names
          * @return {Jamon} The instance
          */
         addClass (className) {
-            return addRemoveToggleClass(this, className, "add");
+            return addRemoveToggleClass(this, className,ClassListMethod.ADD);
         }
 
         /**
          * Remove class name(s)
-         * @param  {String} className - Space-separated class names
+         * @param  {string} className - Space-separated class names
          * @return {Jamon} The instance
          */
         removeClass (className) {
-            return addRemoveToggleClass(this, className, "remove");
+            return addRemoveToggleClass(this, className, ClassListMethod.REMOVE);
         }
 
         /**
          * Toggle class name(s)
-         * @param  {String} className - Space-separated class names
+         * @param  {string} className - Space-separated class names
          * @return {Jamon} The instance
          */
         toggleClass (className) {
-            return addRemoveToggleClass(this, className, "toggle");
+            return addRemoveToggleClass(this, className, ClassListMethod.TOGGLE);
         }
 
         // Checks if the element has the provided class name
@@ -847,30 +847,30 @@
             // Set up event properties based on event type
             if (!isUndefined(detail)) {
                 type = "CustomEvent";
-            } else if (eventRegExps.mouse.test(event)) {
+            } else if (EventRegExp.MOUSE.test(event)) {
                 type = "MouseEvent";
                 bubbles = true;
                 cancelable = true;
-            } else if (eventRegExps.focus.test(event)) {
+            } else if (EventRegExp.FOCUS.test(event)) {
                 type = "FocusEvent";
                 if (event === "change") {
                     bubbles = true;
                 }
-            } else if (eventRegExps.form.test(event)) {
+            } else if (EventRegExp.FORM.test(event)) {
                 bubbles = true;
                 cancelable = true;
-            } else if (eventRegExps.keyboard.test(event)) {
+            } else if (EventRegExp.KEYBOARD.test(event)) {
                    type = "KeyboardEvent";
                    bubbles = true;
                    cancelable = true;
-            } else if (eventRegExps.touch.test(event)) {
+            } else if (EventRegExp.TOUCH.test(event)) {
                 type = "TouchEvent";
                 bubbles = true;
 
                 if (event !== "touchcancel") {
                     cancelable = true;
                 }
-            } else if (eventRegExps.pointer.test(event)) {
+            } else if (EventRegExp.POINTER.test(event)) {
                 let exceptions = ["pointerenter", "pointerleave"];
                 type = "PointerEvent";
                 if (!exceptions.includes(event)) {
