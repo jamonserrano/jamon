@@ -301,29 +301,28 @@
      */
     class Jamon extends Array {
 
-        static ready () {
-            return new Promise(function (resolve) {
-                if (document.readyState === "ready") {
-                    resolve();
-                } else {
-                    document.addEventListener("DOMContentLoaded", resolve);
-                }
-            });
-        }
-
-        // Utility: create a new element
-        static create (type, options) {
+        /**
+         * Create a new element
+         * @param  {string} type - Element type
+         * @param  {object} [attributes] - Attributes
+         * @return {Jamon} The element wrapped in a Jamón instance
+         */
+        static create (type, attributes) {
             const element = document.createElement(type);
-            if (options) {
-                for (const key of Object.keys(options)) {
-                    element.setAttribute(key, options[key]);
+            if (attributes) {
+                for (const attribute of Object.keys(attributes)) {
+                    element.setAttribute(attribute, attributes[attribute]);
                 }
             }
             return Jamon.from([element]);
-        };
+        }
 
+        /**
+         * Sets the class name used for hide(), show(), and toggle()
+         * @param {[string} className - The new class name to use
+         */
         static setHiddenClassName (className) {
-            if (isString(className)) {
+            if (isString(className) && className.length) {
                 hiddenClassName = className;
             }
         }
@@ -850,8 +849,7 @@
 
             return this;
         }
-
-    };
+    }
 
     // Assign global variables
     window.Jamon = Jamon;
