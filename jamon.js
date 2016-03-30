@@ -65,6 +65,38 @@
     };
 
     /**
+     * Enum for node operations.
+     * @enum {number}
+     */
+    const NodeMethod = {
+      PREPEND: 0,
+      APPEND: 1,
+      BEFORE: 2,
+      AFTER: 3,
+      REPLACE: 4
+    };
+
+    /**
+     * Enum for class name operations.
+     * @enum {string}
+     */
+    const ClassListMethod = {
+        ADD: "add",
+        REMOVE: "remove",
+        TOGGLE: "toggle"
+    };
+
+    /**
+     * Enum for node relatives.
+     * @enum {string}
+     */
+    const Relative = {
+        PARENT_ELEMENT: "parentElement",
+        FIRST_ELEMENT_CHILD: "firstElementChild",
+        LAST_ELEMENT_CHILD: "lastElementChild"
+    };
+
+    /**
      * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
      * @private
      * @param  {string} property CSS property name
@@ -99,7 +131,7 @@
      * @private
      * @param {Jamon} context The Jamón instance
      * @param {string} className Space-separated class names
-     * @param {('add'|'remove'|'toggle')} method Method to use on the class name(s)
+     * @param {ClassListMethod} method Method to use on the class name(s)
      * @return {Jamon}
      */
     function addRemoveToggleClass (context, className, method) {
@@ -115,7 +147,7 @@
 
         if (classNames.length) {
             for (const element of context) {
-                if (method !== "toggle") {
+                if (method !== ClassListMethod.TOGGLE) {
                     // add and remove accept multiple parameters…
                     element.classList[method](...classNames);
                 } else {
@@ -140,7 +172,7 @@
      */
     function getSetProperty (context, property, value) {
         if (isUndefined(value)) {
-            return context.element[property];
+            return context[0][property];
         }
 
         for (const element of context) {
@@ -154,7 +186,7 @@
      * Get relatives of the element
      * @private
      * @param  {Jamon} context
-     * @param  {('parentElement'|'firstElementChild'|'lastElementChild')} relative
+     * @param  {Relative} relative
      * @return {Jamon} New Jamón instance containing the found elements
      */
     function getRelative (context, relative) {
@@ -164,7 +196,7 @@
             relatives.push(element[relative]);
         }
 
-        return new Jamon(relatives);
+        return Jamon.from(relatives);
     };
 
     // Handle all node insertion operations
@@ -173,8 +205,8 @@
      * @private
      * @param  {Jamon|string} subject The element/string that we are using
      * @param  {string|Element|Text|Document|Jamon} target The target we are using the subject with
-     * @param  {('before'|'after'|'prepend'|'append'|'replace')} operation Name of the operation
-     * @param  {(0|1)} contextIndex Index of the paramater to be returned
+     * @param  {NodeMethod} operation Name of the operation
+     * @param  {number} contextIndex Index of the paramater to be returned
      * @return {Jamon} The Jamón instance (referenced by contextIndex)
      * @todo   Separate this monster into 4 parts
      */
@@ -192,24 +224,24 @@
             subject = document.createTextNode(subject);
             subjectIsText = true;
         } else {
-            subject = Jamon.$(subject).element;
+            subject = Jamon.$(subject)[0];
         }
 
-        // before, insertBefore, after, insertAfter
-        if (operation === "before" || operation === "after") {
+        if (operation === NodeMethod.BEFORE || operation === NodeMethod.AFTER) {
+            // before, insertBefore, after, insertAfter
             for (const element of target) {
                 // use a clone of the subject for all but the last target
                 element.parentElement.insertBefore(
                     (index++ < lastIndex) ? subject.cloneNode(true) : subject,
-                    operation === "before" ? element : element.nextSibling
+                    operation === NodeMethod.BEFORE ? element : element.nextSibling
                 );
                 // remove adjacent textNodes
                 if (subjectIsText && element.parentNode) {
                     element.parentNode.normalize();
                 }
             }
-        // prepend, prependTo
-        } else if (operation === "prepend") {
+        } else if (operation === NodeMethod.PREPEND) {
+            // prepend, prependTo
             for (const element of target) {
                 // use a clone of the subject for all but the last target
                 element.insertBefore(
@@ -221,8 +253,8 @@
                     element.normalize();
                 }
             }
-        // append, appendTo
-        } else if (operation === "append") {
+        } else if (operation === NodeMethod.APPEND) {
+            // append, appendTo
             for (const element of target) {
                 // use a clone of the subject for all but the last target
                 element.appendChild((index < lastIndex) ? subject.cloneNode(true) : subject);
@@ -231,8 +263,8 @@
                     element.normalize();
                 }
             }
-        // replace, replaceWith
-        } else if (operation === "replace") {
+        } else if (operation === NodeMethod.REPLACE) {
+            // replace, replaceWith
             for (const element of target) {
                 // use a clone of the subject for all but the last target
                 element.parentElement.replaceChild(
@@ -252,7 +284,7 @@
     /**
      * Generate a unique proxy id for the given listener-selector combination
      * @private
-     * @param  {function} listener The event listener function
+     * @param  {function(Event)} listener The event listener function
      * @param  {string} selector The selector used for the delegation
      * @return {string} Unique proxy id
      */
@@ -266,7 +298,7 @@
      * @private
      * @param  {HTMLElement} element The search context
      * @param  {string} selector The selector to use in the query
-     * @param  {boolean} one Do we want only one result?
+     * @param  {boolean=} one Do we want only one result?
      * @return {HTMLElement|NodeList} The result of the query
      */
     function findInElement (element, selector, one) {
@@ -298,13 +330,14 @@
 
     /**
      * Jamón class definition
+     * @extends {Array}
      */
     class Jamon extends Array {
 
         /**
          * Create a new element
          * @param  {string} type - Element type
-         * @param  {object} [attributes] - Attributes
+         * @param  {Object=} attributes - Attributes
          * @return {Jamon} The element wrapped in a Jamón instance
          */
         static create (type, attributes) {
@@ -319,7 +352,7 @@
 
         /**
          * Sets the class name used for hide(), show(), and toggle()
-         * @param {[string} className - The new class name to use
+         * @param {string} className - The new class name to use
          */
         static setHiddenClassName (className) {
             if (isString(className) && className.length) {
@@ -333,22 +366,25 @@
          * @return {Jamon} New Jamón instance
          */
         static $ (selector) {
+            let result;
             if (isUndefined(selector)) {
                 // empty collection
-                return Jamon.from([]);
+                result = Jamon.from([]);
             } else if (isString(selector)) {
                 // selector
                 let element = document.querySelector(selector);
                 // Array.from cannot use undefined or null
                 element = element ? [element] : [];
-                return Jamon.from(element);
+                result = Jamon.from(element);
             } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
                 // element node, text node, or document node
-                return Jamon.from([selector]);
+                result = Jamon.from([selector]);
             } else if (selector instanceof Jamon) {
                 // Jamon instance
-                return selector;
+                result = selector;
             }
+
+            return result;
         }
 
         /**
@@ -357,19 +393,22 @@
          * @return {Jamon} New Jamón instance
          */
         static $$ (selector) {
+            let result;
             if (isUndefined(selector)) {
                 // empty collection
-                return Jamon.from([]);
+                result = Jamon.from([]);
             } else if (isString(selector)) {
                 // selector string
-                return Jamon.from(document.querySelectorAll(selector));
+                result = Jamon.from(document.querySelectorAll(selector));
             } else if (selector instanceof Jamon) {
                 // Jamon instance
-                return selector;
+                result = selector;
             } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
                 // NodeList or HTMLCollection
-                return Jamon.from(selector);
+                result = Jamon.from(selector);
             }
+
+            return result;
         }
 
         // Find the first descendant that matches the selector in any of the elements
@@ -632,17 +671,17 @@
 
         // Get the parent of the element
         parent () {
-            return getRelative(this, "parentElement");
+            return getRelative(this, Relative.PARENT_ELEMENT);
         }
 
         // Get the first child of the element
         firstChild () {
-            return getRelative(this, "firstElementChild");
+            return getRelative(this, Relative.FIRST_ELEMENT_CHILD);
         }
 
         // Get the last child of the element
         lastChild () {
-            return getRelative(this, "lastElementChild");
+            return getRelative(this, Relative.LAST_ELEMENT_CHILD);
         }
 
         // Get the children of the element
@@ -678,52 +717,52 @@
 
         // Prepend something to the element
         prepend (subject) {
-            return insertNode(subject, this, "prepend", 1);
+            return insertNode(subject, this, NodeMethod.PREPEND, 1);
         }
 
         // Prepend the element to something
         prependTo (target) {
-            return insertNode(this, target, "prepend", 0);
+            return insertNode(this, target, NodeMethod.PREPEND, 0);
         }
 
         // Append something to the element
         append (subject) {
-            return insertNode(subject, this, "append", 1);
+            return insertNode(subject, this, NodeMethod.APPEND, 1);
         }
 
         // Append the element to something
         appendTo (target) {
-            return insertNode(this, target, "append", 0);
+            return insertNode(this, target, NodeMethod.APPEND, 0);
         }
 
         // Insert something before the element
         before (subject) {
-            return insertNode(subject, this, "before", 1);
+            return insertNode(subject, this, NodeMethod.BEFORE, 1);
         }
 
         // Insert the element before something
         insertBefore (target) {
-            return insertNode(this, target, "before", 0);
+            return insertNode(this, target, NodeMethod.BEFORE, 0);
         }
 
         // Insert something after the element
         after (subject) {
-            return insertNode(subject, this, "after", 1);
+            return insertNode(subject, this, NodeMethod.AFTER, 1);
         }
 
         // Insert the element after something
         insertAfter (target) {
-            return insertNode(this, target, "after", 0);
+            return insertNode(this, target, NodeMethod.AFTER, 0);
         }
 
         // Replace the element with something
         replaceWith (subject) {
-            return insertNode(subject, this, "replace", 1);
+            return insertNode(subject, this, NodeMethod.REPLACE, 1);
         }
 
         // Replace something with the element
         replaceAll (target) {
-            return insertNode(this, target, "replace", 0);
+            return insertNode(this, target, NodeMethod.REPLACE, 0);
         }
 
         // Clone the element
@@ -834,11 +873,11 @@
             } else if (eventRegExps.pointer.test(event)) {
                 let exceptions = ["pointerenter", "pointerleave"];
                 type = "PointerEvent";
-                if (!exceptions.include(event)) {
+                if (!exceptions.includes(event)) {
                     bubbles = true;
                 }
                 exceptions.push("pointercancel");
-                if (!exceptions.include(event)) {
+                if (!exceptions.includes(event)) {
                     cancelable = true;
                 }
             }
