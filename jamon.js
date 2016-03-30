@@ -70,7 +70,7 @@
      * @param  {string} property CSS property name
      * @return {string} JS property name
      */
-    const kebabToCamel = function (property) {
+    function kebabToCamel (property) {
         return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
     };
 
@@ -80,7 +80,7 @@
      * @param  {*}  reference
      * @return {boolean} The undefinedness of the reference
      */
-    const isUndefined = function (reference) {
+    function isUndefined (reference) {
         return reference === undefined;
     };
 
@@ -90,7 +90,7 @@
      * @param  {*}  reference
      * @return {boolean} The stringness of the reference
      */
-    const isString = function (reference) {
+    function isString (reference) {
         return typeof reference === "string";
     };
 
@@ -102,7 +102,7 @@
      * @param {('add'|'remove'|'toggle')} method Method to use on the class name(s)
      * @return {Jamon}
      */
-    const addRemoveToggleClass = function (context, className, method) {
+    function addRemoveToggleClass (context, className, method) {
         if (isUndefined(className)) {
             throw new ReferenceError(`Invalid parameter: ${className}`);
         }
@@ -138,7 +138,7 @@
      * @param  {*} value Property value
      * @return {Jamon}
      */
-    const getSetProperty = function (context, property, value) {
+    function getSetProperty (context, property, value) {
         if (isUndefined(value)) {
             return context.element[property];
         }
@@ -157,7 +157,7 @@
      * @param  {('parentElement'|'firstElementChild'|'lastElementChild')} relative
      * @return {Jamon} New Jamón instance containing the found elements
      */
-    const getRelative = function (context, relative) {
+    function getRelative (context, relative) {
         const relatives = [];
 
         for (const element of context) {
@@ -178,7 +178,7 @@
      * @return {Jamon} The Jamón instance (referenced by contextIndex)
      * @todo   Separate this monster into 4 parts
      */
-    const insertNode = function (subject, target, operation, contextIndex) {
+    function insertNode (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
         target = target instanceof Jamon ? target : Jamon.$(target);
 
@@ -256,7 +256,7 @@
      * @param  {string} selector The selector used for the delegation
      * @return {string} Unique proxy id
      */
-    const getProxyId = function (listener, selector) {
+    function getProxyId (listener, selector) {
         // The proxy id consists of the unique index attached the function and the selector string
         return `${listener[listenerProperty]}|${selector}`;
     };
@@ -269,7 +269,7 @@
      * @param  {boolean} one Do we want only one result?
      * @return {HTMLElement|NodeList} The result of the query
      */
-    const findInElement = function (element, selector, one) {
+    function findInElement (element, selector, one) {
         let result,
             temporaryId = false,
             id = element.id;
@@ -400,7 +400,7 @@
 
         /**
          * Add class name(s)
-         * @param {String} className Space-separated class names
+         * @param {String} className - Space-separated class names
          * @return {Jamon} The instance
          */
         addClass (className) {
@@ -409,7 +409,7 @@
 
         /**
          * Remove class name(s)
-         * @param  {String} className Space-separated class names
+         * @param  {String} className - Space-separated class names
          * @return {Jamon} The instance
          */
         removeClass (className) {
@@ -418,7 +418,7 @@
 
         /**
          * Toggle class name(s)
-         * @param  {String} className Space-separated class names
+         * @param  {String} className - Space-separated class names
          * @return {Jamon} The instance
          */
         toggleClass (className) {
