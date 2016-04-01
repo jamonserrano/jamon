@@ -194,10 +194,7 @@ Jamón is a subclass of the built-in Array so instances behave just like regular
 
 ### Utilities
 
-#### Jamon.ready()
-A Promise that is resolved when the document is loaded.
-
-#### Jamon.create(type)
+#### Jamon.create(nodeType)
 Creates a new HTML element.
 
 #### Jamon.setHiddenClassName(className)
