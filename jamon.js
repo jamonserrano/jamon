@@ -115,7 +115,7 @@
      */
     function kebabToCamel (property) {
         return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
-    };
+    }
 
     /**
      * Check if a reference is undefined
@@ -125,7 +125,7 @@
      */
     function isUndefined (reference) {
         return reference === undefined;
-    };
+    }
 
     /**
      * Check if a reference is a String
@@ -135,7 +135,7 @@
      */
     function isString (reference) {
         return typeof reference === "string";
-    };
+    }
 
     /**
      * Add, remove, or toggle class names
@@ -171,7 +171,7 @@
         }
 
         return context;
-    };
+    }
 
     /**
      * Get & set element properties
@@ -191,7 +191,7 @@
         }
 
         return context;
-    };
+    }
 
     /**
      * Get relatives of the element
@@ -208,7 +208,7 @@
         }
 
         return Jamon.from(relatives);
-    };
+    }
 
     // Handle all node insertion operations
     /**
@@ -290,7 +290,7 @@
         }
         // return the subject or the target (whichever contextIndex points to)
         return arguments[contextIndex];
-    };
+    }
 
     /**
      * Generate a unique proxy id for the given listener-selector combination
@@ -302,7 +302,7 @@
     function getProxyId (listener, selector) {
         // The proxy id consists of the unique index attached the function and the selector string
         return `${listener[listenerProperty]}|${selector}`;
-    };
+    }
 
     /**
      * Runs querySelectorAll WITHIN the element (unlike native qSA)
@@ -337,7 +337,7 @@
 
         // Return the result
         return result;
-    };
+    }
 
     /**
      * Jamón class definition
@@ -382,7 +382,7 @@
             if (isUndefined(selector)) {
                 // empty collection
                 result = Jamon.from([]);
-            } else if (typeof selector === "string") {
+            } else if (isString(selector)) {
                 // selector
                 let element = document.querySelector(selector);
                 // Array.from cannot use undefined or null
@@ -409,7 +409,7 @@
             if (isUndefined(selector)) {
                 // empty collection
                 result = Jamon.from([]);
-            } else if (typeof selector === "string") {
+            } else if (isString(selector)) {
                 // selector string
                 result = Jamon.from(document.querySelectorAll(selector));
             } else if (selector instanceof Jamon) {
