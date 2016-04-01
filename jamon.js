@@ -58,7 +58,6 @@
      * @private
      * @const
      * @enum {RegExp}
-     * @todo This too might be better as a Map
      */
     const EventRegExp = {
         FOCUS: /^(blur|change|focus)$/,
@@ -151,8 +150,9 @@
         }
 
         if (!isString(className)) {
-            throw new TypeError(`Parameter must be a String`);
+            throw new TypeError("Parameter must be a String");
         }
+
         // Split by spaces, then remove empty elements caused by extra whitespace
         const classNames = className.split(" ").filter(item => item.length);
 
