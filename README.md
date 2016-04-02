@@ -191,5 +191,5 @@ Jamón is a subclass of the built-in Array so instances behave just like regular
 #### Jamon.create(nodeType)
 Creates a new HTML element.
 
-#### Jamon.setHiddenClassName(className)
+#### Jamon.hiddenClassName
 Overrides the default class name ('hidden') used for hiding elements.

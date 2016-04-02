@@ -375,9 +375,8 @@
         /**
          * Sets the class name used for hide(), show(), and toggle()
          * @param {string} className - The new class name to use
-         * @todo throw error on whitespace in class name
          */
-        static setHiddenClassName (className) {
+        static set hiddenClassName (className) {
             // accept only string with non-null length
             if (isString(className) && className.length) {
                 hiddenClassName = className;
