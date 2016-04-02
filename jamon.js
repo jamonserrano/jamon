@@ -178,7 +178,7 @@
      * @private
      * @param  {Jamon} context The Jamón instance
      * @param  {string} property Property name
-     * @param  {string=|null} value Property value (null to remove property)
+     * @param  {string|null|undefined} value Property value (null to remove property)
      * @return {Jamon}
      */
     function getSetProperty (context, property, value) {
@@ -439,7 +439,7 @@
         /**
          * Find the first descendant that matches the selector in any of the elements
          * @param  {string} selector - Selector to match
-         * @return {Jamon} - A new Jamón instance containing the matched element
+         * @return {Jamon|undefined} - A new Jamón instance containing the matched element
          */
         findOne (selector) {
             let result;
@@ -572,7 +572,7 @@
         /**
          * Get a property of the first element or set a property of each element
          * @param  {string} property - Property name
-         * @param  {string=|null} value - Property value to set (null to remove property)
+         * @param  {string|null|undefined} value - Property value to set (null to remove property)
          * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
          */
         prop (property, value) {
@@ -582,8 +582,8 @@
         /**
          * Get an attribute of the first element or set an attribute to each element
          * @param  {string} attribute - Attribute name
-         * @param  {string=|null} value - Attribute value to set (null to remove attribute)
-         * @return {[string|Jamon} - Attribute value (get) or the Jamón instance (set)
+         * @param  {string|null|undefined} value - Attribute value to set (null to remove attribute)
+         * @return {string|Jamon} - Attribute value (get) or the Jamón instance (set)
          */
         attr (attribute, value) {
             if (isUndefined(value)) {
