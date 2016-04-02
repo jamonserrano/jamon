@@ -178,16 +178,22 @@
      * @private
      * @param  {Jamon} context The Jamón instance
      * @param  {string} property Property name
-     * @param  {*} value Property value
+     * @param  {string=|null} value Property value (null to remove property)
      * @return {Jamon}
      */
     function getSetProperty (context, property, value) {
         if (isUndefined(value)) {
             return context[0][property];
-        }
+        } else if (value !== null) {
+            value = String(value);
 
-        for (const element of context) {
-            element[property] = value;
+            for (const element of context) {
+                element[property] = value;
+            }
+        } else {
+            for (const element of context) {
+                delete element[property];
+            }
         }
 
         return context;
@@ -516,30 +522,27 @@
             return getSetProperty(this, property, value);
         }
 
-        // Remove property
-        removeProp (property) {
-            return getSetProperty(this, property, null);
-        }
-
-        // Get or set attributes
+        /**
+         * Get an attribute of the first element or set an attribute to each element
+         * @param  {string} attribute - Attribute name
+         * @param  {string=|null} value - Attribute value to set (null to remove attribute)
+         * @return {[string|Jamon} - Attribute value (get) or the Jamón instance (set)
+         */
         attr (attribute, value) {
-            if (isUndefined(value)) { // get
+            if (isUndefined(value)) {
+                // get
                 return this[0].getAttribute(attribute);
+            } else if (value !== null) {
+                // set
+                for (const element of this) {
+                    element.setAttribute(attribute, value);
+                }
+            } else {
+                // remove
+                for (const element of this) {
+                    element.removeAttribute(attribute);
+                }
             }
-
-            for (const element of this) { // set
-                element.setAttribute(attribute, value);
-            }
-
-            return this;
-        }
-
-        // Remove attribute
-        removeAttr (attribute) {
-            for (const element of this) {
-                element.removeAttribute(attribute);
-            }
-
             return this;
         }
 
