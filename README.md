@@ -48,14 +48,8 @@ Gets the text content of the first element or sets the text content of each elem
 #### prop(property [, value])
 Gets the value of a property of the first element or sets the value of a property of each element.
 
-#### removeProp(property)
-Removes the property from each element.
-
 #### attr(attribute [, value])
 Gets the value of an attribute of the first element or sets the value of an attribute of each element.
-
-#### removeAttr(attribute)
-Removes the attribute from each element.
 
 #### data(attribute [, value])
 Gets the value of the data attribute for the first element or sets the data attribute value for each element.
