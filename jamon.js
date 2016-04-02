@@ -159,10 +159,10 @@
         if (classNames.length) {
             for (const element of context) {
                 if (method !== ClassListMethod.TOGGLE) {
-                    // add and remove accept multiple parameters…
+                    // 'add' and 'remove' accept multiple parameters…
                     element.classList[method](...classNames);
                 } else {
-                    // while toggle accepts only one
+                    // while 'toggle' accepts only one
                     for (const className of classNames) {
                         element.classList.toggle(className);
                     }
@@ -204,7 +204,7 @@
      * @private
      * @param  {Jamon} context
      * @param  {Relative} relative
-     * @return {Array|Jamon} New Jamón instance containing the found elements
+     * @return {Jamon} New Jamón instance containing the found elements
      */
     function getRelative (context, relative) {
         const relatives = [];
@@ -356,23 +356,29 @@
          * Create a new element
          * @param  {string} type - Element type
          * @param  {Object=} attributes - Attributes
-         * @return {Array|Jamon} The element wrapped in a Jamón instance
+         * @return {Jamon} The element wrapped in a Jamón instance
          */
         static create (type, attributes) {
+            // create a new element of the given type
             const element = document.createElement(type);
+
+            // add attributes
             if (attributes) {
                 for (const attribute of Object.keys(attributes)) {
                     element.setAttribute(attribute, attributes[attribute]);
                 }
             }
+
             return Jamon.from([element]);
         }
 
         /**
          * Sets the class name used for hide(), show(), and toggle()
          * @param {string} className - The new class name to use
+         * @todo throw error on whitespace in class name
          */
         static setHiddenClassName (className) {
+            // accept only string with non-null length
             if (isString(className) && className.length) {
                 hiddenClassName = className;
             }
@@ -381,10 +387,11 @@
         /**
          * Get a single element
          * @param  {string|Element|Text|Document|Jamon} selector
-         * @return {Array|Jamon|undefined} New Jamón instance
+         * @return {Jamon|undefined} New Jamón instance
          */
         static $ (selector) {
             let result;
+
             if (isUndefined(selector)) {
                 // empty collection
                 result = Jamon.from([]);
@@ -408,10 +415,11 @@
         /**
          * Get multiple elements
          * @param  {string|NodeList|HTMLCollection|Jamon} selector
-         * @return {Array|Jamon|undefined} New Jamón instance
+         * @return {Jamon|undefined} New Jamón instance
          */
         static $$ (selector) {
             let result;
+
             if (isUndefined(selector)) {
                 // empty collection
                 result = Jamon.from([]);
@@ -429,44 +437,64 @@
             return result;
         }
 
-        // Find the first descendant that matches the selector in any of the elements
+        /**
+         * Find the first descendant that matches the selector in any of the elements
+         * @param  {string} selector - Selector to match
+         * @return {Jamon} - A new Jamón instance containing the matched element
+         */
         findOne (selector) {
             let result;
+
             for (const element of this) {
                 result = findInElement(element, selector, true);
                 if (result) {
+                    // break an return the first result
                     return Jamon.from([result]);
                 }
             }
         }
 
-        // Find all descendants that match the selector within each element
+        /**
+         * Find all descendants that match the selector in any of the elements
+         * @param  {string} selector - Selector to match
+         * @return {Jamon} - A new Jamón instance containing the matched elements
+         */
         findAll (selector) {
             let results = [];
+
             for (const element of this) {
                 results = results.concat(Array.from(findInElement(element, selector)));
             }
+
+            // use a Set to discard duplicate results
             return Jamon.from(new Set(results));
         }
 
-        // Filter the elements (returns a new Jamón instance)
+        //
+        /**
+         * Filter the elements in the collection with a selector
+         * @param  {string} selector - Selector to match
+         * @return {Jamon} - A new Jamón instance containing the matched elements
+         * @todo use msMatchesSelector too for a while
+         */
         filterBy (selector) {
             const elements = this.filter((element) => element.matches(selector));
+
             return Jamon.from(elements);
         }
 
         /**
          * Add class name(s)
-         * @param {string} className - Space-separated class names
-         * @return {Jamon} The instance
+         * @param {string} className - Space-separated list of class names
+         * @return {Jamon} - The instance
          */
         addClass (className) {
-            return addRemoveToggleClass(this, className,ClassListMethod.ADD);
+            return addRemoveToggleClass(this, className, ClassListMethod.ADD);
         }
 
         /**
          * Remove class name(s)
-         * @param  {string} className - Space-separated class names
+         * @param  {string} className - Space-separated list of class names
          * @return {Jamon} The instance
          */
         removeClass (className) {
@@ -475,49 +503,82 @@
 
         /**
          * Toggle class name(s)
-         * @param  {string} className - Space-separated class names
+         * @param  {string} className - Space-separated list of class names
          * @return {Jamon} The instance
          */
         toggleClass (className) {
             return addRemoveToggleClass(this, className, ClassListMethod.TOGGLE);
         }
 
-        // Checks if the element has the provided class name
+        /**
+         * Checks if the first element has the provided class name
+         * @param  {string}  className - Class name to check
+         * @return {Boolean} - True if the element has the class name
+         */
         hasClass (className) {
             return this[0].classList.contains(className);
         }
 
-        // Show the element
+        /**
+         * Show the element(s)
+         * @return {Jamon} The instance
+         * @todo remove dependece on other methods
+         */
         show () {
             return this.removeClass(hiddenClassName);
         }
 
-        // Hide the element
+        /**
+         * Hide the element(s)
+         * @return {Jamon} The instance
+         * @todo remove dependece on other methods
+         */
         hide () {
             return this.addClass(hiddenClassName);
         }
 
-        // Toggle the visibility of the element
+        /**
+         * Toggle the visibility of the element(s)
+         * @return {Jamon} - The instance
+         * @todo remove dependece on other methods
+         */
         toggle () {
             return this.toggleClass(hiddenClassName);
         }
 
-        // Get or set value
+        /**
+         * Get the value of the first element or set the values of the elements
+         * @param  {string=} value - Value to set
+         * @return {string|Jamon} - Value (get) or the Jamón instance (set)
+         */
         val (value) {
             return getSetProperty(this, "value", value);
         }
 
-        // Get or set HTML content
+        /**
+         * Get the html content of the first element or set the html content of the elements
+         * @param  {string=} html - HTML content to set
+         * @return {string|Jamon} - HTML content (get) or the Jamón instance (set)
+         */
         html (html) {
             return getSetProperty(this, "innerHTML", html);
         }
 
-        // Get or set text content
+        /**
+         * Get the text content of the first element or set the text content of the elements
+         * @param  {string} text - Text content to set
+         * @return {string|Jamon} - Text content (get) or the Jamón instance (set)
+         */
         text (text) {
             return getSetProperty(this, "textContent", text);
         }
 
-        // Get or set property
+        /**
+         * Get a property of the first element or set a property of each element
+         * @param  {string} property - Property name
+         * @param  {string=|null} value - Property value to set (null to remove property)
+         * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
+         */
         prop (property, value) {
             return getSetProperty(this, property, value);
         }
