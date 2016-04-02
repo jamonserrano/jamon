@@ -522,28 +522,25 @@
         /**
          * Show the element(s)
          * @return {Jamon} The instance
-         * @todo remove dependece on other methods
          */
         show () {
-            return this.removeClass(hiddenClassName);
+            return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.REMOVE);
         }
 
         /**
          * Hide the element(s)
          * @return {Jamon} The instance
-         * @todo remove dependece on other methods
          */
         hide () {
-            return this.addClass(hiddenClassName);
+            return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.ADD);
         }
 
         /**
          * Toggle the visibility of the element(s)
          * @return {Jamon} - The instance
-         * @todo remove dependece on other methods
          */
         toggle () {
-            return this.toggleClass(hiddenClassName);
+            return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.TOGGLE);
         }
 
         /**
