@@ -123,7 +123,7 @@
      * @return {boolean} The undefinedness of the reference
      */
     function isUndefined (reference) {
-        return reference === undefined;
+        return typeof reference === "undefined";
     }
 
     /**
