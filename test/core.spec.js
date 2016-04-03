@@ -169,6 +169,22 @@ describe("Core", function () {
             removeFixture();
         });
 
+        it("should work with an Array", function () {
+            addFixture();
+            var arr = Array.from(document.getElementsByTagName("div"));
+            var results = $$(arr);
+            var length = results.length;
+            var i = 0;
+
+            expect(results).to.be.an.instanceof(Jamon);
+            expect(length).to.equal(arr.length);
+            for (; i < length; i++) {
+                expect(results[i]).to.equal(arr[i]);
+            }
+
+            removeFixture();
+        })
+
         it("should work on a Jamón instance", function () {
             var original = $$();
             var result = $$(original);

@@ -423,6 +423,7 @@
          * Get multiple elements
          * @param  {string|NodeList|HTMLCollection|Jamon} selector
          * @return {Jamon|undefined} New Jamón instance
+         * @todo use Symbol.iterator check when it becomes available for NodeList & HTMLCollection
          */
         static $$ (selector) {
             let result;
@@ -436,8 +437,8 @@
             } else if (selector instanceof Jamon) {
                 // Jamon instance
                 result = selector;
-            } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
-                // NodeList or HTMLCollection
+            } else if ([NodeList, HTMLCollection, Array].includes(selector.constructor)) {
+                // other iterables
                 result = Jamon.from(selector);
             } else {
                 throw new TypeError();
@@ -514,6 +515,7 @@
          * Toggle class name(s)
          * @param  {string} className - Space-separated list of class names
          * @return {Jamon} The instance
+         * @todo add second parameter?
          */
         toggleClass (className) {
             return addRemoveToggleClass(this, className, ClassListMethod.TOGGLE);
