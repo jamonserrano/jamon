@@ -167,7 +167,7 @@ describe("Classes", function () {
                 duplicateNames = className + " " + className;
             this.el.classList.add(className);
 
-            expect(calling(this.$el.removeClass.bind(this.$el)).with(duplicateNames)).to.not.throw(Error);
+            expect(calling(this.$el.removeClass).on(this.$el).with(duplicateNames)).to.not.throw(Error);
         });
 
         it("should remove class names from all elements", function () {
