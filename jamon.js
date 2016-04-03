@@ -107,6 +107,13 @@
     };
 
     /**
+     * Cross-browser 'matches' method
+     * @type {string}
+     * @todo remove when Edge implements 'matches'
+     */
+    const matchMethod = Element.prototype.msMatchesSelector ? "msMatchesSelector" : "matches";
+
+    /**
      * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
      * @private
      * @param  {string} property CSS property name
@@ -480,7 +487,7 @@
          * @todo use msMatchesSelector too for a while
          */
         filterBy (selector) {
-            const elements = this.filter((element) => element.matches(selector));
+            const elements = this.filter((element) => element[matchMethod](selector));
 
             return Jamon.from(elements);
         }
@@ -899,7 +906,7 @@
         delegate (event, selector, listener) {
             const proxy = function (e) {
                 const target = e.target;
-                if (target.matches(selector)) {
+                if (target[matchMethod](selector)) {
                     listener.call(target, e);
                 }
             };
