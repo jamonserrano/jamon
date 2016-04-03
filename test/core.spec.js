@@ -90,6 +90,11 @@ describe("Core", function () {
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.equal(original);
         });
+
+        it ("should throw an error with invalid parameter", function () {
+            expect(calling($).with({})).to.throw(TypeError);
+            expect(calling($).with([])).to.throw(TypeError);
+        });
     });
 
     describe("$$", function () {
@@ -170,6 +175,11 @@ describe("Core", function () {
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.equal(original);
+        });
+
+        it ("should throw an error with invalid parameter", function () {
+            expect(calling($).with({})).to.throw(TypeError);
+            expect(calling($).with([])).to.throw(TypeError);
         });
     });
 

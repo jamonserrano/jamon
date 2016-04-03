@@ -2,7 +2,7 @@
 (function () {
     var calling = function (func) {
         return {
-            withArgs: function () {
+            with: function () {
                 var args = Array.prototype.slice.call(arguments);
                 return function() {
                     func.apply(null, args);

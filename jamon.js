@@ -146,11 +146,11 @@
      */
     function addRemoveToggleClass (context, className, method) {
         if (isUndefined(className)) {
-            throw new ReferenceError(`Invalid parameter: ${className}`);
+            throw new ReferenceError();
         }
 
         if (!isString(className)) {
-            throw new TypeError("Parameter must be a String");
+            throw new TypeError();
         }
 
         // Split by spaces, then remove empty elements caused by extra whitespace
@@ -230,7 +230,6 @@
     function insertNode (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
         target = target instanceof Jamon ? target : Jamon.$(target);
-
         const lastIndex = target.length - 1;
         let index = 0,
             subjectIsText = false;
@@ -406,6 +405,8 @@
             } else if (selector instanceof Jamon) {
                 // Jamon instance
                 result = selector;
+            } else {
+                throw new TypeError();
             }
 
             return result;
@@ -431,6 +432,8 @@
             } else if (selector.constructor === NodeList || selector.constructor === HTMLCollection) {
                 // NodeList or HTMLCollection
                 result = Jamon.from(selector);
+            } else {
+                throw new TypeError();
             }
 
             return result;

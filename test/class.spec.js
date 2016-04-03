@@ -16,16 +16,16 @@ describe("Classes", function () {
         });
 
         it("should throw reference error without arguments", function () {
-            expect(calling(this.$el.addClass).withArgs()).to.throw(ReferenceError);
+            expect(calling(this.$el.addClass).with()).to.throw(ReferenceError);
         });
 
         it("should throw type error with invalid type", function () {
-            expect(calling(this.$el.addClass).withArgs(null)).to.throw(TypeError);
-            expect(calling(this.$el.addClass).withArgs({})).to.throw(TypeError);
+            expect(calling(this.$el.addClass).with(null)).to.throw(TypeError);
+            expect(calling(this.$el.addClass).with({})).to.throw(TypeError);
         });
 
         it("should not throw error with an empty string", function () {
-            expect(calling(this.$el.addClass).withArgs("")).to.not.throw(Error);
+            expect(calling(this.$el.addClass).with("")).to.not.throw(Error);
         });
 
         it("should not create an empty class attribute with an empty string", function () {
