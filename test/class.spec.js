@@ -17,16 +17,16 @@ describe("Classes", function () {
 
     describe("addClass()", function () {
         it("should throw reference error without arguments", function () {
-            expect(calling(this.$el.addClass.bind(this.$el)).with()).to.throw(ReferenceError);
+            expect(calling(this.$el.addClass).on(this.$el).with()).to.throw(ReferenceError);
         });
 
         it("should throw type error with invalid type", function () {
-            expect(calling(this.$el.addClass.bind(this.$el)).with(null)).to.throw(TypeError);
-            expect(calling(this.$el.addClass.bind(this.$el)).with({})).to.throw(TypeError);
+            expect(calling(this.$el.addClass).on(this.$el).with(null)).to.throw(TypeError);
+            expect(calling(this.$el.addClass).on(this.$el).with({})).to.throw(TypeError);
         });
 
         it("should not throw error with an empty string", function () {
-            expect(calling(this.$el.addClass.bind(this.$el)).with("")).to.not.throw(Error);
+            expect(calling(this.$el.addClass).on(this.$el).with("")).to.not.throw(Error);
         });
 
         it("should not create an empty class attribute with an empty string", function () {
@@ -102,16 +102,16 @@ describe("Classes", function () {
 
     describe("removeClass()", function () {
         it("should throw reference error without arguments", function () {
-            expect(calling(this.$el.removeClass.bind(this.$el)).with()).to.throw(ReferenceError);
+            expect(calling(this.$el.removeClass).on(this.$el).with()).to.throw(ReferenceError);
         });
 
         it("should throw type error with invalid type", function () {
-            expect(calling(this.$el.removeClass.bind(this.$el)).with(null)).to.throw(TypeError);
-            expect(calling(this.$el.removeClass.bind(this.$el)).with({})).to.throw(TypeError);
+            expect(calling(this.$el.removeClass).on(this.$el).with(null)).to.throw(TypeError);
+            expect(calling(this.$el.removeClass).on(this.$el).with({})).to.throw(TypeError);
         });
 
         it("should not throw error with an empty string", function () {
-            expect(calling(this.$el.removeClass.bind(this.$el)).with("")).to.not.throw(Error);
+            expect(calling(this.$el.removeClass).on(this.$el).with("")).to.not.throw(Error);
         });
 
         it("should not remove class attribute", function () {
