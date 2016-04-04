@@ -36,12 +36,11 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'fixture', 'chai-dom', 'chai'],
+    frameworks: ['mocha', 'fixture', 'chai-dom', 'chai', 'calling'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'test/helpers.js',
       'jamon.js',
       'test/*.spec.js',
       'test/fixtures/**/*'
