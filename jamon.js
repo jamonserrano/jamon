@@ -399,16 +399,15 @@
 
             if (isUndefined(selector)) {
                 // empty collection
-                result = Jamon.from([]);
+                result = Jamon.of();
             } else if (isString(selector)) {
                 // selector
                 let element = document.querySelector(selector);
                 // Array.from cannot use undefined or null
-                element = element ? [element] : [];
-                result = Jamon.from(element);
+                result = Jamon.of(element);
             } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
                 // element node, text node, or document node
-                result = Jamon.from([selector]);
+                result = Jamon.of(selector);
             } else if (selector instanceof Jamon) {
                 // Jamon instance
                 result = selector;
