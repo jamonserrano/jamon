@@ -402,9 +402,7 @@
                 result = Jamon.of();
             } else if (isString(selector)) {
                 // selector
-                let element = document.querySelector(selector);
-                // Array.from cannot use undefined or null
-                result = Jamon.of(element);
+                result = Jamon.of(document.querySelector(selector));
             } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
                 // element node, text node, or document node
                 result = Jamon.of(selector);
