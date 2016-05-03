@@ -29,15 +29,6 @@
     const listenerProperty = Symbol("listenerProperty");
 
     /**
-     * CSS properties that accept numbers (to know when to not append "px"), list taken from jQuery
-     * @private
-     * @const
-     * @type {Set}
-     */
-    const cssNumberProperties = new Set(["columnCount", "fillOpacity", "fontWeight",
-        "lineHeight", "opacity", "order", "orphans", "widows", "zIndex","zoom"]);
-
-    /**
      * Storage for element data
      * @private
      * @const
@@ -612,27 +603,30 @@
             return this;
         }
 
-        // Get or set inline styles
+        /**
+         * Get a single CSS property of the first element, or set one or more CSS properties on all elements
+         * @param {string|object} style - Property name or a property-value map
+         * @param {string} value - Property value
+         * @return {string|Jamon} - Property value (get) or the Jamón instance
+         */
         css (style, value) {
             if (isString(style)) {
+                style = kebabCaseToCamelCase(style);
                 // set single style
                 if (!isUndefined(value)) {
                     for (const element of this) {
-                        element.style[kebabCaseToCamelCase(style)] = value;
+                        element.style[style] = value;
                     }
                     return this;
-                // get style
+                // get single style
                 } else {
-                    const property = kebabCaseToCamelCase(style);
-                    value = window.getComputedStyle(this[0])[property];
-                    return cssNumberProperties.has(property) ? value : parseFloat(value);
+                    return window.getComputedStyle(this[0])[style]
                 }
             // set multiple styles
             } else if (typeof style === "object") {
                 const normalizedStyles = new Map();
                 Object.keys(style).forEach((property) => {
-                    const value = style[property];
-                    normalizedStyles.set(kebabCaseToCamelCase(property),value);
+                    normalizedStyles.set(kebabCaseToCamelCase(property), style[property]);
                 });
 
                 for (const element of this) {
