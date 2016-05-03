@@ -107,8 +107,8 @@
     /**
      * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
      * @private
-     * @param  {string} property CSS property name
-     * @return {string} JS property name
+     * @param  {string} property - CSS property name
+     * @return {string}          - JS property name
      */
     function kebabCaseToCamelCase (property) {
         return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
@@ -117,8 +117,8 @@
     /**
      * Check if a reference is undefined
      * @private
-     * @param  {*}  reference
-     * @return {boolean} The undefinedness of the reference
+     * @param  {*} reference - The reference to check
+     * @return {boolean}     - The undefinedness of the reference
      */
     function isUndefined (reference) {
         return typeof reference === "undefined";
@@ -127,8 +127,8 @@
     /**
      * Check if a reference is a String
      * @private
-     * @param  {*}  reference
-     * @return {boolean} The stringness of the reference
+     * @param  {*} reference - The reference to check
+     * @return {boolean}     - The stringness of the reference
      */
     function isString (reference) {
         return typeof reference === "string";
@@ -137,9 +137,9 @@
     /**
      * Add, remove, or toggle class names
      * @private
-     * @param {Jamon} context The Jamón instance
-     * @param {string} className Space-separated class names
-     * @param {ClassListMethod} method Method to use on the class name(s)
+     * @param {Jamon} context          - The Jamón instance
+     * @param {string} className       - Space-separated class names
+     * @param {ClassListMethod} method - Method to use on the class name(s)
      * @return {Jamon}
      */
     function addRemoveToggleClass (context, className, method) {
@@ -174,9 +174,9 @@
     /**
      * Get & set element properties
      * @private
-     * @param  {Jamon} context The Jamón instance
-     * @param  {string} property Property name
-     * @param  {string|null|undefined} value Property value (null to remove property)
+     * @param  {Jamon} context               - The Jamón instance
+     * @param  {string} property             - Property name
+     * @param  {string|null|undefined} value - Property value (null to remove property)
      * @return {Jamon}
      */
     function getSetProperty (context, property, value) {
@@ -200,9 +200,9 @@
     /**
      * Get relatives of the element
      * @private
-     * @param  {Jamon} context
-     * @param  {Relative} relative
-     * @return {Jamon} New Jamón instance containing the found elements
+     * @param  {Jamon} context     - Elements to find relatives for
+     * @param  {Relative} relative - Relative type
+     * @return {Jamon}             - New Jamón instance containing the found elements
      */
     function getRelative (context, relative) {
         const relatives = [];
@@ -214,15 +214,14 @@
         return Jamon.from(relatives);
     }
 
-    // Handle all node insertion operations
     /**
      * Handle all node insertion operations
      * @private
-     * @param  {Jamon|string} subject The element/string that we are using
-     * @param  {string|Element|Text|Document|Jamon} target The target we are using the subject with
-     * @param  {NodeMethod} operation Name of the operation
-     * @param  {number} contextIndex Index of the paramater to be returned
-     * @return {Jamon} The Jamón instance (referenced by contextIndex)
+     * @param  {Jamon|string} subject                      - The element/string that we are using
+     * @param  {string|Element|Text|Document|Jamon} target - The target we are using the subject with
+     * @param  {NodeMethod} operation                      - Name of the operation
+     * @param  {number} contextIndex                       - Index of the paramater to be returned
+     * @return {Jamon}                                     - The Jamón instance (referenced by contextIndex)
      * @todo   Separate this monster into 4 parts
      */
     function insertNode (subject, target, operation, contextIndex) {
@@ -298,9 +297,9 @@
     /**
      * Generate a unique proxy id for the given listener-selector combination
      * @private
-     * @param  {function(Event)} listener The event listener function
-     * @param  {string} selector The selector used for the delegation
-     * @return {string} Unique proxy id
+     * @param  {function(Event)} listener - The event listener function
+     * @param  {string} selector          - The selector used for the delegation
+     * @return {string}                   - Unique proxy id
      */
     function getProxyId (listener, selector) {
         // The proxy id consists of the unique index attached the function and the selector string
@@ -310,10 +309,10 @@
     /**
      * Runs querySelectorAll WITHIN the element (unlike native qSA)
      * @private
-     * @param  {HTMLElement} element The search context
-     * @param  {string} selector The selector to use in the query
-     * @param  {boolean=} one Do we want only one result?
-     * @return {HTMLElement|NodeList} The result of the query
+     * @param  {HTMLElement} element  - The search context
+     * @param  {string} selector      - The selector to use in the query
+     * @param  {boolean=} one         - Do we want only one result?
+     * @return {HTMLElement|NodeList} - The result of the query
      */
     function findInElement (element, selector, one) {
         let result,
@@ -351,9 +350,9 @@
 
         /**
          * Create a new element
-         * @param  {string} type - Element type
+         * @param  {string} type        - Element type
          * @param  {Object=} attributes - Attributes
-         * @return {Jamon} The element wrapped in a Jamón instance
+         * @return {Jamon}              - The element wrapped in a Jamón instance
          */
         static create (type, attributes) {
             // create a new element of the given type
@@ -382,8 +381,8 @@
 
         /**
          * Get a single element
-         * @param  {string|Element|Text|Document|Jamon} selector
-         * @return {Jamon|undefined} New Jamón instance
+         * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
+         * @return {Jamon|undefined}                             - New Jamón instance
          */
         static $ (selector) {
             let result;
@@ -409,8 +408,8 @@
 
         /**
          * Get multiple elements
-         * @param  {string|NodeList|HTMLCollection|Jamon} selector
-         * @return {Jamon|undefined} New Jamón instance
+         * @param  {string|NodeList|HTMLCollection|Jamon} selector - The selector/element/collection to use
+         * @return {Jamon|undefined}                               - New Jamón instance
          * @todo use Symbol.iterator check when it becomes available for NodeList & HTMLCollection
          */
         static $$ (selector) {
@@ -446,7 +445,7 @@
             for (const element of this) {
                 result = findInElement(element, selector, true);
                 if (result) {
-                    // break an return the first result
+                    // break and return the first result
                     return Jamon.from([result]);
                 }
             }
@@ -455,7 +454,7 @@
         /**
          * Find all descendants that match the selector in any of the elements
          * @param  {string} selector - Selector to match
-         * @return {Jamon} - A new Jamón instance containing the matched elements
+         * @return {Jamon}           - A new Jamón instance containing the matched elements
          */
         findAll (selector) {
             let results = [];
@@ -468,11 +467,10 @@
             return Jamon.from(new Set(results));
         }
 
-        //
         /**
          * Filter the elements in the collection with a selector
          * @param  {string} selector - Selector to match
-         * @return {Jamon} - A new Jamón instance containing the matched elements
+         * @return {Jamon}           - A new Jamón instance containing the matched elements
          * @todo use msMatchesSelector too for a while
          */
         filterBy (selector) {
@@ -484,7 +482,7 @@
         /**
          * Add class name(s)
          * @param {string} className - Space-separated list of class names
-         * @return {Jamon} - The instance
+         * @return {Jamon}           - The instance
          */
         addClass (className) {
             return addRemoveToggleClass(this, className, ClassListMethod.ADD);
@@ -493,7 +491,7 @@
         /**
          * Remove class name(s)
          * @param  {string} className - Space-separated list of class names
-         * @return {Jamon} The instance
+         * @return {Jamon}            - The instance
          */
         removeClass (className) {
             return addRemoveToggleClass(this, className, ClassListMethod.REMOVE);
@@ -502,7 +500,7 @@
         /**
          * Toggle class name(s)
          * @param  {string} className - Space-separated list of class names
-         * @return {Jamon} The instance
+         * @return {Jamon}            - The instance
          * @todo add second parameter?
          */
         toggleClass (className) {
@@ -511,8 +509,8 @@
 
         /**
          * Checks if the first element has the provided class name
-         * @param  {string}  className - Class name to check
-         * @return {Boolean} - True if the element has the class name
+         * @param  {string} className - Class name to check
+         * @return {Boolean}          - True if the element has the class name
          */
         hasClass (className) {
             return this[0].classList.contains(className);
@@ -520,7 +518,7 @@
 
         /**
          * Show the element(s)
-         * @return {Jamon} The instance
+         * @return {Jamon} - The instance
          */
         show () {
             return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.REMOVE);
@@ -528,7 +526,7 @@
 
         /**
          * Hide the element(s)
-         * @return {Jamon} The instance
+         * @return {Jamon} - The instance
          */
         hide () {
             return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.ADD);
@@ -545,7 +543,7 @@
         /**
          * Get the value of the first element or set the values of the elements
          * @param  {string=} value - Value to set
-         * @return {string|Jamon} - Value (get) or the Jamón instance (set)
+         * @return {string|Jamon}  - Value (get) or the Jamón instance (set)
          */
         val (value) {
             return getSetProperty(this, "value", value);
@@ -562,7 +560,7 @@
 
         /**
          * Get the text content of the first element or set the text content of the elements
-         * @param  {string} text - Text content to set
+         * @param  {string} text  - Text content to set
          * @return {string|Jamon} - Text content (get) or the Jamón instance (set)
          */
         text (text) {
@@ -571,9 +569,9 @@
 
         /**
          * Get a property of the first element or set a property of each element
-         * @param  {string} property - Property name
+         * @param  {string} property             - Property name
          * @param  {string|null|undefined} value - Property value to set (null to remove property)
-         * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
+         * @return {string|Jamon}                - Property value (get) or the Jamón instance (set)
          */
         prop (property, value) {
             return getSetProperty(this, property, value);
@@ -581,9 +579,9 @@
 
         /**
          * Get an attribute of the first element or set an attribute to each element
-         * @param  {string} attribute - Attribute name
+         * @param  {string} attribute            - Attribute name
          * @param  {string|null|undefined} value - Attribute value to set (null to remove attribute)
-         * @return {string|Jamon} - Attribute value (get) or the Jamón instance (set)
+         * @return {string|Jamon}                - Attribute value (get) or the Jamón instance (set)
          */
         attr (attribute, value) {
             if (isUndefined(value)) {
@@ -605,9 +603,9 @@
 
         /**
          * Get a single CSS property of the first element, or set one or more CSS properties on all elements
-         * @param {string|object} style - Property name or a property-value map
-         * @param {string} value - Property value
-         * @return {string|Jamon} - Property value (get) or the Jamón instance
+         * @param  {string|object} style - Property name or a property-value map
+         * @param  {string} value        - Property value
+         * @return {string|Jamon}        - Property value (get) or the Jamón instance (set)
          */
         css (style, value) {
             if (isString(style)) {
@@ -639,40 +637,54 @@
             }
         }
 
-        // Get or set data attributes
-        data (attribute, value) {
+        /**
+         * Get a data attribute of the first element or set a data attribute on all elements
+         * @param  {string} name - Attribute name
+         * @param  {any=} value  - Attribute value
+         * @return {any}         - Attribute value (get) or the instance (set)
+         */
+        data (name, value) {
             if (isUndefined(value)) { // get
                 const element = this[0],
                     storage = dataMap.get(element);
                 let data;
                 // look it up in the storage first, then in the data-attribute
-                if (storage && (!isUndefined(storage.get(attribute)))) {
-                    data = storage.get(attribute);
+                if (storage && (!isUndefined(storage.get(name)))) {
+                    data = storage.get(name);
                 } else {
-                    data = element.dataset[attribute];
+                    data = element.dataset[name];
                 }
 
                 return data;
             }
 
             for (const element of this) {
-                dataMap.set(element,(dataMap.get(element) || new Map()).set(attribute, value));
+                dataMap.set(element,(dataMap.get(element) || new Map()).set(name, value));
             }
 
             return this;
         }
 
-        // Get width
+        /**
+         * Get the width of the first element
+         * @return {number} - The width of the element
+         */
         width () {
-            return this[0].getBoundingClientRect().height;
-        }
-
-        // Get height
-        height () {
             return this[0].getBoundingClientRect().width;
         }
 
-        // Get position relative to the parent
+        /**
+         * Get the height of the first element
+         * @return {number} - The height of the element
+         */
+        height () {
+            return this[0].getBoundingClientRect().height;
+        }
+
+        /**
+         * Get the offset (position relative to the offsetParent) of the first element
+         * @return {{left: number, top: number}} - The offset of the element
+         */
         offset () {
             const element = this[0];
             return {
@@ -681,7 +693,11 @@
             };
         }
 
-        // Get or set position relative to the document
+        /**
+         * Get the absolute position of the first element or set the absolute position of all elements
+         * @param  {{left: number, top: number}=} position - Position to set
+         * @return {{left: number, top: number}|Jamon}     - Position (get) or the instance (set)
+         */
         position (position) {
             const rect = this[0].getBoundingClientRect();
             if (!position) {
@@ -722,24 +738,38 @@
                     style.top = top - originalTop - parentRect.top + "px";
                 }
             }
+            
+            return this;
         }
 
-        // Get the parent of the element
+        /**
+         * Get the parent of each element
+         * @return {Jamon} - A new Jamón instance containing the parents
+         */
         parent () {
             return getRelative(this, Relative.PARENT_ELEMENT);
         }
 
-        // Get the first child of the element
+        /**
+         * Get the first child of each element
+         * @return {Jamon} - A new Jamón instance containing the first children
+         */
         firstChild () {
             return getRelative(this, Relative.FIRST_ELEMENT_CHILD);
         }
-
-        // Get the last child of the element
+        
+        /**
+         * Get the last child of each element
+         * @return {Jamon} - A new Jamón instance containing the last children
+         */
         lastChild () {
             return getRelative(this, Relative.LAST_ELEMENT_CHILD);
         }
 
-        // Get the children of the element
+         /**
+         * Get the children of each element
+         * @return {Jamon} - A new Jamón instance containing the children
+         */
         children () {
             const children = [];
 
@@ -747,19 +777,28 @@
                 children.push(...Array.from(element.children));
             }
 
-            return new Jamon(children);
+            return Jamon.from(children);
         }
-
+        
+        /**
+         * Get the contents (element and text nodes) of each element
+         * @return {Jamon} - A new Jamón instance with the contents
+         */
         contents () {
             const contents = [];
+            
             for (const element of this) {
                 contents.push(...Array.from(element.childNodes));
             }
 
-            return new Jamon(contents);
+            return Jamon.from(contents);
         }
 
-        // Get the first ancestor that matches the selector
+        /**
+         * Get the first ancestor that matches the provided selector of each element
+         * @param  {string} selector - The selector to match ancestors against
+         * @return {Jamon}           - A new Jamón instance containing the matched ancestors
+         */
         closest (selector) {
             const closests = [];
 
@@ -767,7 +806,7 @@
                 closests.push(element.closest(selector));
             }
 
-            return new Jamon(closests);
+            return Jamon.from(closests);
         }
 
         // Prepend something to the element
@@ -828,7 +867,7 @@
                 clones.push(element.cloneNode(deep));
             }
 
-            return new Jamon(clones);
+            return Jamon.from(clones);
         }
 
         // Remove the element from the DOM
