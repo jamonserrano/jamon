@@ -740,16 +740,6 @@
             }
         }
 
-        // Get or set horizontal scroll position
-        scrollLeft (value) {
-            return getSetProperty(this, "scrollLeft", value);
-        }
-
-        // Get or set vertical scroll position
-        scrollTop (value) {
-            return getSetProperty(this, "scrollTop", value);
-        }
-
         // Get the parent of the element
         parent () {
             return getRelative(this, Relative.PARENT_ELEMENT);
