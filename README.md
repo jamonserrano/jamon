@@ -82,18 +82,6 @@ Gets the width of the first element.
 #### height()
 Gets the height of the first element.
 
-#### scrollWidth()
-Gets the scroll width of the first element.
-
-#### scrollHeight()
-Gets the scroll height of the first element.
-
-#### scrollLeft(value)
-Gets the horizontal scroll position for the first element or sets the horizontal scroll position for each element.
-
-#### scrollTop(value)
-Gets the vertical scroll position for the first element or sets the vertical scroll position for each element.
-
 #### offset()
 Gets the offset position of the first element relative to the offset parent.
 
