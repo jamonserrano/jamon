@@ -1,6 +1,7 @@
 # Jamón [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon)
 My take on a DOM library (aka jQuery, the good parts)
 
+
 ## Usage
 
 Use `$(selector)` or `Jamon.$(selector)` to select a single element:
@@ -19,13 +20,19 @@ $$(".menu");
 $$("#section-1, #section2");
 ```
 
+> Jamón only registers the globals `$()` and `$$()` if they are unused. 
+
+### Working with Jamón instances
+Jamón extends the built-in Array so instances behave just like regular arrays. You can use array methods like `forEach`, `map`, `push`, `join`, etc, or iterate with `for...of` loops.
+
+
 ## Supported browsers
 Evergreen browsers with decent ES2015 support: Chrome, Firefox, Edge.
 
-## API
-Jamón currently supports the following methods:
 
-### Attributes
+## API
+
+### Classes
 
 #### addClass(className)
 Adds a class name or a list of space-separated class names to the element(s).
@@ -35,6 +42,24 @@ Removes a class name or a list of space-separated class names from the element(s
 
 #### toggleClass(className)
 Toggles a class name or each class name of a space-separated list on the element(s).
+
+#### show()
+Shows the element(s) by adding the `hidden` class name.
+
+#### hide()
+Hides the element(s) by removing the `hidden` class name.
+
+#### toggle()
+Toggles the element(s) by toggling the `hidden` class name.
+
+> For show(), hide() and toggle() to work you need to include the following line in your CSS:
+```css
+.hidden { display: none !important; }
+```
+> You can customize this class name by changing the value of `Jamon.hiddenClassName`.
+
+
+### Attributes
 
 #### val([value])
 Gets the value of the first element or sets the value of each element.
@@ -54,21 +79,8 @@ Gets the value of an attribute of the first element or sets the value of an attr
 #### data(attribute [, value])
 Gets the value of the data attribute for the first element or sets the data attribute value for each element.
 
+
 ### Styling
-> For show(), hide() and toggle() to work you need to include the following line in your CSS:
-```css
-.hidden {display: none !important;}
-```
-You can change the `hidden` class name with `jamon.setHiddenClassName()`
-
-#### show()
-Shows the element(s) by adding the `hidden` class name.
-
-#### hide()
-Hides the element(s) by removing the `hidden` class name.
-
-#### toggle()
-Toggles the element(s) by toggling the `hidden` class name.
 
 #### css(property [, value])
 Gets the computed value of the CSS property for the first element or sets the value of the CSS property for each element.
@@ -76,17 +88,24 @@ Gets the computed value of the CSS property for the first element or sets the va
 #### css(properties)
 Sets the values of the the CSS properties in the object for each element.
 
+
+### Dimensions
+
 #### width()
 Gets the width of the first element.
 
 #### height()
 Gets the height of the first element.
 
+
+### Positioning
+
 #### offset()
 Gets the offset position of the first element relative to the offset parent.
 
 #### position()
 Gets the absolute position of the first element or sets the position of each element relative to the page.
+
 
 ### DOM Traversal
 
@@ -171,13 +190,11 @@ Removes the standard or delegated event listeners from the elements.
 #### trigger(event [, data])
 Triggers an event on each element. The additional event data can be accessed in the event.detail property. Supported native events: mouse, focus and keyboard events.
 
-### Working with Jamón instances
-Jamón is a subclass of the built-in Array so instances behave just like regular arrays. You can use all the prototype methods like `forEach`, `map`, `push`, `join`, etc, or iterate with `for...of` loops.
 
 ### Utilities
 
-#### Jamon.create(nodeType)
+#### Jamon.create(tagName)
 Creates a new HTML element.
 
 #### Jamon.hiddenClassName
-Overrides the default class name ('hidden') used for hiding elements.
+Overrides the default class name `hidden` used for hiding elements.
