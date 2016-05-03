@@ -678,16 +678,6 @@
             return this[0].getBoundingClientRect().width;
         }
 
-        // Get scroll width
-        scrollWidth () {
-            return this[0].scrollWidth;
-        }
-
-        //Get scroll height
-        scrollHeight () {
-            return this[0].scrollHeight;
-        }
-
         // Get position relative to the parent
         offset () {
             const element = this[0];
