@@ -119,7 +119,7 @@
      * @param  {string} property CSS property name
      * @return {string} JS property name
      */
-    function kebabToCamel (property) {
+    function kebabCaseToCamelCase (property) {
         return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
     }
 
@@ -618,12 +618,12 @@
                 // set single style
                 if (!isUndefined(value)) {
                     for (const element of this) {
-                        element.style[kebabToCamel(style)] = value;
+                        element.style[kebabCaseToCamelCase(style)] = value;
                     }
                     return this;
                 // get style
                 } else {
-                    const property = kebabToCamel(style);
+                    const property = kebabCaseToCamelCase(style);
                     value = window.getComputedStyle(this[0])[property];
                     return cssNumberProperties.has(property) ? value : parseFloat(value);
                 }
@@ -632,7 +632,7 @@
                 const normalizedStyles = new Map();
                 Object.keys(style).forEach((property) => {
                     const value = style[property];
-                    normalizedStyles.set(kebabToCamel(property),value);
+                    normalizedStyles.set(kebabCaseToCamelCase(property),value);
                 });
 
                 for (const element of this) {
