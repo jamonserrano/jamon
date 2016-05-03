@@ -403,7 +403,7 @@
             } else if (isString(selector)) {
                 // selector
                 result = Jamon.of(document.querySelector(selector));
-            } else if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
+            } else if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
                 // element node, text node, or document node
                 result = Jamon.of(selector);
             } else if (selector instanceof Jamon) {
