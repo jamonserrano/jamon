@@ -22,15 +22,18 @@ $$("#section-1, #section2");
 
 > Jamón only registers the globals `$()` and `$$()` if they are unused. 
 
-### Working with Jamón instances
-Jamón extends the built-in Array so instances behave just like regular arrays. You can use array methods like `forEach`, `map`, `push`, `join`, etc, or iterate with `for...of` loops.
-
 
 ## Supported browsers
 Evergreen browsers with decent ES2015 support: Chrome, Firefox, Edge.
 
 
 ## API
+
+### Working with Jamón instances
+Jamón extends the built-in Array so instances behave just like regular arrays.
+You can use [array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#Array_instances)
+like `forEach`, `map`, `push`, `join`, etc, or iterate with `for...of` loops.
+
 
 ### Classes
 
