@@ -603,45 +603,50 @@
 
         /**
          * Get a single CSS property of the first element, or set one or more CSS properties on all elements
-         * @param  {string|object} style - Property name or a property-value map
+         * @param  {string|Object} style - Property name or a property-value map
          * @param  {string} value        - Property value
          * @return {string|Jamon}        - Property value (get) or the Jamón instance (set)
          */
         css (style, value) {
             if (isString(style)) {
                 style = kebabCaseToCamelCase(style);
-                // set single style
+                
                 if (!isUndefined(value)) {
+                    // set single style
                     for (const element of this) {
                         element.style[style] = value;
                     }
                     return this;
-                // get single style
+                
                 } else {
+                    // get single style
                     return window.getComputedStyle(this[0])[style]
                 }
             // set multiple styles
-            } else if (typeof style === "object") {
-                const normalizedStyles = new Map();
-                Object.keys(style).forEach((property) => {
-                    normalizedStyles.set(kebabCaseToCamelCase(property), style[property]);
-                });
+            } else {
+                if (typeof style === "object") {
+                    const normalizedStyles = new Map();
+                    
+                    Object.keys(style).forEach((property) => {
+                        normalizedStyles.set(kebabCaseToCamelCase(property), style[property]);
+                    });
 
-                for (const element of this) {
-                    for (const normalizedStyle of normalizedStyles) {
-                        element.style[normalizedStyle[0]] = normalizedStyle[1];
+                    for (const element of this) {
+                        for (const normalizedStyle of normalizedStyles) {
+                            element.style[normalizedStyle[0]] = normalizedStyle[1];
+                        }
                     }
                 }
-
-                return this;
+                
+                return this;    
             }
         }
 
         /**
          * Get a data attribute of the first element or set a data attribute on all elements
          * @param  {string} name - Attribute name
-         * @param  {any=} value  - Attribute value
-         * @return {any}         - Attribute value (get) or the instance (set)
+         * @param  {*=} value  - Attribute value
+         * @return {*}         - Attribute value (get) or the instance (set)
          */
         data (name, value) {
             if (isUndefined(value)) { // get
