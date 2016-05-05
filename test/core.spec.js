@@ -22,12 +22,12 @@ describe("Core", function () {
 
         it("should provide the global variable $", function () {
             expect(window.$).to.exist;
-            expect(window.$).to.equal(Jamon.$);
+            expect(window.$).to.equal(Jamon.get);
         });
 
         it("should provide the global variable $$", function () {
             expect(window.$$).to.exist;
-            expect(window.$$).to.equal(Jamon.$$);
+            expect(window.$$).to.equal(Jamon.getAll);
         });
     });
 

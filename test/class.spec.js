@@ -6,11 +6,11 @@ describe("Classes", function () {
     beforeEach(function () {
         fixture.load('basic_elements.html');
         this.el = document.getElementById("id1");
-        this.$el = $(this.el);
+        this.$el = Jamon.get(this.el);
         this.el2 = document.getElementById("id2");
-        this.$el2 = $(this.el2);
+        this.$el2 = Jamon.get(this.el2);
         this.el3 = document.getElementById("id3");
-        this.$el3 = $(this.el3);
+        this.$el3 = Jamon.get(this.el3);
         this.newClass1 = "new1";
         this.newClass2 = "new2";
     });
@@ -90,7 +90,7 @@ describe("Classes", function () {
         });
 
         it("should add class names to multiple elements", function () {
-            var $els = $$("#id1, #id2");
+            var $els = Jamon.getAll("#id1, #id2");
             $els.addClass(this.newClass1);
 
             expect(this.el).to.have.class(this.newClass1);
@@ -176,7 +176,7 @@ describe("Classes", function () {
         });
 
         it("should work on multiple elements", function () {
-            var $els = $$("#" + this.el2.id + ", #" + this.el3.id);
+            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
             
             this.el2.classList.add(this.newClass1);
             this.el3.classList.add(this.newClass1);
@@ -263,7 +263,7 @@ describe("Classes", function () {
         });
         
         it("should work on multiple elements", function () {
-            var $els = $$("#" + this.el2.id + ", #" + this.el3.id);
+            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
             
             $els.toggleClass(this.newClass1);
 
@@ -307,13 +307,13 @@ describe("Classes", function () {
         });
         
         it("should work on multiple elements", function () {
-            var $els = $$("#" + this.el2.id + ", #" + this.el3.id);
+            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
             
             expect(calling($els.hasClass).on($els).with()).to.not.throw(Error);
         });
         
         it("should return the existence of the class name on the first element", function () {
-            var $els = $$("#" + this.el2.id + ", #" + this.el3.id);
+            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
             this.el3.classList.add(this.newClass1);
             
             expect(this.$el.hasClass(this.newClass1)).to.be.false;

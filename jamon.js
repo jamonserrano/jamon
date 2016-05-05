@@ -226,7 +226,7 @@
      */
     function insertNode (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
-        target = target instanceof Jamon ? target : Jamon.$(target);
+        target = target instanceof Jamon ? target : Jamon.get(target);
         const lastIndex = target.length - 1;
         let index = 0,
             subjectIsText = false;
@@ -237,7 +237,7 @@
             subject = document.createTextNode(subject);
             subjectIsText = true;
         } else {
-            subject = Jamon.$(subject)[0];
+            subject = Jamon.get(subject)[0];
         }
 
         if (operation === NodeMethod.BEFORE || operation === NodeMethod.AFTER) {
@@ -384,7 +384,7 @@
          * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
          * @return {Jamon|undefined}                             - New Jamón instance
          */
-        static $ (selector) {
+        static get (selector) {
             let result;
 
             if (isUndefined(selector)) {
@@ -412,7 +412,7 @@
          * @return {Jamon|undefined}                               - New Jamón instance
          * @todo use Symbol.iterator check when it becomes available for NodeList & HTMLCollection
          */
-        static $$ (selector) {
+        static getAll (selector) {
             let result;
 
             if (isUndefined(selector)) {
@@ -992,7 +992,7 @@
     // Assign global variables
     window.Jamon = Jamon;
     if (isUndefined(window.$) && isUndefined(window.$$)) {
-        window.$ = Jamon.$;
-        window.$$ = Jamon.$$;
+        window.$ = Jamon.get;
+        window.$$ = Jamon.getAll;
     }
 }

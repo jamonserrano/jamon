@@ -4,7 +4,7 @@ My take on a DOM library (aka jQuery, the good parts)
 
 ## Usage
 
-Use `$(selector)` or `Jamon.$(selector)` to select a single element:
+Use `$(selector)` or `Jamon.get(selector)` to select a single element:
 
 ```
 $("div");
@@ -12,7 +12,7 @@ $(".menu");
 $("#Header");
 ```
 
-Use `$$(selector)` or `Jamon.$$(selector)` to select multiple elements:
+Use `$$(selector)` or `Jamon.getAll(selector)` to select multiple elements:
 
 ```
 $$("a > span");
@@ -195,6 +195,12 @@ Triggers an event on each element. The additional event data can be accessed in 
 
 
 ### Utilities
+
+#### Jamon.get(selector|element)
+Creates a new Jamón collection with only one element.
+
+#### Jamon.getAll(selector|iterable)
+Creates a new Jamón collection with multiple elements.
 
 #### Jamon.create(tagName)
 Creates a new HTML element.
