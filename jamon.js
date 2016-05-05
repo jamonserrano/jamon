@@ -814,22 +814,38 @@
             return Jamon.from(closests);
         }
 
-        // Prepend something to the element
+        /**
+         * Prepend a Jamón element or string to the elements in the collection
+         * @param  {Jamon|string} subject - The element or string to prepend
+         * @return {Jamon}                - The Jamón instance
+         */
         prepend (subject) {
             return insertNode(subject, this, NodeMethod.PREPEND, 1);
         }
 
-        // Prepend the element to something
+        /**
+         * Prepend the elements in the collection to one or more elements
+         * @param  {string|Element|Text|Document|Jamon} target - The target
+         * @return {Jamon}                                     - The Jamón instance
+         */
         prependTo (target) {
             return insertNode(this, target, NodeMethod.PREPEND, 0);
         }
 
-        // Append something to the element
+        /**
+         * Append a Jamón element or string to the element
+         * @param  {Jamon|string} subject - The element or string to append
+         * @return {Jamon}                - The Jamón instance
+         */
         append (subject) {
             return insertNode(subject, this, NodeMethod.APPEND, 1);
         }
 
-        // Append the element to something
+        /**
+         * Append the elements in the collection to one or more elements
+         * @param  {string|Element|Text|Document|Jamon} target - The target
+         * @return {Jamon}                                     - The Jamón instance
+         */
         appendTo (target) {
             return insertNode(this, target, NodeMethod.APPEND, 0);
         }
