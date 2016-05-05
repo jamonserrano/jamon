@@ -199,12 +199,12 @@ describe("Classes", function () {
             expect(calling(this.$el.toggleClass).on(this.$el).with()).to.throw(ReferenceError);
         });
         
-        it("should throw type error with invalid type", function () {
+        it("should throw type error with invalid type arguments", function () {
             expect(calling(this.$el.toggleClass).on(this.$el).with(null)).to.throw(TypeError);
             expect(calling(this.$el.toggleClass).on(this.$el).with({})).to.throw(TypeError);
         });
         
-        it("should not throw error with an empty string", function () {
+        it("should not throw error with an empty string argument", function () {
             expect(calling(this.$el.toggleClass).on(this.$el).with("")).to.not.throw(Error);
         });
         
@@ -275,22 +275,77 @@ describe("Classes", function () {
             expect(this.el2).to.not.have.class(this.newClass1);
             expect(this.el3).to.not.have.class(this.newClass1);
         });
+        
+        it("should return the Jamón instance", function () {
+            var returnValue = this.$el.toggleClass("");
+
+            expect(returnValue).to.equal(this.$el);
+        });
     });
     
     describe("hasClass()", function () {
+        it("should not throw error without arguments", function () {
+            expect(calling(this.$el.hasClass).on(this.$el).with()).to.not.throw(Error);
+        });
         
+        it("should throw error with space character in argument", function () {
+            expect(calling(this.$el.hasClass).on(this.$el).with(this.newClass1 + " ")).to.throw(Error);
+        });
+        
+        it("should not throw error with an empty string argument", function () {
+            expect(calling(this.$el.hasClass).on(this.$el).with("")).to.throw(Error);
+        });
+        
+        it("should return true for an existing class name", function () {
+            this.el.classList.add(this.newClass1);
+            
+            expect(this.$el.hasClass(this.newClass1)).to.be.true;
+        });
+        
+        it("should return false for a nonexisting class name", function () {
+            expect(this.$el.hasClass(this.newClass1)).to.be.false;
+        });
+        
+        it("should work on multiple elements", function () {
+            var $els = $$("#" + this.el2.id + ", #" + this.el3.id);
+            
+            expect(calling($els.hasClass).on($els).with()).to.not.throw(Error);
+        });
+        
+        it("should return the existence of the class name on the first element", function () {
+            var $els = $$("#" + this.el2.id + ", #" + this.el3.id);
+            this.el3.classList.add(this.newClass1);
+            
+            expect(this.$el.hasClass(this.newClass1)).to.be.false;
+            
+            this.el2.classList.add(this.newClass2);
+            
+            expect(this.$el.hasClass(this.newClass2)).to.be.false;  
+        });
     });
     
     describe("show()", function () {
-        
+        it("should remove the hidden class name from the element");
+        it("should work on multiple elements");
+        it("should return the Jamón instance");
     });
     
     describe("hide()", function () {
-        
+        it("should add the hidden class name to the element");
+        it("should work on multiple elements");
+        it("should return the Jamón instance");
     });
     
      describe("toggle()", function () {
-        
+        it("should toggle the hidden class name on the element");
+        it("should work on multiple elements");
+        it("should return the Jamón instance");
+    });
+    
+    describe("Jamon.hiddenClassName", function () {
+        it("should change the class name used by show()");
+        it("should change the class name used by hide()");
+        it("should change the class name used by toggle()");
     });
     
 });
