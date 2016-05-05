@@ -218,34 +218,41 @@
      * Handle all node insertion operations
      * @private
      * @param  {Jamon|string} subject                      - The element/string that we are using
-     * @param  {string|Element|Text|Document|Jamon} target - The target we are using the subject with
+     * @param  {Jamon} target                              - The target we are using the subject with
      * @param  {NodeMethod} operation                      - Name of the operation
      * @param  {number} contextIndex                       - Index of the paramater to be returned
      * @return {Jamon}                                     - The Jamón instance (referenced by contextIndex)
      * @todo   Separate this monster into 4 parts
+     * @todo   Support multiple subjects
      */
     function insertNode (subject, target, operation, contextIndex) {
         // make sure target is a Jamon instance
-        target = target instanceof Jamon ? target : Jamon.get(target);
+        if (!target instanceof Jamon) {
+           throw new TypeError();    
+        }
+        
+        // if there are multiple targets, the subject should be cloned lastIndex times
         const lastIndex = target.length - 1;
-        let index = 0,
-            subjectIsText = false;
+        // we use this to count the targets
+        let index = 0;
+        let subjectIsText = false;
 
-        // make sure the subject is an element
         if (isString(subject)) {
-            // insert string as textNode
+            // if the subject is string, convert it into text node so we can insert it
             subject = document.createTextNode(subject);
             subjectIsText = true;
         } else {
-            subject = Jamon.get(subject)[0];
+            // only use the first element
+            subject = subject[0];
         }
 
         if (operation === NodeMethod.BEFORE || operation === NodeMethod.AFTER) {
-            // before, insertBefore, after, insertAfter
+            // before(), insertBefore(), after(), insertAfter()
             for (const element of target) {
-                // use a clone of the subject for all but the last target
                 element.parentElement.insertBefore(
+                    // use a clone of the subject for every target but the last one
                     (index++ < lastIndex) ? subject.cloneNode(true) : subject,
+                    // insert before or after the element
                     operation === NodeMethod.BEFORE ? element : element.nextSibling
                 );
                 // remove adjacent textNodes
@@ -254,11 +261,12 @@
                 }
             }
         } else if (operation === NodeMethod.PREPEND) {
-            // prepend, prependTo
+            // prepend(), prependTo()
             for (const element of target) {
-                // use a clone of the subject for all but the last target
                 element.insertBefore(
+                    // use a clone of the subject for all but the last target
                     (index++ < lastIndex) ? subject.cloneNode(true) : subject,
+                    // insert before the element's first child
                     element.firstChild
                 );
                 // remove adjacent textNodes
@@ -267,20 +275,20 @@
                 }
             }
         } else if (operation === NodeMethod.APPEND) {
-            // append, appendTo
+            // append(), appendTo()
             for (const element of target) {
                 // use a clone of the subject for all but the last target
-                element.appendChild((index < lastIndex) ? subject.cloneNode(true) : subject);
+                element.appendChild((index++ < lastIndex) ? subject.cloneNode(true) : subject);
                 // remove adjacent textNodes
                 if (subjectIsText) {
                     element.normalize();
                 }
             }
         } else if (operation === NodeMethod.REPLACE) {
-            // replace, replaceWith
+            // replace(), replaceWith()
             for (const element of target) {
-                // use a clone of the subject for all but the last target
                 element.parentElement.replaceChild(
+                    // use a clone of the subject for all but the last target
                     index < lastIndex ? subject.cloneNode(true) : subject,
                     element
                 );
@@ -290,6 +298,7 @@
                 }
             }
         }
+        
         // return the subject or the target (whichever contextIndex points to)
         return arguments[contextIndex];
     }
