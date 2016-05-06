@@ -30,10 +30,10 @@ describe("Core", function () {
             expect(window.$$).to.equal(Jamon.getAll);
         });
     });
-
+    
     describe("$", function () {
         it("should work without arguments", function () {
-            var result = $();
+            var result = Jamon.get();
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.have.lengthOf(0);
@@ -44,7 +44,7 @@ describe("Core", function () {
 
             var selector = "div";
             var qSResult = document.querySelector(selector);
-            var result = $(selector);
+            var result = Jamon.get(selector);
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.have.lengthOf(1);
@@ -54,7 +54,7 @@ describe("Core", function () {
         });
 
         it("should work on the document element", function () {
-            var result = $(document);
+            var result = Jamon.get(document);
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.have.lengthOf(1);
@@ -65,7 +65,7 @@ describe("Core", function () {
             addFixture();
 
             var el = document.getElementById("id1");
-            var result = $(el);
+            var result = Jamon.get(el);
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.have.lengthOf(1);
@@ -76,7 +76,7 @@ describe("Core", function () {
 
         it("should work on a text node", function () {
             var text = document.createTextNode("text");
-            var result = $(text);
+            var result = Jamon.get(text);
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.have.lengthOf(1);
@@ -84,8 +84,8 @@ describe("Core", function () {
         });
 
         it("should work on a Jamón instance", function () {
-            var original = $();
-            var result = $(original);
+            var original = Jamon.get();
+            var result = Jamon.get(original);
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.equal(original);
@@ -100,7 +100,7 @@ describe("Core", function () {
     describe("$$", function () {
 
         it("should work without arguments", function () {
-            var results = $$();
+            var results = Jamon.getAll();
 
             expect(results).to.be.an.instanceof(Jamon);
             expect(results).to.have.lengthOf(0);
@@ -111,7 +111,7 @@ describe("Core", function () {
 
             var selector = "div";
             var qSAResults = document.querySelectorAll(selector);
-            var results = $$(selector);
+            var results = Jamon.getAll(selector);
 
             expect(results).to.be.an.instanceof(Jamon);
 
@@ -123,7 +123,7 @@ describe("Core", function () {
 
             var selector = "div";
             var qSAResults = document.querySelectorAll(selector);
-            var results = $$(selector);
+            var results = Jamon.getAll(selector);
             var length = results.length;
             var i = 0;
 
@@ -139,7 +139,7 @@ describe("Core", function () {
             addFixture();
 
             var nodeList = document.querySelectorAll("div");
-            var results = $$(nodeList);
+            var results = Jamon.getAll(nodeList);
             var length = results.length;
             var i = 0;
 
@@ -156,7 +156,7 @@ describe("Core", function () {
             addFixture();
 
             var htmlCollection = document.getElementsByTagName("div");
-            var results = $$(htmlCollection);
+            var results = Jamon.getAll(htmlCollection);
             var length = results.length;
             var i = 0;
 
@@ -172,7 +172,7 @@ describe("Core", function () {
         it("should work with an Array", function () {
             addFixture();
             var arr = Array.from(document.getElementsByTagName("div"));
-            var results = $$(arr);
+            var results = Jamon.getAll(arr);
             var length = results.length;
             var i = 0;
 
@@ -186,8 +186,8 @@ describe("Core", function () {
         })
 
         it("should work on a Jamón instance", function () {
-            var original = $$();
-            var result = $$(original);
+            var original = Jamon.getAll();
+            var result = Jamon.getAll(original);
 
             expect(result).to.be.an.instanceof(Jamon);
             expect(result).to.equal(original);
