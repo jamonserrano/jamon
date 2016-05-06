@@ -356,11 +356,15 @@
 
             return Jamon.from([element]);
         }
-
+        
         /**
-         * Sets the class name used for hide(), show(), and toggle()
-         * @param {string} className - The new class name to use
+         * The class name used for hide(), show(), and toggle()
+         * @type {string}
          */
+        static get hiddenClassName () {
+            return hiddenClassName;
+        }
+        
         static set hiddenClassName (className) {
             // accept only string with non-null length
             if (isString(className) && className.length) {
