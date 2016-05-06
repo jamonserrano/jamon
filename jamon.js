@@ -505,8 +505,8 @@
          * @param  {string} className - Class name to check
          * @return {Boolean}          - True if the element has the class name
          */
-        hasClass (className) {
-            return this[0].classList.contains(className);
+        hasClass (className) {     
+            return this[0] && this[0].classList.contains(className);
         }
 
         /**

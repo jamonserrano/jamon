@@ -1,6 +1,10 @@
 describe("Classes", function () {
     before(function () {
         fixture.setBase("test/fixtures");
+        this.newClass1 = "new1";
+        this.newClass2 = "new2";
+        this.hiddenClassName = Jamon.hiddenClassName;
+        this.empty = Jamon.get();
     });
 
     beforeEach(function () {
@@ -11,8 +15,7 @@ describe("Classes", function () {
         this.$el2 = Jamon.get(this.el2);
         this.el3 = document.getElementById("id3");
         this.$el3 = Jamon.get(this.el3);
-        this.newClass1 = "new1";
-        this.newClass2 = "new2";
+        this.$els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
     });
 
     afterEach(function () {
@@ -20,6 +23,7 @@ describe("Classes", function () {
     });
 
     describe("addClass()", function () {
+        
         it("should throw reference error without arguments", function () {
             expect(calling(this.$el.addClass).on(this.$el).with()).to.throw(ReferenceError);
         });
@@ -31,6 +35,10 @@ describe("Classes", function () {
 
         it("should not throw error with an empty string", function () {
             expect(calling(this.$el.addClass).on(this.$el).with("")).to.not.throw(Error);
+        });
+        
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.addClass).on(this.empty).with("")).to.not.throw(Error);
         });
 
         it("should not create an empty class attribute with an empty string", function () {
@@ -90,11 +98,10 @@ describe("Classes", function () {
         });
 
         it("should add class names to multiple elements", function () {
-            var $els = Jamon.getAll("#id1, #id2");
-            $els.addClass(this.newClass1);
+            this.$els.addClass(this.newClass1);
 
-            expect(this.el).to.have.class(this.newClass1);
-            expect(this.el).to.have.class(this.newClass1);
+            expect(this.el2).to.have.class(this.newClass1);
+            expect(this.el3).to.have.class(this.newClass1);
         });
 
         it("should return the Jamón instance", function () {
@@ -105,6 +112,7 @@ describe("Classes", function () {
     });
 
     describe("removeClass()", function () {
+        
         it("should throw reference error without arguments", function () {
             expect(calling(this.$el.removeClass).on(this.$el).with()).to.throw(ReferenceError);
         });
@@ -116,6 +124,10 @@ describe("Classes", function () {
 
         it("should not throw error with an empty string", function () {
             expect(calling(this.$el.removeClass).on(this.$el).with("")).to.not.throw(Error);
+        });
+        
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.removeClass).on(this.empty).with("")).to.not.throw(Error);
         });
 
         it("should not remove class attribute", function () {
@@ -176,11 +188,10 @@ describe("Classes", function () {
         });
 
         it("should work on multiple elements", function () {
-            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
             
             this.el2.classList.add(this.newClass1);
             this.el3.classList.add(this.newClass1);
-            $els.removeClass(this.newClass1);
+            this.$els.removeClass(this.newClass1);
 
             expect(this.el2).to.not.have.class(this.newClass1);
             expect(this.el3).to.not.have.class(this.newClass1);
@@ -195,6 +206,7 @@ describe("Classes", function () {
     });
     
     describe("toggleClass()", function () {
+        
         it("should throw reference error without arguments", function () {
             expect(calling(this.$el.toggleClass).on(this.$el).with()).to.throw(ReferenceError);
         });
@@ -206,6 +218,10 @@ describe("Classes", function () {
         
         it("should not throw error with an empty string argument", function () {
             expect(calling(this.$el.toggleClass).on(this.$el).with("")).to.not.throw(Error);
+        });
+        
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.toggleClass).on(this.empty).with("")).to.not.throw(Error);
         });
         
         it("should remove an existing class name", function () {
@@ -262,15 +278,13 @@ describe("Classes", function () {
             expect(calling(this.$el.toggleClass).on(this.$el).with(this.newClass1 + " " + this.newClass1)).to.not.throw(Error);
         });
         
-        it("should work on multiple elements", function () {
-            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
-            
-            $els.toggleClass(this.newClass1);
+        it("should work on multiple elements", function () {            
+            this.$els.toggleClass(this.newClass1);
 
             expect(this.el2).to.have.class(this.newClass1);
             expect(this.el3).to.have.class(this.newClass1);
             
-            $els.toggleClass(this.newClass1);
+            this.$els.toggleClass(this.newClass1);
 
             expect(this.el2).to.not.have.class(this.newClass1);
             expect(this.el3).to.not.have.class(this.newClass1);
@@ -284,6 +298,7 @@ describe("Classes", function () {
     });
     
     describe("hasClass()", function () {
+        
         it("should not throw error without arguments", function () {
             expect(calling(this.$el.hasClass).on(this.$el).with()).to.not.throw(Error);
         });
@@ -296,6 +311,10 @@ describe("Classes", function () {
             expect(calling(this.$el.hasClass).on(this.$el).with("")).to.throw(Error);
         });
         
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.hasClass).on(this.empty).with("")).to.not.throw(Error);
+        });
+        
         it("should return true for an existing class name", function () {
             this.el.classList.add(this.newClass1);
             
@@ -306,46 +325,142 @@ describe("Classes", function () {
             expect(this.$el.hasClass(this.newClass1)).to.be.false;
         });
         
-        it("should work on multiple elements", function () {
-            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
-            
-            expect(calling($els.hasClass).on($els).with()).to.not.throw(Error);
+        it("should work on multiple elements", function () {            
+            expect(calling(this.$els.hasClass).on(this.$els).with()).to.not.throw(Error);
         });
         
         it("should return the existence of the class name on the first element", function () {
-            var $els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
             this.el3.classList.add(this.newClass1);
             
-            expect(this.$el.hasClass(this.newClass1)).to.be.false;
+            expect(this.$els.hasClass(this.newClass1)).to.be.false;
             
             this.el2.classList.add(this.newClass2);
             
-            expect(this.$el.hasClass(this.newClass2)).to.be.false;  
+            expect(this.$els.hasClass(this.newClass2)).to.be.true;  
         });
     });
     
     describe("show()", function () {
-        it("should remove the hidden class name from the element");
-        it("should work on multiple elements");
-        it("should return the Jamón instance");
+        
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.show).on(this.empty).with()).to.not.throw(Error);
+        });
+        
+        it("should remove the hidden class name from the element", function () {
+            this.el2.classList.add(this.hiddenClassName);
+            this.$el2.show();
+            
+            expect(this.el2).to.not.have.class(this.hiddenClassName);
+        });
+        
+        it("should work on multiple elements", function () {
+            this.el2.classList.add(this.hiddenClassName);
+            this.el3.classList.add(this.hiddenClassName);
+            this.$els.show();
+             
+            expect(this.el2).to.not.have.class(this.hiddenClassName);
+            expect(this.el3).to.not.have.class(this.hiddenClassName);
+        });
+        
+        it("should return the Jamón instance", function () {
+            var returnValue = this.$el.show();
+            
+            expect(returnValue).to.equal(this.$el);
+        });
     });
     
     describe("hide()", function () {
-        it("should add the hidden class name to the element");
-        it("should work on multiple elements");
-        it("should return the Jamón instance");
+        
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.hide).on(this.empty).with()).to.not.throw(Error);
+        });
+
+        it("should add the hidden class name to the element", function () {
+            this.$el2.hide();
+            
+            expect(this.el2).to.have.class(this.hiddenClassName);
+        });
+        
+        it("should work on multiple elements", function () {
+            this.$els.hide();
+             
+            expect(this.el2).to.have.class(this.hiddenClassName);
+            expect(this.el3).to.have.class(this.hiddenClassName);
+            
+        });
+        
+        it("should return the Jamón instance", function () {
+            var returnValue = this.$el.hide();
+            
+            expect(returnValue).to.equal(this.$el);
+        });
     });
     
      describe("toggle()", function () {
-        it("should toggle the hidden class name on the element");
-        it("should work on multiple elements");
-        it("should return the Jamón instance");
+        
+        it("should not throw error when called on an empty collection", function () {
+            expect(calling(this.empty.toggle).on(this.empty).with()).to.not.throw(Error);
+        });
+
+        it("should remove the hidden class name from the element", function () {
+            this.el2.classList.add(this.hiddenClassName);
+            this.$el2.toggle();
+            
+            expect(this.el2).to.not.have.class(this.hiddenClassName);
+        });
+        
+        it("should add the hidden class name to the element", function () {
+            this.$el2.hide();
+            
+            expect(this.el2).to.have.class(this.hiddenClassName);
+        });
+        
+        it("should work on multiple elements", function () {
+            this.el2.classList.add(this.hiddenClassName);
+            this.$els.toggle();
+             
+            expect(this.el2).to.not.have.class(this.hiddenClassName);
+            expect(this.el3).to.have.class(this.hiddenClassName);
+        });
+        
+        it("should return the Jamón instance", function () {
+             var returnValue = this.$el.toggle();
+            
+            expect(returnValue).to.equal(this.$el);
+        });
     });
     
     describe("Jamon.hiddenClassName", function () {
-        it("should change the class name used by show()");
-        it("should change the class name used by hide()");
-        it("should change the class name used by toggle()");
+        
+        beforeEach(function () {
+            Jamon.hiddenClassName = this.hiddenClassName;
+        })
+        
+        it("should change the class name used by show()", function () {            
+            Jamon.hiddenClassName = this.newClass1;
+            this.el.classList.add(this.newClass1);
+            this.$el.show();
+            
+            expect(this.el).to.not.have.class(this.newClass1);
+        });
+        
+        it("should change the class name used by hide()", function () {
+            Jamon.hiddenClassName = this.newClass1;
+            this.$el.hide();
+            
+            expect(this.el).to.have.class(this.newClass1);
+        });
+        
+        it("should change the class name used by toggle()", function () {
+            Jamon.hiddenClassName = this.newClass1;
+            this.$el.toggle();
+            
+            expect(this.el).to.have.class(this.newClass1);
+            
+            this.$el.toggle();
+            
+            expect(this.el).to.not.have.class(this.newClass1);
+        });
     });
     
 });
