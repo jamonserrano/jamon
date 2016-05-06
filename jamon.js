@@ -26,7 +26,7 @@
      * @const
      * @type {symbol}
      */
-    const listenerProperty = Symbol("listenerProperty");
+    const listenerID = Symbol("listenerID");
 
     /**
      * Storage for element data
@@ -292,7 +292,7 @@
      */
     function getProxyId (listener, selector) {
         // The proxy id consists of the unique index attached the function and the selector string
-        return `${listener[listenerProperty]}|${selector}`;
+        return `${listener[listenerID]}|${selector}`;
     }
 
     /**
@@ -965,8 +965,8 @@
                 }
             };
             // assign a unique ID to proxied listeners
-            if (!listener[listenerProperty]) {
-                listener[listenerProperty] = listenerIndex++;
+            if (!listener[listenerID]) {
+                listener[listenerID] = listenerIndex++;
             }
             // store the proxy so we can remove it later
             proxyMap.set(getProxyId(listener, selector), proxy);
