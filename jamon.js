@@ -226,15 +226,16 @@
      * @todo   Support multiple subjects
      */
     function insertNode (subject, target, operation, contextIndex) {
-        // make sure target is a Jamon instance
+        // make sure subject is Jamon instance or string
+        if (!subject instanceof Jamon && !isString(subject)) {
+            throw new TypeError();
+        }
+        
+        // make sure target is Jamon instance
         if (!target instanceof Jamon) {
            throw new TypeError();    
         }
         
-        // if there are multiple targets, the subject should be cloned lastIndex times
-        const lastIndex = target.length - 1;
-        // we use this to count the targets
-        let index = 0;
         let subjectIsText = false;
 
         if (isString(subject)) {
@@ -245,58 +246,37 @@
             // only use the first element
             subject = subject[0];
         }
+        
+        target = target[0];
 
         if (operation === NodeMethod.BEFORE || operation === NodeMethod.AFTER) {
             // before(), insertBefore(), after(), insertAfter()
-            for (const element of target) {
-                element.parentElement.insertBefore(
-                    // use a clone of the subject for every target but the last one
-                    (index++ < lastIndex) ? subject.cloneNode(true) : subject,
-                    // insert before or after the element
-                    operation === NodeMethod.BEFORE ? element : element.nextSibling
-                );
+                target.parentElement.insertBefore(subject, operation === NodeMethod.BEFORE ? target : target.nextSibling);
                 // remove adjacent textNodes
-                if (subjectIsText && element.parentNode) {
-                    element.parentNode.normalize();
+                if (subjectIsText && target.parentNode) {
+                    target.parentNode.normalize();
                 }
-            }
         } else if (operation === NodeMethod.PREPEND) {
             // prepend(), prependTo()
-            for (const element of target) {
-                element.insertBefore(
-                    // use a clone of the subject for all but the last target
-                    (index++ < lastIndex) ? subject.cloneNode(true) : subject,
-                    // insert before the element's first child
-                    element.firstChild
-                );
+                target.insertBefore(subject, target.firstChild);
                 // remove adjacent textNodes
                 if (subjectIsText) {
-                    element.normalize();
+                    target.normalize();
                 }
-            }
         } else if (operation === NodeMethod.APPEND) {
             // append(), appendTo()
-            for (const element of target) {
-                // use a clone of the subject for all but the last target
-                element.appendChild((index++ < lastIndex) ? subject.cloneNode(true) : subject);
+            target.appendChild(subject);
                 // remove adjacent textNodes
                 if (subjectIsText) {
-                    element.normalize();
+                    target.normalize();
                 }
-            }
         } else if (operation === NodeMethod.REPLACE) {
             // replace(), replaceWith()
-            for (const element of target) {
-                element.parentElement.replaceChild(
-                    // use a clone of the subject for all but the last target
-                    index < lastIndex ? subject.cloneNode(true) : subject,
-                    element
-                );
+            target.parentElement.replaceChild(subject, target);
                 // remove adjacent textNodes
                 if (subjectIsText) {
                     subject.parentNode.normalize();
                 }
-            }
         }
         
         // return the subject or the target (whichever contextIndex points to)
@@ -824,7 +804,7 @@
         }
 
         /**
-         * Prepend a Jamón element or string to the elements in the collection
+         * Prepend a Jamón element or string to the element
          * @param  {Jamon|string} subject - The element or string to prepend
          * @return {Jamon}                - The Jamón instance
          */
@@ -833,9 +813,9 @@
         }
 
         /**
-         * Prepend the elements in the collection to one or more elements
-         * @param  {string|Element|Text|Document|Jamon} target - The target
-         * @return {Jamon}                                     - The Jamón instance
+         * Prepend element to another Jamón element
+         * @param  {Jamon} target - The target
+         * @return {Jamon}        - The Jamón instance
          */
         prependTo (target) {
             return insertNode(this, target, NodeMethod.PREPEND, 0);
@@ -851,66 +831,98 @@
         }
 
         /**
-         * Append the elements in the collection to one or more elements
-         * @param  {string|Element|Text|Document|Jamon} target - The target
-         * @return {Jamon}                                     - The Jamón instance
+         * Append the element to another Jamón element
+         * @param  {Jamon} target - The target
+         * @return {Jamon}        - The Jamón instance
          */
         appendTo (target) {
             return insertNode(this, target, NodeMethod.APPEND, 0);
         }
 
-        // Insert something before the element
+        /**
+         * Insert another Jamón element before the element
+         * @param  {Jamon|string} subject - The element or string to insert
+         * @return {Jamon}                - The Jamón instance
+         */
         before (subject) {
             return insertNode(subject, this, NodeMethod.BEFORE, 1);
         }
 
-        // Insert the element before something
+        /**
+         * Insert the element before another Jamón element
+         * @param  {Jamon} target - The target
+         * @return {Jamon}        - The Jamón instance
+         */
         insertBefore (target) {
             return insertNode(this, target, NodeMethod.BEFORE, 0);
         }
 
-        // Insert something after the element
+        /**
+         * Insert another Jamón element after the element
+         * @param  {Jamon|string} subject - The element or string to insert
+         * @return {Jamon}                - The Jamón instance
+         */
         after (subject) {
             return insertNode(subject, this, NodeMethod.AFTER, 1);
         }
 
-        // Insert the element after something
+        /**
+         * Insert the element after another Jamón element
+         * @param  {Jamon} target - The target
+         * @return {Jamon}        - The Jamón instance
+         */
         insertAfter (target) {
             return insertNode(this, target, NodeMethod.AFTER, 0);
         }
 
-        // Replace the element with something
+        /**
+         * Replace the element with another Jamón element
+         * @param  {Jamon|string} subject - The element or string to insert
+         * @return {Jamon}                - The Jamón instance
+         */
         replaceWith (subject) {
             return insertNode(subject, this, NodeMethod.REPLACE, 1);
         }
 
-        // Replace something with the element
+        /**
+         * Replace another Jamón element with the element
+         * @param  {Jamon} target - The target to replace
+         * @return {Jamon}        - The Jamón instance
+         */
         replaceAll (target) {
             return insertNode(this, target, NodeMethod.REPLACE, 0);
         }
 
-        // Clone the element
+        /**
+         * Clones the collection
+         * @param {boolean} deep - Deep clone
+         * @return {Jamon}       - A new Jamón collection with the clones
+         */
         clone (deep) {
-            const clones = [];
+            const clones = new Jamon();
 
             for (const element of this) {
                 clones.push(element.cloneNode(deep));
             }
 
-            return Jamon.from(clones);
+            return clones;
         }
 
-        // Remove the element from the DOM
+        /**
+         * Remove the elements from the DOM
+         * @return {Jamon} - The Jamón instance
+         */
         remove () {
             for (const element of this) {
                 element.remove();
-                element.parentNode.normalize(); // remove adjacent textNodes
+                // remove adjacent textNodes
+                element.parentNode.normalize();
             }
 
             return this;
         }
 
-        // Add event listener
+        // Add an event listener
         on (events, listener) {
             events = events.split(" ");
 
