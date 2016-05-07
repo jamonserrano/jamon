@@ -99,6 +99,8 @@
 
     /**
      * Cross-browser 'matches' method
+     * @private
+     * @const
      * @type {string}
      * @todo remove when Edge implements 'matches'
      */
