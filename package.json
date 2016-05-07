@@ -34,6 +34,8 @@
     "karma-chai": "~0.1.0",
     "karma-chai-dom": "~1.1.0",
     "karma-chrome-launcher": "~0.2.2",
+    "karma-coverage": "^1.0.0",
+    "karma-coveralls": "^1.1.2",
     "karma-eslint": "~2.1.0",
     "karma-fixture": "~0.2.6",
     "karma-html2js-preprocessor": "~0.1.0",
