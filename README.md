@@ -1,4 +1,5 @@
-# Jamón [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon)
+# Jamón [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon) [![Coverage Status](https://coveralls.io/repos/github/jamonserrano/jamon/badge.svg?branch=coveralls)](https://coveralls.io/github/jamonserrano/jamon)
+
 My take on a DOM library (aka jQuery, the good parts)
 
 
@@ -21,10 +22,6 @@ $$("#section-1, #section2");
 ```
 
 > Jamón only registers the globals `$()` and `$$()` if they are unused. 
-
-
-## Supported browsers
-Evergreen browsers with decent ES2015 support: Chrome, Firefox, Edge.
 
 
 ## API
@@ -137,40 +134,40 @@ Finds the first descendant that matches the selector in any of the elements.
 Finds all descendants that match the selector in each element.
 
 ### Manipulation
->These methods only work with one subject i.e. the first element in the collection.
+These methods only work with one subject and one target i.e. the first element in the collection.
 
 #### prepend(subject)
-Prepends the subject (element or text node) to each element. If there are multiple elements, clones of the subject will be used.
+Prepends another element or string to the element.
 
 #### prependTo(target)
-Prepends the first element to the target element(s). If there are multiple targets, clones of the element will be used.
+Prepends the first element to another element.
 
 #### append(subject)
-Appends the subject (element or text node) to each element. If there are multiple elements, clones of the subject will be used.
+Appends another element or string to the element.
 
 #### appendTo(target)
-Appends the first element to the target element(s). If there are multiple targets, clones of the element will be used.
+Appends the element to another element.
 
 #### before(subject)
-Inserts the subject (element or text node) before each element. If there are multiple elements, clones of the subject will be used.
+Inserts another element or string before the element.
 
 #### insertBefore(target)
-Inserts the first element before the target element(s). If there are multiple targets, clones of the elements will be used.
+Inserts the element before another element.
 
 #### after(subject)
-Inserts the subject (element or text node) after each element. If there are multiple elements, clones of the subject will be used.
+Inserts another element or string after the element.
 
 #### insertAfter(target)
-Inserts the first element after the target element(s). If there are multiple targets, clones of the elements will be used.
+Inserts the element after another element.
 
 #### replaceWith(subject)
-Replaces each element with the subject element. If there are multiple targets, clones of the subject will be used.
+Replaces the element with another element.
 
 #### replaceAll(target)
-Replaces the target element(s) with the first element. If there are multiple targets, clones of the element will be used.
+Replaces another element with the element.
 
 #### clone(deep)
-Clones each element.
+Clones each element in the collection.
 
 #### remove()
 Removes each element from the DOM.
