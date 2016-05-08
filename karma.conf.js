@@ -41,8 +41,13 @@ module.exports = function(config) {
 
     
     coverageReporter: {
-      type : 'text-summary'
+      dir: 'test/reports',
+      reporters: [
+        { type: 'text-summary' },
+        { type: 'html' }
+      ]
     },
+    
     
     // web server port
     port: 9876,
