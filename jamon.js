@@ -172,31 +172,30 @@
 
         return context;
     }
-
+    
     /**
      * Get & set element properties
      * @private
-     * @param  {Jamon} context               - The Jamón instance
+     * @param  {Jamon} collection            - The Jamón instance
      * @param  {string} property             - Property name
      * @param  {string|null|undefined} value - Property value (null to remove property)
      * @return {Jamon}
      */
-    function getSetProperty (context, property, value) {
+    function getSetProperty (collection, property, value) {
         if (isUndefined(value)) {
-            return context[0][property];
+            // get property of first element if there is one
+            return collection[0] ? collection[0][property] : undefined;
         } else if (value !== null) {
-            value = String(value);
-
-            for (const element of context) {
+            for (const element of collection) {
                 element[property] = value;
             }
         } else {
-            for (const element of context) {
+            for (const element of collection) {
                 delete element[property];
             }
         }
 
-        return context;
+        return collection;
     }
 
     /**
