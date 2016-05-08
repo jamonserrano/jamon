@@ -393,7 +393,11 @@
                 result = Jamon.of(selector);
             } else if (selector instanceof Jamon) {
                 // Jamon instance
-                result = selector;
+                result = selector.slice(0,1);
+            } else if ([NodeList, HTMLCollection, Array].includes(selector.constructor)) {
+                // other iterables
+                //result = Jamon.from(selector).slice(0,1); this returns an Array for now
+                result = Jamon.of(Array.prototype.slice.call(selector, 0, 1));
             } else {
                 throw new TypeError();
             }
@@ -405,7 +409,6 @@
          * Get multiple elements
          * @param  {string|NodeList|HTMLCollection|Jamon} selector - The selector/element/collection to use
          * @return {Jamon|undefined}                               - New Jamón instance
-         * @todo use Symbol.iterator check when it becomes available for NodeList & HTMLCollection
          */
         static getAll (selector) {
             let result;
