@@ -366,17 +366,15 @@
             return hiddenClassName;
         }
         
-        static set hiddenClassName (className) {
-            // accept only string with non-null length
-            if (isString(className) && className.length) {
-                hiddenClassName = className;
-            }
+        static set hiddenClassName (className) {            
+            hiddenClassName = className;
         }
 
         /**
          * Get a single element
          * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
          * @return {Jamon|undefined}                             - New Jamón instance
+         * @todo use slice when parameter is a Jamon or Array instance
          */
         static get (selector) {
             let result;
@@ -390,13 +388,14 @@
             } else if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
                 // element node, text node, or document node
                 result = Jamon.of(selector);
-            } else if (selector instanceof Jamon) {
-                // Jamon instance
+            /*
+            } else if (selector instanceof Array) {
+                // Jamon or Array instance
                 result = selector.slice(0,1);
-            } else if ([NodeList, HTMLCollection, Array].includes(selector.constructor)) {
+            */
+            } else if ([Jamon, NodeList, HTMLCollection, Array].includes(selector.constructor)) {
                 // other iterables
-                //result = Jamon.from(selector).slice(0,1); this returns an Array for now
-                result = Jamon.of(Array.prototype.slice.call(selector, 0, 1));
+                result = Jamon.from(Array.prototype.slice.call(selector, 0, 1));
             } else {
                 throw new TypeError();
             }
