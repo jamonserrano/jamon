@@ -176,12 +176,12 @@
 	/**
 	 * Get & set element properties
 	 * @private
-	 * @param  {Jamon} collection			- The Jamón instance
+	 * @param  {Jamon} collection			 - The Jamón instance
 	 * @param  {string} property			 - Property name
 	 * @param  {string|null|undefined} value - Property value (null to remove property)
 	 * @return {Jamon}
 	 */
-	function getSetProperty (collection, property, value) {
+	function getSetRemoveProperty (collection, property, value) {
 		if (isUndefined(value)) {
 			// get property of first element if there is one
 			return collection[0] ? collection[0][property] : undefined;
@@ -542,7 +542,7 @@
 		 * @return {string|Jamon}  - Value (get) or the Jamón instance (set)
 		 */
 		val (value) {
-			return getSetProperty(this, "value", value);
+			return getSetRemoveProperty(this, "value", value);
 		}
 
 		/**
@@ -551,7 +551,7 @@
 		 * @return {string|Jamon} - HTML content (get) or the Jamón instance (set)
 		 */
 		html (html) {
-			return getSetProperty(this, "innerHTML", html);
+			return getSetRemoveProperty(this, "innerHTML", html);
 		}
 
 		/**
@@ -560,7 +560,7 @@
 		 * @return {string|Jamon} - Text content (get) or the Jamón instance (set)
 		 */
 		text (text) {
-			return getSetProperty(this, "textContent", text);
+			return getSetRemoveProperty(this, "textContent", text);
 		}
 
 		/**
@@ -570,7 +570,7 @@
 		 * @return {string|Jamon}				- Property value (get) or the Jamón instance (set)
 		 */
 		prop (property, value) {
-			return getSetProperty(this, property, value);
+			return getSetRemoveProperty(this, property, value);
 		}
 
 		/**
