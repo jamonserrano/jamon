@@ -99,7 +99,17 @@ describe("Value", function () {
 				expect(item.value).to.equal(this.newValue);
 			}
 		});
-
+		
+		it("should not delete the property when called with null", function () {
+			var input = this.inputs[0];
+			
+			expect(input.value).to.exist;
+			
+			var result = Jamon.get(this.inputs[0]).val(null);
+			
+			expect(input.value).to.exist;
+		});
+		
 		it("should return the Jamón instance", function () {
 			var results = Jamon.get("input[type=text]");
 
