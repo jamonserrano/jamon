@@ -982,51 +982,55 @@
 		}
 
 		// Trigger event on the element
-		trigger (event, detail) {
-			let type = "Event",
+		trigger (type, data) {
+			let event = Event,
 				bubbles = false,
 				cancelable = false;
+				
+			data = data || {};
 
 			// Set up event properties based on event type
-			if (!isUndefined(detail)) {
-				type = "CustomEvent";
-			} else if (EventRegExp.MOUSE.test(event)) {
-				type = "MouseEvent";
+			if (!isUndefined(data.detail)) {
+				event = CustomEvent;
+			} else if (EventRegExp.MOUSE.test(type)) {
+				event = MouseEvent;
 				bubbles = true;
 				cancelable = true;
-			} else if (EventRegExp.FOCUS.test(event)) {
-				type = "FocusEvent";
-				if (event === "change") {
+			} else if (EventRegExp.FOCUS.test(type)) {
+				event = FocusEvent;
+				if (type === "change") {
 					bubbles = true;
 				}
-			} else if (EventRegExp.FORM.test(event)) {
+			} else if (EventRegExp.FORM.test(type)) {
 				bubbles = true;
 				cancelable = true;
-			} else if (EventRegExp.KEYBOARD.test(event)) {
-				type = "KeyboardEvent";
+			} else if (EventRegExp.KEYBOARD.test(type)) {
+				event = KeyboardEvent;
 				bubbles = true;
 				cancelable = true;
-			} else if (EventRegExp.TOUCH.test(event)) {
-				type = "TouchEvent";
+			} else if (EventRegExp.TOUCH.test(type)) {
+				event = TouchEvent;
 				bubbles = true;
 
-				if (event !== "touchcancel") {
+				if (type !== "touchcancel") {
 					cancelable = true;
 				}
-			} else if (EventRegExp.POINTER.test(event)) {
+			/*
+			} else if (EventRegExp.POINTER.test(type)) {
 				let exceptions = ["pointerenter", "pointerleave"];
-				type = "PointerEvent";
-				if (!exceptions.includes(event)) {
+				event = PointerEvent;
+				if (!exceptions.includes(type)) {
 					bubbles = true;
 				}
 				exceptions.push("pointercancel");
-				if (!exceptions.includes(event)) {
+				if (!exceptions.includes(type)) {
 					cancelable = true;
 				}
+			*/
 			}
-
+			
 			for (const element of this) {
-				element.dispatchEvent(new window[type](event, {bubbles, cancelable, detail}));
+				element.dispatchEvent(new event(type, Object.assign(data, {bubbles, cancelable})));
 			}
 
 			return this;
