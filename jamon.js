@@ -337,25 +337,25 @@
 	 * @unrestricted
 	 */
 	class Jamon extends Array {
-
+		
 		/**
 		 * Create a new element
 		 * @param  {string} type		- Element type
-		 * @param  {Object=} attributes - Attributes
+		 * @param  {Object=} properties - Properties
 		 * @return {Jamon}			  - The element wrapped in a Jamón instance
 		 */
-		static create (type, attributes) {
+		static create (type, properties) {
 			// create a new element of the given type
 			const element = document.createElement(type);
 
-			// add attributes
-			if (attributes) {
-				for (const attribute of Object.keys(attributes)) {
-					element.setAttribute(attribute, attributes[attribute]);
+			// add properties
+			if (!isUndefined(properties)) {
+				for (const property of Object.keys(properties)) {
+					element[property] = properties[property];
 				}
 			}
 
-			return Jamon.from([element]);
+			return Jamon.of(element);
 		}
 		
 		/**
