@@ -616,7 +616,7 @@
 				
 				} else {
 					// get single style
-					return window.getComputedStyle(this[0])[style]
+					return getComputedStyle(this[0])[style]
 				}
 			// set multiple styles
 			} else {
@@ -711,7 +711,7 @@
 			for (const element of this) {
 				const offsetParent = element.offsetParent || document.body,
 					parentRect = offsetParent.getBoundingClientRect(),
-					computedStyle = window.getComputedStyle(element),
+					computedStyle = getComputedStyle(element),
 					style = element.style,
 					left = position.left,
 					top = position.top;
