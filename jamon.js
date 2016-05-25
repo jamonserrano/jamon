@@ -754,20 +754,6 @@
 		}
 		
 		/**
-		 * Get the contents (element and text nodes) of each element
-		 * @return {Jamon} - A new Jamón instance with the contents
-		 */
-		contents () {
-			const contents = [];
-			
-			for (const element of this) {
-				contents.push(...Array.from(element.childNodes));
-			}
-
-			return Jamon.from(contents);
-		}
-
-		/**
 		 * Get the first ancestor that matches the provided selector of each element
 		 * @param  {string} selector - The selector to match ancestors against
 		 * @return {Jamon}		   - A new Jamón instance containing the matched ancestors

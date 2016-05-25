@@ -115,9 +115,6 @@ Gets the parent element of each element.
 #### children()
 Gets the children elements of each element.
 
-#### contents()
-Gets all children (including text nodes) of each element.
-
 #### closest([selector])
 Gets the closest parent (matching the optional selector) of each element.
 
