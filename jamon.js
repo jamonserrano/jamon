@@ -86,18 +86,6 @@
 	};
 
 	/**
-	 * Enum for node relatives.
-	 * @private
-	 * @const
-	 * @enum {string}
-	 */
-	const Relative = {
-		PARENT_ELEMENT: "parentElement",
-		FIRST_ELEMENT_CHILD: "firstElementChild",
-		LAST_ELEMENT_CHILD: "lastElementChild"
-	};
-
-	/**
 	 * Cross-browser 'matches' method
 	 * @private
 	 * @const
@@ -196,23 +184,6 @@
 		}
 
 		return collection;
-	}
-
-	/**
-	 * Get relatives of the element
-	 * @private
-	 * @param  {Jamon} context	 - Elements to find relatives for
-	 * @param  {Relative} relative - Relative type
-	 * @return {Jamon}			 - New Jamón instance containing the found elements
-	 */
-	function getRelative (context, relative) {
-		const relatives = [];
-
-		for (const element of context) {
-			relatives.push(element[relative]);
-		}
-
-		return Jamon.from(relatives);
 	}
 
 	/**
@@ -736,7 +707,13 @@
 		 * @return {Jamon} - A new Jamón instance containing the parents
 		 */
 		parent () {
-			return getRelative(this, Relative.PARENT_ELEMENT);
+			const parents = [];
+
+			for (const element of this) {
+				parents.push(element.parentElement);
+			}
+
+			return Jamon.from(parents);
 		}
 
 		/**
