@@ -464,18 +464,6 @@
 		}
 
 		/**
-		 * Filter the elements in the collection with a selector
-		 * @param  {string} selector - Selector to match
-		 * @return {Jamon}		   - A new Jamón instance containing the matched elements
-		 * @todo use msMatchesSelector too for a while
-		 */
-		filterBy (selector) {
-			const elements = this.filter((element) => element[matchMethod](selector));
-
-			return Jamon.from(elements);
-		}
-
-		/**
 		 * Add class name(s)
 		 * @param {string} className - Space-separated list of class names
 		 * @return {Jamon}		   - The instance

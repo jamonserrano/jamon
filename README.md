@@ -166,9 +166,6 @@ Clones each element in the collection.
 #### remove()
 Removes each element from the DOM.
 
-#### filterBy(selector)
-Returns a new Jamón instance containing only the elements that match the selector.
-
 
 ### Events
 
