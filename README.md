@@ -154,7 +154,7 @@ Inserts the element after another element.
 #### replaceWith(subject)
 Replaces the element with another element.
 
-#### replaceAll(target)
+#### replace(target)
 Replaces another element with the element.
 
 #### clone(deep)

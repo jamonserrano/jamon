@@ -854,7 +854,7 @@
 		 * @param  {Jamon} target - The target to replace
 		 * @return {Jamon}		- The Jamón instance
 		 */
-		replaceAll (target) {
+		replace (target) {
 			return insertNode(this, target, NodeMethod.REPLACE, 0);
 		}
 
