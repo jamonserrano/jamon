@@ -112,12 +112,6 @@ Gets the absolute position of the first element or sets the position of each ele
 #### parent()
 Gets the parent element of each element.
 
-#### firstChild()
-Gets the first element child of each element.
-
-#### lastChild()
-Gets the last element child of each element.
-
 #### children()
 Gets the children elements of each element.
 

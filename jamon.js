@@ -752,22 +752,6 @@
 		}
 
 		/**
-		 * Get the first child of each element
-		 * @return {Jamon} - A new Jamón instance containing the first children
-		 */
-		firstChild () {
-			return getRelative(this, Relative.FIRST_ELEMENT_CHILD);
-		}
-		
-		/**
-		 * Get the last child of each element
-		 * @return {Jamon} - A new Jamón instance containing the last children
-		 */
-		lastChild () {
-			return getRelative(this, Relative.LAST_ELEMENT_CHILD);
-		}
-
-		/**
 		 * Get the children of each element
 		 * @return {Jamon} - A new Jamón instance containing the children
 		 */
