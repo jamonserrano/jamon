@@ -352,21 +352,16 @@
 
 			if (isUndefined(selector)) {
 				// empty collection
-				result = Jamon.of();
+				result = new Jamon();
 			} else if (isString(selector)) {
 				// selector
 				result = Jamon.of(document.querySelector(selector));
 			} else if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
 				// element node, text node, or document node
 				result = Jamon.of(selector);
-			/*
-			} else if (selector instanceof Array) {
-				// Jamon or Array instance
-				result = selector.slice(0,1);
-			*/
 			} else if ([Jamon, NodeList, HTMLCollection, Array].includes(selector.constructor)) {
 				// other iterables
-				result = Jamon.from(Array.prototype.slice.call(selector, 0, 1));
+				result = selector.length ? Jamon.of(selector[0]) : new Jamon();
 			} else {
 				throw new TypeError();
 			}
@@ -384,7 +379,7 @@
 
 			if (isUndefined(selector)) {
 				// empty collection
-				result = Jamon.from([]);
+				result = new Jamon();
 			} else if (isString(selector)) {
 				// selector string
 				result = Jamon.from(document.querySelectorAll(selector));
@@ -413,7 +408,7 @@
 				result = findInElement(element, selector, true);
 				if (result) {
 					// break and return the first result
-					return Jamon.from([result]);
+					return Jamon.of(result);
 				}
 			}
 		}
@@ -422,16 +417,16 @@
 		 * Find all descendants that match the selector in any of the elements
 		 * @param  {string} selector - Selector to match
 		 * @return {Jamon}		   - A new Jamón instance containing the matched elements
+		 * @todo Handle duplicates?
 		 */
 		findAll (selector) {
-			let results = [];
+			let results = new Jamon();
 
 			for (const element of this) {
 				results = results.concat(Array.from(findInElement(element, selector)));
 			}
 
-			// use a Set to discard duplicate results
-			return Jamon.from(new Set(results));
+			return results;
 		}
 
 		/**
@@ -707,13 +702,13 @@
 		 * @return {Jamon} - A new Jamón instance containing the parents
 		 */
 		parent () {
-			const parents = [];
+			const parents = new Jamon();
 
 			for (const element of this) {
 				parents.push(element.parentElement);
 			}
 
-			return Jamon.from(parents);
+			return parents;
 		}
 
 		/**
@@ -721,13 +716,13 @@
 		 * @return {Jamon} - A new Jamón instance containing the children
 		 */
 		children () {
-			const children = [];
+			const children = new Jamon();
 
 			for (const element of this) {
 				children.push(...Array.from(element.children));
 			}
 
-			return Jamon.from(children);
+			return children;
 		}
 		
 		/**
@@ -736,13 +731,13 @@
 		 * @return {Jamon}		   - A new Jamón instance containing the matched ancestors
 		 */
 		closest (selector) {
-			const closests = [];
+			const closests = new Jamon();
 
 			for (const element of this) {
 				closests.push(element.closest(selector));
 			}
 
-			return Jamon.from(closests);
+			return closests;
 		}
 
 		/**
