@@ -395,6 +395,16 @@
 
 			return result;
 		}
+		
+		/**
+		 * An iterable that wraps each element in a Jamón instance
+		 * @return {Iterable<Jamon>}
+		 */
+		* items () {
+			for (const element of this) {
+				yield Jamon.of(element);
+			}
+		}
 
 		/**
 		 * Find the first descendant that matches the selector in any of the elements

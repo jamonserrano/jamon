@@ -28,8 +28,11 @@ $$("#section-1, #section2");
 
 ### Working with Jamón instances
 Jamón extends the built-in Array so instances behave just like regular arrays.
-You can use [array methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#Array_instances)
+You can use all [array prototype methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#Array_instances)
 like `forEach`, `map`, `push`, `join`, etc, or iterate with `for...of` loops.
+
+#### items()
+Provides an Iterable that yields each element wrapped in a Jamón instance
 
 
 ### Classes
