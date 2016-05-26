@@ -172,7 +172,7 @@ describe("Core", function () {
 		});
 
 		it ("should throw an error with invalid parameter", function () {
-			expect(calling($).with({})).to.throw(TypeError);
+			expect(calling(Jamon.get).with({})).to.throw(TypeError);
 		});
 	});
 
@@ -307,7 +307,7 @@ describe("Core", function () {
 		});
 
 		it ("should throw an error with invalid parameter", function () {
-			expect(calling($).with({})).to.throw(TypeError);
+			expect(calling(Jamon.getAll).with({})).to.throw(TypeError);
 		});
 	});
 });
