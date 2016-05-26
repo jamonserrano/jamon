@@ -3,13 +3,13 @@ describe("Core", function () {
 		fixture.setBase("test/fixtures");
 	});
 
-	function addFixture () {
+	beforeEach(function () {
 		fixture.load('basic_elements.html');
-	}
+	});
 
-	function removeFixture () {
+	afterEach(function () {
 		fixture.cleanup();
-	}
+	});
 	
 	describe("Jamon", function () {
 	   
@@ -32,8 +32,6 @@ describe("Core", function () {
 		});
 
 		it("should work with a selector string", function () {
-			addFixture();
-
 			var selector = "div";
 			var qSResult = document.querySelector(selector);
 			var result = Jamon.get(selector);
@@ -41,8 +39,6 @@ describe("Core", function () {
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(qSResult);
-
-			removeFixture();
 		});
 
 		it("should work with the document element", function () {
@@ -54,16 +50,12 @@ describe("Core", function () {
 		});
 
 		it("should work with an element", function () {
-			addFixture();
-
 			var el = document.getElementById("id1");
 			var result = Jamon.get(el);
 
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(el);
-
-			removeFixture();
 		});
 
 		it("should work with a text node", function () {
@@ -76,7 +68,6 @@ describe("Core", function () {
 		});
 
 		it("should work with a Jamón instance", function () {
-			addFixture();
 			var el1 = document.getElementById("id1");
 			var el2 = document.getElementById("id2");
 			
@@ -85,24 +76,17 @@ describe("Core", function () {
 			
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(original[0]);
-			
-			removeFixture();
 		});
 		
 		it("should work with an empty Jamón instance", function () {
-			addFixture();
 			var original = new Jamon();
 			var result = Jamon.get(original);
 
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(0);
-						
-			removeFixture();
 		});
 		
 		it("should work with a NodeList", function () {
-			addFixture();
-			
 			var nodeList = document.querySelectorAll("div");		   
 			var result = Jamon.get(nodeList);
 
@@ -110,26 +94,18 @@ describe("Core", function () {
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(nodeList[0]);
-
-			removeFixture();
 		});
 		
 		it("should work with an empty NodeList", function () {
-			addFixture();
-			
 			var nodeList = document.querySelectorAll("#nonexistent");
 			var result = Jamon.get(nodeList);
 			
 			expect(nodeList.length).to.equal(0);
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(0);
-			
-			removeFixture();
 		});
 
 		it("should work with a HTMLCollection", function () {
-			addFixture();
-
 			var htmlCollection = document.getElementsByTagName("div");
 			var result = Jamon.get(htmlCollection);
 			
@@ -137,21 +113,15 @@ describe("Core", function () {
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(htmlCollection[0]);
-
-			removeFixture();
 		});
 		
 		it("should work with an empty HTMLCollection", function () {
-			addFixture();
-
 			var htmlCollection = document.getElementsByTagName("nonexistent");
 			var result = Jamon.get(htmlCollection);
 			
 			expect(htmlCollection.length).to.equal(0); 
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(0);		  
-			
-			removeFixture();
 		});
 
 		it("should work with an Array", function () {
@@ -186,8 +156,6 @@ describe("Core", function () {
 		});
 
 		it("should work with a selector string", function () {
-			addFixture();
-
 			var selector = "div";
 			var qSAResults = document.querySelectorAll(selector);
 			var results = Jamon.getAll(selector);
@@ -198,13 +166,9 @@ describe("Core", function () {
 			for (; i < length; i++) {
 				expect(results[i]).to.equal(qSAResults[i]);
 			}
-
-			removeFixture();
 		});
 		
 		it("should work with a NodeList", function () {
-			addFixture();
-
 			var nodeList = document.querySelectorAll("div");
 			var results = Jamon.getAll(nodeList);
 			var length = results.length;
@@ -215,27 +179,19 @@ describe("Core", function () {
 			for (; i < length; i++) {
 				expect(results[i]).to.equal(nodeList[i]);
 			}
-
-			removeFixture();
 		});
 		
 		it("should work with an empty NodeList", function () {
-			addFixture();
-			
 			var nodeList = document.querySelectorAll("#nonexistent");
 			var results = Jamon.getAll(nodeList);
 			
 			expect(nodeList.length).to.equal(0);
 			expect(results).to.be.an.instanceof(Jamon);
 			expect(results).to.have.lengthOf(0);
-			
-			removeFixture();
 		});
 
 
 		it("should work with a HTMLCollection", function () {
-			addFixture();
-
 			var htmlCollection = document.getElementsByTagName("div");
 			var results = Jamon.getAll(htmlCollection);
 			var length = results.length;
@@ -246,25 +202,18 @@ describe("Core", function () {
 			for (; i < length; i++) {
 				expect(results[i]).to.equal(htmlCollection[i]);
 			}
-
-			removeFixture();
 		});
 		
 		it("should work with an empty HTMLCollection", function () {
-			addFixture();
-
 			var htmlCollection = document.getElementsByTagName("nonexistent");
 			var results = Jamon.get(htmlCollection);
 			
 			expect(htmlCollection.length).to.equal(0); 
 			expect(results).to.be.an.instanceof(Jamon);
 			expect(results).to.have.lengthOf(0);		  
-			
-			removeFixture();
 		});
 
 		it("should work with an Array", function () {
-			addFixture();
 			var arr = [1,2];
 			var results = Jamon.getAll(arr);
 			var length = results.length;
@@ -275,8 +224,6 @@ describe("Core", function () {
 			for (; i < length; i++) {
 				expect(results[i]).to.equal(arr[i]);
 			}
-
-			removeFixture();
 		});
 		
 		it("should work with an empty Array", function () {
@@ -296,14 +243,11 @@ describe("Core", function () {
 		});
 		
 		it("should work with an empty Jamón instance", function () {
-			addFixture();
 			var original = new Jamon();
 			var results = Jamon.get(original);
 
 			expect(results).to.be.an.instanceof(Jamon);
 			expect(results).to.have.lengthOf(0);
-						
-			removeFixture();
 		});
 
 		it ("should throw an error with invalid parameter", function () {
