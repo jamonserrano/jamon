@@ -546,7 +546,8 @@
 		attr (attribute, value) {
 			if (isUndefined(value)) {
 				// get
-				return this[0].getAttribute(attribute);
+				let first = this[0];
+				return first.hasAttribute(attribute) ? first.getAttribute(attribute) : undefined;
 			} else if (value !== null) {
 				// set
 				for (const element of this) {
