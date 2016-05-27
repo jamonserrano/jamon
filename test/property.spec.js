@@ -166,24 +166,71 @@ describe("Property", function () {
 			expect(this.$el.html(this.content)).to.equal(this.$el);
 		});
 	});
-	/*
+	
 	describe("text()", function () {
 		it("should return the text content", function () {
+			var text = this.el.textContent
+			expect(text).to.not.equal("");
+			
+			expect(this.$el.text()).to.equal(text);
 		});
 		
 		it("should return empty string when the element is empty", function () {
+			var text = this.el2.textContent
+			expect(text).to.equal("");
+			
+			expect(this.$el2.text()).to.equal(text);
 		});
 
 		it("should work on an empty collection", function () {
+			expect(this.$empty.text()).to.be.undefined;
 		});
 
 		it("should work on multiple items", function () {
+			var els = Jamon.getAll([this.el, this.el2]);
+			
+			expect(this.el.textContent).to.not.equal(this.el2.textContent);
+			expect(els.text()).to.equal(this.el.textContent);
 		});
 
 	});
 	
 	describe("text(value)", function () {
+		it("should set the text content", function () {
+			this.$el.text(this.content);
+			
+			expect(this.el.textContent).to.equal(this.content);
+		});
 		
+		it("calling with empty string should empty text content", function () {
+			this.$el.text("");
+			expect(this.el.textContent).to.equal("");
+		});
+		
+		it("calling with null should empty text content", function () {
+			this.$el.text(null);
+			expect(this.el.textContent).to.equal("");
+		});
+		
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.text).on(this.$empty).with(this.content)).to.not.throw(Error);
+		});
+
+		it("should work on multiple items", function () {
+			var els = Jamon.getAll([this.el, this.el2]);
+			
+			expect(this.el.textContent).to.not.equal(this.el2.textContent);
+			
+			els.text(this.content);
+			
+			expect(this.el.textContent).to.equal(this.content);
+			expect(this.el2.textContent).to.equal(this.content);
+		});
+		
+		it("should return the Jamón instance", function () {
+			expect(this.$el.text(this.content)).to.equal(this.$el);
+		});
+
 	});
-	*/
+	
 });
