@@ -98,7 +98,7 @@
 	 * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
 	 * @private
 	 * @param  {string} property - CSS property name
-	 * @return {string}		  - JS property name
+	 * @return {string}		     - JS property name
 	 */
 	function kebabCaseToCamelCase (property) {
 		return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
@@ -581,7 +581,7 @@
 				
 				} else {
 					// get single style
-					return getComputedStyle(this[0])[style]
+					return window.getComputedStyle(this[0])[style]
 				}
 			// set multiple styles
 			} else {

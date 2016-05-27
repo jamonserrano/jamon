@@ -1,7 +1,7 @@
 describe("Attributes", function () {
 	before(function () {
 		fixture.setBase("test/fixtures");
-		this.empty = Jamon.get();
+		this.$empty = Jamon.get();
 	});
 
 	beforeEach(function () {
@@ -9,7 +9,6 @@ describe("Attributes", function () {
 		
 		this.input = document.getElementById("id1");
 		this.$input = Jamon.get(this.input);
-		this.$empty = Jamon.get();
 		
 		this.attribute = "type";
 		this.value = "hidden";

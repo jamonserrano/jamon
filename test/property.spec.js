@@ -1,6 +1,10 @@
 describe("Property", function () {
 	before(function () {
 		fixture.setBase("test/fixtures");
+		this.property = "disabled";
+		this.customProperty = "customProperty";
+		this.$empty = Jamon.get();
+		this.content = "<div id=\"id5\">new content</div>";
 	});
 
 	beforeEach(function () {
@@ -14,11 +18,6 @@ describe("Property", function () {
 		
 		this.el2 = document.getElementById("id4");
 		this.$el2 = Jamon.get(this.el2);
-		
-		this.property = "disabled";
-		this.customProperty = "customProperty";
-		this.$empty = Jamon.get();
-		this.content = "<div id=\"id5\">new content</div>";
 	});
 
 	afterEach(function () {
