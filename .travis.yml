@@ -8,3 +8,6 @@ script: karma start karma.conf-sauce.js
 env:
     global:
     - NPM_CONFIG_PROGRESS="false"
+cache:
+	directories:
+	- node_modules
