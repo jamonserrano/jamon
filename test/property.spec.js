@@ -4,12 +4,21 @@ describe("Property", function () {
 	});
 
 	beforeEach(function () {
-		fixture.load('property_elements.html');
+		fixture.load("property_elements.html");
+		
 		this.input = document.getElementById("id1");
 		this.$input = Jamon.get(this.input);
+		
+		this.el = document.getElementById("id3");
+		this.$el = Jamon.get(this.el);
+		
+		this.el2 = document.getElementById("id4");
+		this.$el2 = Jamon.get(this.el2);
+		
 		this.property = "disabled";
 		this.customProperty = "customProperty";
 		this.$empty = Jamon.get();
+		this.content = "<div id=\"id5\">new content</div>";
 	});
 
 	afterEach(function () {
@@ -68,6 +77,13 @@ describe("Property", function () {
 			expect(this.input[this.customProperty]).to.equal(value);
 		});
 		
+		it("should remove the property when called with null", function () {
+			this.input[this.customProperty] = true;		
+			this.$input.prop(this.customProperty, null);
+			
+			expect(this.input[this.customProperty]).to.not.exist;
+		});
+		
 		it("should work on an empty collection", function () {
 			expect(calling(this.$empty.prop).on(this.$empty).with(this.property, true)).to.not.throw(Error);
 		});
@@ -89,31 +105,85 @@ describe("Property", function () {
 		});
 		
 	});
-	
-	describe("prop(name, null)", function () {
 		
-		it("should delete the property when called with null", function () {
-			this.input[this.customProperty] = true;		
-			this.$input.prop(this.customProperty, null);
+	describe("html()", function () {
+		it("should return the html content", function () {
+			var html = this.el.innerHTML
+			expect(html).to.not.equal("");
 			
-			expect(this.input[this.customProperty]).to.not.exist;
+			expect(this.$el.html()).to.equal(html);
 		});
 		
-	});
-	
-	describe("html()", function () {
-		
+		it("should return empty string when the element is empty", function () {
+			expect(this.$el2.html()).to.equal("");
+		});
+
+		it("should work on an empty collection", function () {
+			expect(this.$empty.html()).to.be.undefined;
+		});
+
+		it("should work on multiple items", function () {
+			var els = Jamon.getAll([this.el, this.el2]);
+			
+			expect(this.el.innerHTML).to.not.equal(this.el2.innerHTML);
+			expect(els.html()).to.equal(this.el.innerHTML);
+		});
 	});
 	
 	describe("html(value)", function () {
+		it("should set the html content", function () {
+			this.$el.html(this.content);
+			
+			expect(this.el.innerHTML).to.equal(this.content);
+		});
 		
+		it("calling with empty string should empty html content", function () {
+			this.$el.html("");
+			expect(this.el.innerHTML).to.equal("");
+		});
+		
+		it("calling with null should empty html content", function () {
+			this.$el.html(null);
+			expect(this.el.innerHTML).to.equal("");
+		});
+		
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.html).on(this.$empty).with(this.content)).to.not.throw(Error);
+		});
+
+		it("should work on multiple items", function () {
+			var els = Jamon.getAll([this.el, this.el2]);
+			
+			expect(this.el.innerHTML).to.not.equal(this.el2.innerHTML);
+			
+			els.html(this.content);
+			
+			expect(this.el.innerHTML).to.equal(this.content);
+			expect(this.el2.innerHTML).to.equal(this.content);
+		});
+		
+		it("should return the Jamón instance", function () {
+			expect(this.$el.html(this.content)).to.equal(this.$el);
+		});
+	});
+	/*
+	describe("text()", function () {
+		it("should return the text content", function () {
+		});
+		
+		it("should return empty string when the element is empty", function () {
+		});
+
+		it("should work on an empty collection", function () {
+		});
+
+		it("should work on multiple items", function () {
+		});
+
 	});
 	
 	describe("text(value)", function () {
 		
 	});
-	
-	describe("text(value)", function () {
-		
-	});
+	*/
 });

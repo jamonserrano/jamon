@@ -515,7 +515,7 @@
 		 * @return {string|Jamon} - HTML content (get) or the Jamón instance (set)
 		 */
 		html (html) {
-			return getSetRemoveProperty(this, "innerHTML", html);
+			return getSetRemoveProperty(this, "innerHTML", html !== null ? html : "");
 		}
 
 		/**
@@ -524,7 +524,7 @@
 		 * @return {string|Jamon} - Text content (get) or the Jamón instance (set)
 		 */
 		text (text) {
-			return getSetRemoveProperty(this, "textContent", text);
+			return getSetRemoveProperty(this, "textContent", text !== null ? text : "");
 		}
 
 		/**
