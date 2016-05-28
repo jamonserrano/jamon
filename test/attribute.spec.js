@@ -28,7 +28,7 @@ describe("Attributes", function () {
 		});
 
 		it("should work on an empty collection", function () {
-			expect(this.$empty.prop(this.property)).to.be.undefined;
+			expect(this.$empty.attr(this.attribute)).to.be.undefined;
 		});
 
 		it("should work on multiple items", function () {

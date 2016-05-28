@@ -15,7 +15,7 @@ describe("Classes", function () {
 		this.$el2 = Jamon.get(this.el2);
 		this.el3 = document.getElementById("id3");
 		this.$el3 = Jamon.get(this.el3);
-		this.$els = Jamon.getAll("#" + this.el2.id + ", #" + this.el3.id);
+		this.$els = Jamon.getAll([this.el2, this.el3]);
 	});
 
 	afterEach(function () {

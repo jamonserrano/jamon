@@ -100,8 +100,18 @@
 	 * @param  {string} property - CSS property name
 	 * @return {string}		     - JS property name
 	 */
-	function kebabCaseToCamelCase (property) {
+	function camelCase (property) {
 		return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
+	}
+	
+	/**
+	 * Turn JS property names into their CSS counterparts (eg. marginTop --> margin-top)
+	 * @private
+	 * @param  {string} property - JS property name
+	 * @return {string}		     - CSS property name
+	 */
+	function kebabCase (property) {
+		return property.replace(/([A-Z])/g, (match) => "-" + match.toLowerCase());
 	}
 
 	/**
@@ -284,7 +294,7 @@
 		// Assign temporary ID if not present
 		if (!id) {
 			temporaryId = true;
-			id = `jamon-temporary-id`;
+			id = "jamon-temporary-id";
 			element.id = id;
 		}
 
@@ -345,7 +355,6 @@
 		 * Get a single element
 		 * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
 		 * @return {Jamon|undefined}							 - New Jamón instance
-		 * @todo use slice when parameter is a Jamon or Array instance
 		 */
 		static get (selector) {
 			let result;
@@ -547,7 +556,7 @@
 			if (isUndefined(value)) {
 				// get
 				let first = this[0];
-				return first.hasAttribute(attribute) ? first.getAttribute(attribute) : undefined;
+				return (first && first.hasAttribute(attribute)) ? first.getAttribute(attribute) : undefined;
 			} else if (value !== null) {
 				// set
 				for (const element of this) {
@@ -569,38 +578,36 @@
 		 * @return {string|Jamon}		- Property value (get) or the Jamón instance (set)
 		 */
 		css (style, value) {
-			if (isString(style)) {
-				style = kebabCaseToCamelCase(style);
-				
+			if (isString(style)) {				
 				if (!isUndefined(value)) {
-					// set single style
+					// set a single style (value is specified)
 					for (const element of this) {
-						element.style[style] = value;
+						element.style[camelCase(style)] = String(value);
 					}
-					return this;
-				
-				} else {
-					// get single style
-					return window.getComputedStyle(this[0])[style]
-				}
-			// set multiple styles
-			} else {
-				if (typeof style === "object") {
-					const normalizedStyles = new Map();
 					
-					Object.keys(style).forEach((property) => {
-						normalizedStyles.set(kebabCaseToCamelCase(property), style[property]);
-					});
+					return this;	
+				} else {
+					// get a single style (no value is specified)
+					let first = this[0];
+					
+					return first ? window.getComputedStyle(first).getPropertyValue(kebabCase(style)) : undefined;
+				}
+			// set multiple styles (defined in an object)
+			} else if (typeof style === "object") {
+				const normalizedStyles = new Map();
+				
+				Object.keys(style).forEach((property) => {
+					normalizedStyles.set(camelCase(property), style[property]);
+				});
 
-					for (const element of this) {
-						for (const normalizedStyle of normalizedStyles) {
-							element.style[normalizedStyle[0]] = normalizedStyle[1];
-						}
+				for (const element of this) {
+					for (const normalizedStyle of normalizedStyles) {
+						element.style[normalizedStyle[0]] = normalizedStyle[1];
 					}
 				}
 				
-				return this;	
-			}
+				return this;
+			}	
 		}
 
 		/**
