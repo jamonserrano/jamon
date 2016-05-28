@@ -408,39 +408,6 @@
 		}
 
 		/**
-		 * Find the first descendant that matches the selector in any of the elements
-		 * @param  {string} selector - Selector to match
-		 * @return {Jamon|undefined} - A new Jamón instance containing the matched element
-		 */
-		findOne (selector) {
-			let result;
-
-			for (const element of this) {
-				result = findInElement(element, selector, true);
-				if (result) {
-					// break and return the first result
-					return Jamon.of(result);
-				}
-			}
-		}
-
-		/**
-		 * Find all descendants that match the selector in any of the elements
-		 * @param  {string} selector - Selector to match
-		 * @return {Jamon}		   - A new Jamón instance containing the matched elements
-		 * @todo Handle duplicates?
-		 */
-		findAll (selector) {
-			let results = new Jamon();
-
-			for (const element of this) {
-				results = results.concat(Array.from(findInElement(element, selector)));
-			}
-
-			return results;
-		}
-
-		/**
 		 * Add class name(s)
 		 * @param {string} className - Space-separated list of class names
 		 * @return {Jamon}		   - The instance
@@ -684,6 +651,43 @@
 			}
 			
 			return this;
+		}
+
+		/**
+		 * Find the first descendant that matches the selector in any of the elements
+		 * @param  {string} selector - Selector to match
+		 * @return {Jamon|undefined} - A new Jamón instance containing the matched element
+		 */
+		findOne (selector) {
+			let result = new Jamon();
+
+			for (const element of this) {
+				const found = findInElement(element, selector, true);
+				
+				if (found) {
+					// break and return the first result
+					result.push(found);
+					break;
+				}
+			}
+			
+			return result;
+		}
+
+		/**
+		 * Find all descendants that match the selector in any of the elements
+		 * @param  {string} selector - Selector to match
+		 * @return {Jamon}		   - A new Jamón instance containing the matched elements
+		 * @todo Handle duplicates?
+		 */
+		findAll (selector) {
+			let results = new Jamon();
+
+			for (const element of this) {
+				results = results.concat(...findInElement(element, selector));
+			}
+
+			return results;
 		}
 
 		/**
