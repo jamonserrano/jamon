@@ -565,38 +565,22 @@
 
 		/**
 		 * Get a single CSS property of the first element, or set one or more CSS properties on all elements
-		 * @param  {string|Object} style - Property name or a property-value map
-		 * @param  {string} value		- Property value
-		 * @return {string|Jamon}		- Property value (get) or the Jamón instance (set)
+		 * @param  {string} property - Property name
+		 * @param  {string} value - Property value
+		 * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
 		 */
-		css (style, value) {
-			if (isString(style)) {				
-				if (!isUndefined(value)) {
-					// set a single style (value is specified)
-					for (const element of this) {
-						element.style[camelCase(style)] = String(value);
-					}
-					return this;	
-				} else {
-					// get a single style (no value is specified)
-					let first = this[0];
-					return first ? window.getComputedStyle(first).getPropertyValue(kebabCase(style)) : undefined;
-				}
-			// set multiple styles (defined in an object)
-			} else if (typeof style === "object") {
-				const normalizedStyles = new Map();
-				
-				Object.keys(style).forEach((property) => {
-					normalizedStyles.set(camelCase(property), style[property]);
-				});
-
+		css (property, value) {				
+			if (isUndefined(value)) {
+				// get
+				let first = this[0];
+				return first ? window.getComputedStyle(first).getPropertyValue(kebabCase(property)) : undefined;
+			} else {
+				// set
 				for (const element of this) {
-					for (const normalizedStyle of normalizedStyles) {
-						element.style[normalizedStyle[0]] = normalizedStyle[1];
-					}
-				}	
+					element.style[camelCase(property)] = String(value);
+				}
 				return this;
-			}	
+			}
 		}
 
 		/**

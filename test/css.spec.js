@@ -79,47 +79,4 @@ describe("Attributes", function () {
 		});
 
 	});
-	
-	describe("css({name: value})", function () {
-						
-		it("should set the style attribute with a kebab-case name", function () {
-			this.$el.css({[this.cssProperty]: this.value});
-			
-			expect(this.el.style[this.property]).to.equal(this.value);
-		});
-		
-		it("should set the style attribute with a camelCase name", function () {
-			this.$el.css({[this.property]: this.value});
-			
-			expect(this.el.style[this.property]).to.equal(this.value);
-
-		});
-	
-		it("should set the style attribute with multiple properties", function () {
-			var property2 = "fontWeight";
-			var value2 = "400";
-			this.$el.css({[this.property]: this.value, [property2]: value2});
-
-			expect(this.el.style[this.property]).to.equal(this.value);
-			expect(this.el.style[property2]).to.equal(value2);
-		});
-			
-		it("should work on an empty collection", function () {
-			expect(calling(this.$empty.css).on(this.$empty).with({[this.property]: this.value})).to.not.throw(Error);
-		});
-		
-		it("should set the style attribute on multiple items", function () {
-			this.$els.css({[this.property]: this.value});
-			
-			for (var item of this.$els) {
-				expect(item.style[this.property]).to.equal(this.value);
-			}
-		});
-		
-		it("should return the Jamón collection", function () {
-			expect(this.$el.css({[this.property]: this.value})).to.equal(this.$el);
-		});
-
-	});
-
 });
