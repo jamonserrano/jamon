@@ -88,9 +88,6 @@ Gets the value of the data attribute for the first element or sets the data attr
 #### css(property [, value])
 Gets the computed value of the CSS property for the first element or sets the value of the CSS property for each element.
 
-#### css(properties)
-Sets the values of the the CSS properties in the object for each element.
-
 
 ### Dimensions
 
@@ -112,20 +109,21 @@ Gets the absolute position of the first element or sets the position of each ele
 
 ### DOM Traversal
 
-#### parent()
-Gets the parent element of each element.
-
-#### children()
-Gets the children elements of each element.
-
-#### closest([selector])
-Gets the closest parent (matching the optional selector) of each element.
-
 #### findOne(selector)
 Finds the first descendant that matches the selector in any of the elements.
 
 #### findAll(selector)
 Finds all descendants that match the selector in each element.
+
+#### parent()
+Gets the parent element of each element.
+
+#### closest([selector])
+Gets the closest parent (matching the optional selector) of each element.
+
+#### children()
+Gets the children elements of each element.
+
 
 ### Manipulation
 These methods only work with one subject and one target i.e. the first element in the collection.
