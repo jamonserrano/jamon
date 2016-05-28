@@ -29,14 +29,6 @@
 	const listenerID = Symbol("listenerID");
 
 	/**
-	 * Storage for element data
-	 * @private
-	 * @const
-	 * @type {Map}
-	 */
-	const dataMap = new Map();
-
-	/**
 	 * Storage for proxied event listeners
 	 * @private
 	 * @const
@@ -584,12 +576,10 @@
 					for (const element of this) {
 						element.style[camelCase(style)] = String(value);
 					}
-					
 					return this;	
 				} else {
 					// get a single style (no value is specified)
 					let first = this[0];
-					
 					return first ? window.getComputedStyle(first).getPropertyValue(kebabCase(style)) : undefined;
 				}
 			// set multiple styles (defined in an object)
@@ -604,8 +594,7 @@
 					for (const normalizedStyle of normalizedStyles) {
 						element.style[normalizedStyle[0]] = normalizedStyle[1];
 					}
-				}
-				
+				}	
 				return this;
 			}	
 		}
@@ -613,29 +602,27 @@
 		/**
 		 * Get a data attribute of the first element or set a data attribute on all elements
 		 * @param  {string} name - Attribute name
-		 * @param  {*=} value  - Attribute value
-		 * @return {*}		 - Attribute value (get) or the instance (set)
+		 * @param  {*=} value - Attribute value
+		 * @return {string|Jamon} - Attribute value (get) or the instance (set)
 		 */
 		data (name, value) {
-			if (isUndefined(value)) { // get
-				const element = this[0],
-					storage = dataMap.get(element);
-				let data;
-				// look it up in the storage first, then in the data-attribute
-				if (storage && (!isUndefined(storage.get(name)))) {
-					data = storage.get(name);
-				} else {
-					data = element.dataset[name];
+			if (isUndefined(value)) {
+				// get value
+				const first = this[0];	
+				return first ? first.dataset[name] : undefined;
+			} else if (value !== null) {
+				// set value
+				for (const element of this) {
+					element.dataset[name] = value;
 				}
-
-				return data;
+				return this;
+			} else {
+				// remove value
+				for (const element of this) {
+					delete element.dataset[name];
+				}
+				return this;
 			}
-
-			for (const element of this) {
-				dataMap.set(element,(dataMap.get(element) || new Map()).set(name, value));
-			}
-
-			return this;
 		}
 
 		/**
