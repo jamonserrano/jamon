@@ -956,7 +956,7 @@
 		}
 	}
 
-	// Assign global variables
+	// Exports
 	window.Jamon = Jamon;
 	if (isUndefined(window.$) && isUndefined(window.$$)) {
 		window.$ = Jamon.get;
