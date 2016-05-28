@@ -22,4 +22,26 @@ describe("Utils", function () {
 			expect(result[0].href).to.equal(href);
 		});
 	});
+	
+	describe("items()", function () {
+		beforeEach(function () {
+			this.el = document.createElement("a");
+			this.el2 = document.createElement("a");
+			this.$els = Jamon.getAll([this.el, this.el2]);
+		});
+		
+		it("should return an iterable", function () {
+			expect(this.$els.items()[Symbol.iterator]).to.be.a.function;	
+		});
+		
+		it("should wrap the elements in Jamón instances", function () {
+			var index = 0;
+			
+			for (var item of this.$els.items()) {
+				expect(item).to.be.an.instanceOf(Jamon);
+				expect(item).to.have.lengthOf(1);
+				expect(item[0]).to.equal(this.$els[index++]);
+			}
+		});
+	});
 });
