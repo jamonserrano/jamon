@@ -78,16 +78,51 @@ describe("Traversal", function () {
 	});
 	
 	describe("findAll", function () {
-		it("should work on an element with id");
+		it("should work on an element with id", function () {
+			var results = this.$el.findAll("> .class5");
+			
+			expect(results).to.be.an.instanceOf(Jamon);
+			expect(results).to.have.lengthOf(2);
+			for (var item of results) {
+				expect(item.parentElement).to.equal(this.el);
+			}
+		});
 		
-		it("should work on an element without id");
+		it("should work on an element without id", function () {
+			var results = this.$el3.findAll("> div");
+			
+			expect(results).to.be.an.instanceOf(Jamon);
+			expect(results).to.have.lengthOf(2);
+			for (var item of results) {
+				expect(item.parentElement).to.equal(this.el3);
+			}
+		});
 		
-		it("should find multiple elements");
+		it("should return an empty Jamón instance when there is no result", function () {
+			var results = this.$el.findAll("invalid");
+			
+			expect(results).to.be.an.instanceOf(Jamon);
+			expect(results).to.have.lengthOf(0);
+		});
 		
-		it("should only find descendants of the element");
+		it("should find multiple elements", function () {
+			var results = this.$el.findAll("div");
+			
+			expect(results).to.be.an.instanceOf(Jamon);
+			expect(results).to.have.length.above(1);
+		});
+				
+		it("should not find the element itself", function () {
+			var results = this.$el.findAll("#" + this.el.id);
+			
+			expect(results).to.be.an.instanceOf(Jamon);
+			expect(results).to.have.lengthOf(0);
+		});
 		
-		it("should not find the element itself");
-		
-		it("should work on multiple elements");
+		it("should work on multiple elements", function () {
+			var results = this.$els.findAll(".class5");
+			
+			expect(results).to.have.lengthOf(3);
+		});
 	});
 });

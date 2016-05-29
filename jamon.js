@@ -684,7 +684,10 @@
 			let results = new Jamon();
 
 			for (const element of this) {
-				results = results.concat(...findInElement(element, selector));
+				const found = findInElement(element, selector);
+				if (found.length) {
+					results = results.concat(...found);
+				}
 			}
 
 			return results;
