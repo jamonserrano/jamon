@@ -677,7 +677,7 @@
 		/**
 		 * Find all descendants that match the selector in any of the elements
 		 * @param  {string} selector - Selector to match
-		 * @return {Jamon}		   - A new Jamón instance containing the matched elements
+		 * @return {Jamon} - A new Jamón instance containing the matched elements
 		 * @todo Handle duplicates?
 		 */
 		findAll (selector) {
@@ -686,7 +686,7 @@
 			for (const element of this) {
 				const found = findInElement(element, selector);
 				if (found.length) {
-					results = results.concat(...found);
+					results.push(...found);
 				}
 			}
 
