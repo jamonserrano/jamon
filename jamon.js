@@ -835,7 +835,12 @@
 			return this;
 		}
 
-		// Add an event listener
+		/**
+		 * Add an event listener
+		 * @param {string} events - Space-separated list of events
+		 * @param {function} listener - Listener function to add
+		 * @return {Jamon} - The Jamón instance
+		 */
 		on (events, listener) {
 			for (const event of trimAndSplit(events)) {
 				for (const element of this) {
@@ -846,7 +851,13 @@
 			return this;
 		}
 
-		// Remove event listener
+		/**
+		 * Remove an event listener
+		 * @param {string} events - Space-separated list of events
+		 * @param {string} selector - The selector used for delegation
+		 * @param {function} listener - Listener function to remove
+		 * @return {Jamon} - The Jamón instance
+		 */
 		off (events, selector, listener) {
 			// delegated event, get the stored proxy
 			if (listener) {
@@ -865,7 +876,13 @@
 			return this;
 		}
 
-		// Delegates an event
+		/**
+		 * Delegate an event listener
+		 * @param {string} event - Event to listen to
+		 * @param {string} selector - The selector used for delegation
+		 * @param {function} listener - Listener function to add
+		 * @return {Jamon} - The Jamón instance
+		 */
 		delegate (event, selector, listener) {
 			const proxy = function (e) {
 				const target = e.target;
@@ -883,7 +900,12 @@
 			return this.on(event, proxy);
 		}
 
-		// Trigger event on the element
+		/**
+		 * Trigger an event
+		 * @param {string} type - Event type
+		 * @param {Object=} eventData - Event data
+		 * @return {Jamon} - The Jamón instance
+		 */
 		trigger (type, eventData = {}) {
 			eventData = Object.assign(eventData, {
 				bubbles: true,
