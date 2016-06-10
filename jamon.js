@@ -37,21 +37,6 @@
 	const proxyMap = new Map();
 
 	/**
-	 * Regular expressions to indentify event types
-	 * @private
-	 * @const
-	 * @enum {RegExp}
-	 */
-	const EventRegExp = {
-		FOCUS: /^(blur|change|focus)$/,
-		FORM: /^(reset|submit)$/,
-		KEYBOARD: /^key(down|press|up)$/,
-		MOUSE: /^(click|dblclick|contextmenu)|(mouse(down|enter|leave|move|out|over|up))$/,
-		POINTER: /^pointer(cancel|down|enter|leave|move|out|over|up)$/,
-		TOUCH: /^touch(cancel|end|move|start)$/
-	};
-
-	/**
 	 * Enum for node operations.
 	 * @private
 	 * @const
@@ -105,6 +90,15 @@
 	function kebabCase (property) {
 		return property.replace(/([A-Z])/g, (match) => "-" + match.toLowerCase());
 	}
+	
+	/**
+	 * Trims and splits a string
+	 * @param {string} value - The string to process
+	 * @return {Array} - The array of strings
+	 */
+	function trimAndSplit (value) {
+		return value ? value.trim().split(" ") : [];
+	}
 
 	/**
 	 * Check if a reference is undefined
@@ -135,16 +129,8 @@
 	 * @return {Jamon}
 	 */
 	function addRemoveToggleClass (context, className, method) {
-		if (isUndefined(className)) {
-			throw new ReferenceError();
-		}
-
-		if (!isString(className)) {
-			throw new TypeError();
-		}
-
 		// Split by spaces, then remove empty elements caused by extra whitespace
-		const classNames = className.split(" ").filter(item => item.length);
+		const classNames = trimAndSplit(className);
 
 		if (classNames.length) {
 			for (const element of context) {
@@ -164,7 +150,7 @@
 	}
 	
 	/**
-	 * Get & set element properties
+	 * Get, set or remove element properties
 	 * @private
 	 * @param  {Jamon} collection			 - The Jamón instance
 	 * @param  {string} property			 - Property name
@@ -346,60 +332,52 @@
 		/**
 		 * Get a single element
 		 * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
-		 * @return {Jamon|undefined}							 - New Jamón instance
+		 * @return {Jamon} - New Jamón instance
 		 */
 		static get (selector) {
-			let result;
-
 			if (isUndefined(selector)) {
 				// empty collection
-				result = new Jamon();
+				return new Jamon();
 			} else if (isString(selector)) {
 				// selector
-				result = Jamon.of(document.querySelector(selector));
+				return Jamon.of(document.querySelector(selector));
 			} else if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
 				// element node, text node, or document node
-				result = Jamon.of(selector);
-			} else if ([Jamon, NodeList, HTMLCollection, Array].includes(selector.constructor)) {
+				return Jamon.of(selector);
+			} else if (selector[Symbol.iterator]) {
 				// other iterables
-				result = selector.length ? Jamon.of(selector[0]) : new Jamon();
+				return selector.length ? Jamon.of(selector[0]) : new Jamon();
 			} else {
 				throw new TypeError();
 			}
-
-			return result;
 		}
 
 		/**
 		 * Get multiple elements
 		 * @param  {string|NodeList|HTMLCollection|Jamon} selector - The selector/element/collection to use
-		 * @return {Jamon|undefined}							   - New Jamón instance
+		 * @return {Jamon} - New Jamón instance
 		 */
 		static getAll (selector) {
-			let result;
-
 			if (isUndefined(selector)) {
 				// empty collection
-				result = new Jamon();
+				return new Jamon();
 			} else if (isString(selector)) {
 				// selector string
-				result = Jamon.from(document.querySelectorAll(selector));
+				return Jamon.from(document.querySelectorAll(selector));
 			} else if (selector instanceof Jamon) {
 				// Jamon instance
-				result = selector;
-			} else if ([NodeList, HTMLCollection, Array].includes(selector.constructor)) {
+				return selector;
+			} else if (selector[Symbol.iterator]) {
 				// other iterables
-				result = Jamon.from(selector);
+				return Jamon.from(selector);
 			} else {
 				throw new TypeError();
 			}
-
-			return result;
 		}
 		
 		/**
 		 * An iterable that wraps each element in a Jamón instance
-		 * @return {Iterable<Jamon>}
+		 * @return {iterable<Jamon>}
 		 */
 		* items () {
 			for (const element of this) {
@@ -515,6 +493,7 @@
 			if (isUndefined(value)) {
 				// get
 				let first = this[0];
+				// getAttribute returns null for missing attributes
 				return (first && first.hasAttribute(attribute)) ? first.getAttribute(attribute) : undefined;
 			} else if (value !== null) {
 				// set
@@ -684,6 +663,7 @@
 			let results = new Jamon();
 
 			for (const element of this) {
+				// add results to the collection
 				const found = findInElement(element, selector);
 				if (found.length) {
 					results.push(...found);
@@ -715,7 +695,7 @@
 			const children = new Jamon();
 
 			for (const element of this) {
-				children.push(...Array.from(element.children));
+				children.push(...(element.children));
 			}
 
 			return children;
@@ -857,9 +837,7 @@
 
 		// Add an event listener
 		on (events, listener) {
-			events = events.split(" ");
-
-			for (const event of events) {
+			for (const event of trimAndSplit(events)) {
 				for (const element of this) {
 					element.addEventListener(event, listener);
 				}
@@ -870,8 +848,6 @@
 
 		// Remove event listener
 		off (events, selector, listener) {
-			events = events.split(" ");
-
 			// delegated event, get the stored proxy
 			if (listener) {
 				listener = proxyMap.get(getProxyId(listener, selector));
@@ -880,7 +856,7 @@
 				listener = selector;
 			}
 
-			for (const event of events) {
+			for (const event of trimAndSplit(events)) {
 				for (const element of this) {
 					element.removeEventListener(event, listener);
 				}
@@ -908,55 +884,14 @@
 		}
 
 		// Trigger event on the element
-		trigger (type, data) {
-			let event = Event,
-				bubbles = false,
-				cancelable = false;
-				
-			data = data || {};
+		trigger (type, eventData = {}) {
+			eventData = Object.assign(eventData, {
+				bubbles: true,
+				cancelable: true
+			});
 
-			// Set up event properties based on event type
-			if (!isUndefined(data.detail)) {
-				event = CustomEvent;
-			} else if (EventRegExp.MOUSE.test(type)) {
-				event = MouseEvent;
-				bubbles = true;
-				cancelable = true;
-			} else if (EventRegExp.FOCUS.test(type)) {
-				event = FocusEvent;
-				if (type === "change") {
-					bubbles = true;
-				}
-			} else if (EventRegExp.FORM.test(type)) {
-				bubbles = true;
-				cancelable = true;
-			} else if (EventRegExp.KEYBOARD.test(type)) {
-				event = KeyboardEvent;
-				bubbles = true;
-				cancelable = true;
-			} else if (EventRegExp.TOUCH.test(type)) {
-				event = TouchEvent;
-				bubbles = true;
-
-				if (type !== "touchcancel") {
-					cancelable = true;
-				}
-			/*
-			} else if (EventRegExp.POINTER.test(type)) {
-				let exceptions = ["pointerenter", "pointerleave"];
-				event = PointerEvent;
-				if (!exceptions.includes(type)) {
-					bubbles = true;
-				}
-				exceptions.push("pointercancel");
-				if (!exceptions.includes(type)) {
-					cancelable = true;
-				}
-			*/
-			}
-			
 			for (const element of this) {
-				element.dispatchEvent(new event(type, Object.assign(data, {bubbles, cancelable})));
+				element.dispatchEvent(new CustomEvent(type, eventData));
 			}
 
 			return this;

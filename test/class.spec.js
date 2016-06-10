@@ -24,15 +24,6 @@ describe("Classes", function () {
 
 	describe("addClass()", function () {
 		
-		it("should throw reference error without arguments", function () {
-			expect(calling(this.$el.addClass).on(this.$el).with()).to.throw(ReferenceError);
-		});
-
-		it("should throw type error with invalid type", function () {
-			expect(calling(this.$el.addClass).on(this.$el).with(null)).to.throw(TypeError);
-			expect(calling(this.$el.addClass).on(this.$el).with({})).to.throw(TypeError);
-		});
-
 		it("should not throw error with an empty string", function () {
 			expect(calling(this.$el.addClass).on(this.$el).with("")).to.not.throw(Error);
 		});
@@ -76,14 +67,6 @@ describe("Classes", function () {
 			expect(this.el).to.have.class(this.newClass2);
 		});
 		
-		it("should work with class names with excess whitespace", function () {
-			this.$el.addClass(" " + this.newClass1 + "  " + this.newClass2 + "   ");
-			
-			expect(this.el).to.have.class(this.newClass1);
-			expect(this.el).to.have.class(this.newClass2);
-			expect(this.el.classList).to.have.lengthOf(2);
-		});
-
 		it("shouldn't add an already existing class name", function () {
 			this.el.className = this.newClass1;
 			this.$el.addClass(this.newClass1);
@@ -113,15 +96,6 @@ describe("Classes", function () {
 
 	describe("removeClass()", function () {
 		
-		it("should throw reference error without arguments", function () {
-			expect(calling(this.$el.removeClass).on(this.$el).with()).to.throw(ReferenceError);
-		});
-
-		it("should throw type error with invalid type", function () {
-			expect(calling(this.$el.removeClass).on(this.$el).with(null)).to.throw(TypeError);
-			expect(calling(this.$el.removeClass).on(this.$el).with({})).to.throw(TypeError);
-		});
-
 		it("should not throw error with an empty string", function () {
 			expect(calling(this.$el.removeClass).on(this.$el).with("")).to.not.throw(Error);
 		});
@@ -159,15 +133,6 @@ describe("Classes", function () {
 			expect(this.el).to.not.have.class(this.newClass2);
 		});
 		
-		it("should work with class names with excess whitespace", function () {
-			var originalClassNames = Array.prototype.slice.call(this.el2.classList);
-			
-			this.$el2.removeClass(" " + originalClassNames.join("   ") + "  ");
-			
-			expect(this.el2.classList).to.have.lengthOf(0);
-
-		});
-
 		it("should keep the original class names of the element", function () {
 			var originalClassNames = Array.prototype.slice.call(this.el2.classList);
 			var newClassNames;
@@ -206,16 +171,7 @@ describe("Classes", function () {
 	});
 	
 	describe("toggleClass()", function () {
-		
-		it("should throw reference error without arguments", function () {
-			expect(calling(this.$el.toggleClass).on(this.$el).with()).to.throw(ReferenceError);
-		});
-		
-		it("should throw type error with invalid type arguments", function () {
-			expect(calling(this.$el.toggleClass).on(this.$el).with(null)).to.throw(TypeError);
-			expect(calling(this.$el.toggleClass).on(this.$el).with({})).to.throw(TypeError);
-		});
-		
+				
 		it("should not throw error with an empty string argument", function () {
 			expect(calling(this.$el.toggleClass).on(this.$el).with("")).to.not.throw(Error);
 		});
@@ -254,15 +210,7 @@ describe("Classes", function () {
 			expect(this.el).to.not.have.class(this.newClass1);
 			expect(this.el).to.have.class(this.newClass2);
 		});
-		
-		it("should work with class names with excess whitespace", function () {
-			this.el.classList.add(this.newClass1);
-			this.$el.toggleClass("  " + this.newClass1 + "   " + this.newClass2 + "  ");
-			
-			expect(this.el).to.not.have.class(this.newClass1);
-			expect(this.el).to.have.class(this.newClass2);
-		});
-		
+				
 		it("should keep the original class names of the element", function () {
 			this.el.classList.add(this.newClass1);
 			this.$el.toggleClass(this.newClass2);
