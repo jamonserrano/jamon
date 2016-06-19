@@ -14,27 +14,14 @@
 	let hiddenClassName = "hidden";
 
 	/**
-	 * Event listener index (used for indentifying proxied listeners)
-	 * @private
-	 * @type {number}
+	 * Unique property name to store proxies on listener functions
 	 */
-	let listenerIndex = 1;
+	const proxyProperty = Symbol("jamonProxies");
 
 	/**
-	 * Unique property name to attach to proxied event listeners
-	 * @private
-	 * @const
-	 * @type {symbol}
+	 * Unique property name to store listeners on elements
 	 */
-	const listenerID = Symbol("listenerID");
-
-	/**
-	 * Storage for proxied event listeners
-	 * @private
-	 * @const
-	 * @type {Map}
-	 */
-	const proxyMap = new Map();
+	const listenerProperty = Symbol("jamonListeners");
 
 	/**
 	 * Enum for node operations.
@@ -77,7 +64,7 @@
 	 * @param  {string} property - CSS property name
 	 * @return {string}		     - JS property name
 	 */
-	function camelCase (property) {
+	function toCamelCase (property) {
 		return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
 	}
 	
@@ -87,7 +74,7 @@
 	 * @param  {string} property - JS property name
 	 * @return {string}		     - CSS property name
 	 */
-	function kebabCase (property) {
+	function toKebabCase (property) {
 		return property.replace(/([A-Z])/g, (match) => "-" + match.toLowerCase());
 	}
 	
@@ -244,15 +231,53 @@
 	}
 
 	/**
-	 * Generate a unique proxy id for the given listener-selector combination
-	 * @private
-	 * @param  {function(Event)} listener - The event listener function
-	 * @param  {string} selector		  - The selector used for the delegation
-	 * @return {string}				   - Unique proxy id
+	 * Return the listener or a generated proxy for the given listener-selector combination
+	 * @param {Function} listener - the listener function
+	 * @param {string} selector - the selector
+	 * @return {Function} - the listener or the proxy
 	 */
-	function getProxyId (listener, selector) {
-		// The proxy id consists of the unique index attached the function and the selector string
-		return `${listener[listenerID]}|${selector}`;
+	function getListenerOrProxy (listener, selector) {
+		let proxy;
+
+		// we need a proxy
+		if (!isUndefined(selector)) {
+			// get existing proxy storage of the listener
+			let proxies = listener[proxyProperty];
+			// or create the storage
+			if (isUndefined(proxies)) {
+				proxies = new Map();
+				listener[proxyProperty] = proxies;
+			}
+
+			// a proxy for this selector already exists - get it
+			if (proxies.has(selector)) {
+				proxy = proxies.get(selector);
+			// create a new proxy for this selector
+			} else {
+				proxy = function (e) {
+					const target = e.target;
+					// only call the listener if the target matches the selector
+					if (target[matchMethod](selector)) {
+						listener.call(target, e);
+					}
+				}
+				// store proxy
+				proxies.set(selector, proxy);
+			}
+		}
+
+		return proxy || listener;
+	}
+
+	/**
+	 * Get the event listener group name for the given event-selector combination
+	 * @private
+	 * @param  {string} type - The event type
+	 * @param  {string} selector - The selector
+	 * @return {string}	- Unique listener id
+	 */
+	function getListenerGroupName (type, selector = "") {
+		return `${type}|${selector}`;
 	}
 
 	/**
@@ -519,11 +544,11 @@
 			if (isUndefined(value)) {
 				// get
 				let first = this[0];
-				return first ? window.getComputedStyle(first).getPropertyValue(kebabCase(property)) : undefined;
+				return first ? window.getComputedStyle(first).getPropertyValue(toKebabCase(property)) : undefined;
 			} else {
 				// set
 				for (const element of this) {
-					element.style[camelCase(property)] = String(value);
+					element.style[toCamelCase(property)] = String(value);
 				}
 				return this;
 			}
@@ -838,13 +863,44 @@
 		/**
 		 * Add an event listener
 		 * @param {string} events - Space-separated list of events
+		 * @param {string=} selector - Selector to use for delegation
 		 * @param {function} listener - Listener function to add
 		 * @return {Jamon} - The Jamón instance
 		 */
-		on (events, listener) {
+		on (events, selector, listener) {
+			if (isUndefined(listener)) {
+				listener = selector;
+				selector = undefined;
+			}
+			
+			listener = getListenerOrProxy(listener, selector);
+						
 			for (const event of trimAndSplit(events)) {
+				const groupName = getListenerGroupName(event, selector);
+
 				for (const element of this) {
-					element.addEventListener(event, listener);
+					// get or create listener storage on element
+					let listeners = element[listenerProperty];
+					if (isUndefined(listeners)) {
+						listeners = new Map();
+						element[listenerProperty] = listeners;
+					}
+					
+					// get or create group for the event-selector combination
+					let listenerGroup = listeners.get(groupName);
+					if (isUndefined(listenerGroup)) {
+						listenerGroup = new Set();
+						listeners.set(groupName, listenerGroup);
+					}
+
+					// add listener
+					if (!listenerGroup.has(listener)) {
+						listenerGroup.add(listener);
+						element.addEventListener(event, listener);
+					// prevent adding duplicate listeners
+					} else {
+						throw new Error("Duplicate event listener");
+					}					
 				}
 			}
 
@@ -858,10 +914,12 @@
 		 * @param {function} listener - Listener function to remove
 		 * @return {Jamon} - The Jamón instance
 		 */
-		off (events, selector, listener) {
+		
+		off (events, selector, callback) {
+			let listener;
 			// delegated event, get the stored proxy
-			if (listener) {
-				listener = proxyMap.get(getProxyId(listener, selector));
+			if (callback) {
+				//listener = proxyMap.get(getProxyId(listener, selector));
 			// basic listener
 			} else {
 				listener = selector;
@@ -874,30 +932,6 @@
 			}
 
 			return this;
-		}
-
-		/**
-		 * Delegate an event listener
-		 * @param {string} event - Event to listen to
-		 * @param {string} selector - The selector used for delegation
-		 * @param {function} listener - Listener function to add
-		 * @return {Jamon} - The Jamón instance
-		 */
-		delegate (event, selector, listener) {
-			const proxy = function (e) {
-				const target = e.target;
-				if (target[matchMethod](selector)) {
-					listener.call(target, e);
-				}
-			};
-			// assign a unique ID to proxied listeners
-			if (!listener[listenerID]) {
-				listener[listenerID] = listenerIndex++;
-			}
-			// store the proxy so we can remove it later
-			proxyMap.set(getProxyId(listener, selector), proxy);
-
-			return this.on(event, proxy);
 		}
 
 		/**
