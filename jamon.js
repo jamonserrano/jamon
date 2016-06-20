@@ -27,14 +27,14 @@
 	 * Enum for node operations.
 	 * @private
 	 * @const
-	 * @enum {number}
+	 * @enum {symbol}
 	 */
 	const NodeMethod = {
-		PREPEND: 0,
-		APPEND: 1,
-		BEFORE: 2,
-		AFTER: 3,
-		REPLACE: 4
+		PREPEND: Symbol(),
+		APPEND: Symbol(),
+		BEFORE: Symbol(),
+		AFTER: Symbol(),
+		REPLACE: Symbol()
 	};
 
 	/**
