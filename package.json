@@ -7,8 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "karma start",
-    "test-once": "karma start --single-run",
+    "test": "npm run pack && karma start --single-run",
     "pack": "packer -i jamon.js -o jamon.min.js -s true",
     "watch": "npm run test & onchange 'jamon.js' -- npm run pack"
   },
@@ -54,5 +53,5 @@
       "es6": true
     }
   },
-  "pre-commit": "test-once"
+  "pre-commit": "test"
 }
