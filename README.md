@@ -167,11 +167,8 @@ Removes each element from the DOM.
 
 ### Events
 
-#### on(events, listener)
-Adds the listener for each of the events in a space-separated list to each element.
-
-#### delegate(event, selector, listener)
-Delegates events from the elements matching the selector to the listener.
+#### on(events, [,selector] , listener)
+Adds the listener for each of the events to each element. Provide an optional selector string for event delegation.
 
 #### off(events [,selector] , listener)
 Removes the standard or delegated event listeners from the elements.
