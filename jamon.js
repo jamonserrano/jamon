@@ -231,29 +231,28 @@
 	}
 
 	/**
-	 * Return the listener or a generated proxy for the given listener-selector combination
+	 * Generate a proxy for the given listener-selector combination
 	 * @param {Function} listener - the listener function
 	 * @param {string} selector - the selector
 	 * @return {Function} - the listener or the proxy
 	 */
-	function getListenerOrProxy (listener, selector) {
-		let proxy;
-
-		// we need a proxy
-		if (!isUndefined(selector)) {
+	function getProxiedListener (listener, selector) {
 			// get existing proxy storage of the listener
 			let proxies = listener[proxyProperty];
+			// the proxy to return
+			let proxy;
+
 			// or create the storage
 			if (isUndefined(proxies)) {
 				proxies = new Map();
 				listener[proxyProperty] = proxies;
 			}
 
-			// a proxy for this selector already exists - get it
 			if (proxies.has(selector)) {
+				// a proxy for this selector already exists - get it
 				proxy = proxies.get(selector);
-			// create a new proxy for this selector
 			} else {
+				// create a new proxy for this selector
 				proxy = function (e) {
 					const target = e.target;
 					// only call the listener if the target matches the selector
@@ -264,9 +263,8 @@
 				// store proxy
 				proxies.set(selector, proxy);
 			}
-		}
 
-		return proxy || listener;
+			return proxy;
 	}
 
 	/**
@@ -869,37 +867,38 @@
 		 */
 		on (events, selector, listener) {
 			if (isUndefined(listener)) {
+				// normalize arguments
 				listener = selector;
 				selector = undefined;
+			} else {
+				// get proxied listener
+				listener = getProxiedListener(listener, selector);
 			}
-			
-			listener = getListenerOrProxy(listener, selector);
 						
 			for (const event of trimAndSplit(events)) {
+				// get group name for the event-selector combination
 				const groupName = getListenerGroupName(event, selector);
 
 				for (const element of this) {
-					// get or create listener storage on element
+					// get or create listener storage on the element
 					let listeners = element[listenerProperty];
 					if (isUndefined(listeners)) {
 						listeners = new Map();
 						element[listenerProperty] = listeners;
 					}
 					
-					// get or create group for the event-selector combination
+					// get or create listener group in the storage with the generated name
 					let listenerGroup = listeners.get(groupName);
 					if (isUndefined(listenerGroup)) {
 						listenerGroup = new Set();
 						listeners.set(groupName, listenerGroup);
 					}
 
-					// add listener
+					// add listener and store it in the group
 					if (!listenerGroup.has(listener)) {
+						// prevent duplicate listeners
 						listenerGroup.add(listener);
 						element.addEventListener(event, listener);
-					// prevent adding duplicate listeners
-					} else {
-						throw new Error("Duplicate event listener");
 					}					
 				}
 			}
@@ -915,18 +914,23 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		
-		off (events, selector, callback) {
-			let listener;
-			// delegated event, get the stored proxy
-			if (callback) {
-				//listener = proxyMap.get(getProxyId(listener, selector));
-			// basic listener
-			} else {
+		off (events, selector, listener) {			
+			if (isUndefined(listener)) {
+				// no selector - reassign arguments
 				listener = selector;
+				selector = undefined;
+			} else {
+				// selector - get proxied listener from proxy storage
+				listener = listener[proxyProperty].get(selector);
 			}
 
 			for (const event of trimAndSplit(events)) {
+				// get group name for the event-selector combination
+				const groupName = getListenerGroupName(event, selector);
+
 				for (const element of this) {
+					// remove listener
+					element[listenerProperty].get(groupName).delete(listener);
 					element.removeEventListener(event, listener);
 				}
 			}
