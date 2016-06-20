@@ -172,17 +172,7 @@
 	 * @todo   Separate this monster into 4 parts
 	 * @todo   Support multiple subjects
 	 */
-	function insertNode (subject, target, operation, contextIndex) {
-		// make sure subject is Jamon instance or string
-		if (!subject instanceof Jamon && !isString(subject)) {
-			throw new TypeError();
-		}
-		
-		// make sure target is Jamon instance
-		if (!target instanceof Jamon) {
-			throw new TypeError();	
-		}
-		
+	function insertNode (subject, target, operation, contextIndex) {		
 		let subjectIsText = false;
 
 		if (isString(subject)) {
