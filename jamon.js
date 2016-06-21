@@ -15,16 +15,20 @@
 
 	/**
 	 * Unique property name to store proxies on listener functions
+	 * @private
+	 * @type {symbol}
 	 */
 	const proxyProperty = Symbol("jamonProxies");
 
 	/**
 	 * Unique property name to store listeners on elements
+	 * @private
+	 * @type {symbol}
 	 */
 	const listenerProperty = Symbol("jamonListeners");
 
 	/**
-	 * Enum for node operations.
+	 * Enum for node operations
 	 * @private
 	 * @const
 	 * @enum {symbol}
@@ -38,7 +42,7 @@
 	};
 
 	/**
-	 * Enum for class name operations.
+	 * Enum for class name operations
 	 * @private
 	 * @const
 	 * @enum {string}
@@ -62,7 +66,7 @@
 	 * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
 	 * @private
 	 * @param  {string} property - CSS property name
-	 * @return {string}		     - JS property name
+	 * @return {string} - JS property name
 	 */
 	function toCamelCase (property) {
 		return property.replace(/-([a-z])/g, (nothing, match) => match.toUpperCase());
@@ -72,7 +76,7 @@
 	 * Turn JS property names into their CSS counterparts (eg. marginTop --> margin-top)
 	 * @private
 	 * @param  {string} property - JS property name
-	 * @return {string}		     - CSS property name
+	 * @return {string}	- CSS property name
 	 */
 	function toKebabCase (property) {
 		return property.replace(/([A-Z])/g, (match) => "-" + match.toLowerCase());
@@ -80,6 +84,7 @@
 	
 	/**
 	 * Trims and splits a string
+	 * @private
 	 * @param {string} value - The string to process
 	 * @return {Array} - The array of strings
 	 */
@@ -91,7 +96,7 @@
 	 * Check if a reference is undefined
 	 * @private
 	 * @param  {*} reference - The reference to check
-	 * @return {boolean}	 - The undefinedness of the reference
+	 * @return {boolean} - The undefinedness of the reference
 	 */
 	function isUndefined (reference) {
 		return typeof reference === "undefined";
@@ -101,7 +106,7 @@
 	 * Check if a reference is a String
 	 * @private
 	 * @param  {*} reference - The reference to check
-	 * @return {boolean}	 - The stringness of the reference
+	 * @return {boolean} - The stringness of the reference
 	 */
 	function isString (reference) {
 		return typeof reference === "string";
@@ -110,8 +115,8 @@
 	/**
 	 * Add, remove, or toggle class names
 	 * @private
-	 * @param {Jamon} context		  - The Jamón instance
-	 * @param {string} className	   - Space-separated class names
+	 * @param {Jamon} context - The Jamón instance
+	 * @param {string} className - Space-separated class names
 	 * @param {ClassListMethod} method - Method to use on the class name(s)
 	 * @return {Jamon}
 	 */
@@ -139,8 +144,8 @@
 	/**
 	 * Get, set or remove element properties
 	 * @private
-	 * @param  {Jamon} collection			 - The Jamón instance
-	 * @param  {string} property			 - Property name
+	 * @param  {Jamon} collection - The Jamón instance
+	 * @param  {string} property - Property name
 	 * @param  {string|null|undefined} value - Property value (null to remove property)
 	 * @return {Jamon}
 	 */
@@ -164,11 +169,11 @@
 	/**
 	 * Handle all node insertion operations
 	 * @private
-	 * @param  {Jamon|string} subject					  - The element/string that we are using
-	 * @param  {Jamon} target							  - The target we are using the subject with
-	 * @param  {NodeMethod} operation					  - Name of the operation
-	 * @param  {number} contextIndex					   - Index of the paramater to be returned
-	 * @return {Jamon}									 - The Jamón instance (referenced by contextIndex)
+	 * @param  {Jamon|string} subject - The element/string that we are using
+	 * @param  {Jamon} target - The target we are using the subject with
+	 * @param  {NodeMethod} operation - Name of the operation
+	 * @param  {number} contextIndex - Index of the paramater to be returned
+	 * @return {Jamon} - The Jamón instance (referenced by contextIndex)
 	 * @todo   Separate this monster into 4 parts
 	 * @todo   Support multiple subjects
 	 */
@@ -222,6 +227,7 @@
 
 	/**
 	 * Generate a proxy for the given listener-selector combination
+	 * @private
 	 * @param {Function} listener - the listener function
 	 * @param {string} selector - the selector
 	 * @return {Function} - the listener or the proxy
@@ -271,9 +277,9 @@
 	/**
 	 * Runs querySelectorAll WITHIN the element (unlike native qSA)
 	 * @private
-	 * @param  {HTMLElement} element  - The search context
-	 * @param  {string} selector	  - The selector to use in the query
-	 * @param  {boolean=} one		 - Do we want only one result?
+	 * @param  {HTMLElement} element - The search context
+	 * @param  {string} selector - The selector to use in the query
+	 * @param  {boolean=} one - Do we want only one result?
 	 * @return {HTMLElement|NodeList} - The result of the query
 	 */
 	function findInElement (element, selector, one) {
@@ -312,9 +318,9 @@
 		
 		/**
 		 * Create a new element
-		 * @param  {string} type		- Element type
+		 * @param  {string} type - Element type
 		 * @param  {Object=} properties - Properties
-		 * @return {Jamon}			  - The element wrapped in a Jamón instance
+		 * @return {Jamon} - The element wrapped in a Jamón instance
 		 */
 		static create (type, properties) {
 			// create a new element of the given type
@@ -345,7 +351,7 @@
 		/**
 		 * Get a single element
 		 * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
-		 * @return {Jamon} - New Jamón instance
+		 * @return {Jamon} - A new Jamón instance
 		 */
 		static get (selector) {
 			if (isUndefined(selector)) {
@@ -368,7 +374,7 @@
 		/**
 		 * Get multiple elements
 		 * @param  {string|NodeList|HTMLCollection|Jamon} selector - The selector/element/collection to use
-		 * @return {Jamon} - New Jamón instance
+		 * @return {Jamon} - A new Jamón instance
 		 */
 		static getAll (selector) {
 			if (isUndefined(selector)) {
@@ -401,7 +407,7 @@
 		/**
 		 * Add class name(s)
 		 * @param {string} className - Space-separated list of class names
-		 * @return {Jamon}		   - The instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		addClass (className) {
 			return addRemoveToggleClass(this, className, ClassListMethod.ADD);
@@ -410,7 +416,7 @@
 		/**
 		 * Remove class name(s)
 		 * @param  {string} className - Space-separated list of class names
-		 * @return {Jamon}			- The instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		removeClass (className) {
 			return addRemoveToggleClass(this, className, ClassListMethod.REMOVE);
@@ -419,8 +425,7 @@
 		/**
 		 * Toggle class name(s)
 		 * @param  {string} className - Space-separated list of class names
-		 * @return {Jamon}			- The instance
-		 * @todo add second parameter?
+		 * @return {Jamon} - The Jamón instance
 		 */
 		toggleClass (className) {
 			return addRemoveToggleClass(this, className, ClassListMethod.TOGGLE);
@@ -429,7 +434,7 @@
 		/**
 		 * Checks if the first element has the provided class name
 		 * @param  {string} className - Class name to check
-		 * @return {Boolean}		  - True if the element has the class name
+		 * @return {Boolean} - True if the element has the class name
 		 */
 		hasClass (className) {	 
 			return this[0] && this[0].classList.contains(className);
@@ -437,7 +442,7 @@
 
 		/**
 		 * Show the element(s)
-		 * @return {Jamon} - The instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		show () {
 			return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.REMOVE);
@@ -445,7 +450,7 @@
 
 		/**
 		 * Hide the element(s)
-		 * @return {Jamon} - The instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		hide () {
 			return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.ADD);
@@ -453,7 +458,7 @@
 
 		/**
 		 * Toggle the visibility of the element(s)
-		 * @return {Jamon} - The instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		toggle () {
 			return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.TOGGLE);
@@ -462,7 +467,7 @@
 		/**
 		 * Get the value of the first element or set the values of the elements
 		 * @param  {string=} value - Value to set
-		 * @return {string|Jamon}  - Value (get) or the Jamón instance (set)
+		 * @return {string|Jamon} - Value (get) or the Jamón instance (set)
 		 */
 		val (value) {
 			return getSetRemoveProperty(this, "value", value);
@@ -479,7 +484,7 @@
 
 		/**
 		 * Get the text content of the first element or set the text content of the elements
-		 * @param  {string} text  - Text content to set
+		 * @param  {string} text - Text content to set
 		 * @return {string|Jamon} - Text content (get) or the Jamón instance (set)
 		 */
 		text (text) {
@@ -488,9 +493,9 @@
 
 		/**
 		 * Get a property of the first element or set a property of each element
-		 * @param  {string} property			 - Property name
+		 * @param  {string} property - Property name
 		 * @param  {string|null|undefined} value - Property value to set (null to remove property)
-		 * @return {string|Jamon}				- Property value (get) or the Jamón instance (set)
+		 * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
 		 */
 		prop (property, value) {
 			return getSetRemoveProperty(this, property, value);
@@ -498,9 +503,9 @@
 
 		/**
 		 * Get an attribute of the first element or set an attribute to each element
-		 * @param  {string} attribute			- Attribute name
+		 * @param  {string} attribute - Attribute name
 		 * @param  {string|null|undefined} value - Attribute value to set (null to remove attribute)
-		 * @return {string|Jamon}				- Attribute value (get) or the Jamón instance (set)
+		 * @return {string|Jamon} - Attribute value (get) or the Jamón instance (set)
 		 */
 		attr (attribute, value) {
 			if (isUndefined(value)) {
@@ -599,7 +604,7 @@
 		/**
 		 * Get the absolute position of the first element or set the absolute position of all elements
 		 * @param  {{left: number, top: number}=} position - Position to set
-		 * @return {{left: number, top: number}|Jamon}	 - Position (get) or the instance (set)
+		 * @return {{left: number, top: number}|Jamon} - Position (get) or the instance (set)
 		 */
 		position (position) {
 			const rect = this[0].getBoundingClientRect();
@@ -648,7 +653,7 @@
 		/**
 		 * Find the first descendant that matches the selector in any of the elements
 		 * @param  {string} selector - Selector to match
-		 * @return {Jamon|undefined} - A new Jamón instance containing the matched element
+		 * @return {Jamon} - A new Jamón instance containing the matched element
 		 */
 		findOne (selector) {
 			let result = new Jamon();
@@ -720,9 +725,9 @@
 		}
 		
 		/**
-		 * Get the first ancestor that matches the provided selector of each element
-		 * @param  {string} selector - The selector to match ancestors against
-		 * @return {Jamon} - A new Jamón instance containing the matched ancestors
+		 * Get the first element that matches the provided selector of each element
+		 * @param  {string} selector - The selector to match elements against
+		 * @return {Jamon} - A new Jamón instance containing the matched elements
 		 */
 		closest (selector) {
 			if (!isString(selector)) {
@@ -747,7 +752,7 @@
 		/**
 		 * Prepend a Jamón element or string to the element
 		 * @param  {Jamon|string} subject - The element or string to prepend
-		 * @return {Jamon}				- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		prepend (subject) {
 			return insertNode(subject, this, NodeMethod.PREPEND, 1);
@@ -756,7 +761,7 @@
 		/**
 		 * Prepend element to another Jamón element
 		 * @param  {Jamon} target - The target
-		 * @return {Jamon}		- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		prependTo (target) {
 			return insertNode(this, target, NodeMethod.PREPEND, 0);
@@ -765,7 +770,7 @@
 		/**
 		 * Append a Jamón element or string to the element
 		 * @param  {Jamon|string} subject - The element or string to append
-		 * @return {Jamon}				- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		append (subject) {
 			return insertNode(subject, this, NodeMethod.APPEND, 1);
@@ -774,7 +779,7 @@
 		/**
 		 * Append the element to another Jamón element
 		 * @param  {Jamon} target - The target
-		 * @return {Jamon}		- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		appendTo (target) {
 			return insertNode(this, target, NodeMethod.APPEND, 0);
@@ -783,7 +788,7 @@
 		/**
 		 * Insert another Jamón element before the element
 		 * @param  {Jamon|string} subject - The element or string to insert
-		 * @return {Jamon}				- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		before (subject) {
 			return insertNode(subject, this, NodeMethod.BEFORE, 1);
@@ -792,7 +797,7 @@
 		/**
 		 * Insert the element before another Jamón element
 		 * @param  {Jamon} target - The target
-		 * @return {Jamon}		- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		insertBefore (target) {
 			return insertNode(this, target, NodeMethod.BEFORE, 0);
@@ -801,7 +806,7 @@
 		/**
 		 * Insert another Jamón element after the element
 		 * @param  {Jamon|string} subject - The element or string to insert
-		 * @return {Jamon}				- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		after (subject) {
 			return insertNode(subject, this, NodeMethod.AFTER, 1);
@@ -810,7 +815,7 @@
 		/**
 		 * Insert the element after another Jamón element
 		 * @param  {Jamon} target - The target
-		 * @return {Jamon}		- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		insertAfter (target) {
 			return insertNode(this, target, NodeMethod.AFTER, 0);
@@ -819,7 +824,7 @@
 		/**
 		 * Replace the element with another Jamón element
 		 * @param  {Jamon|string} subject - The element or string to insert
-		 * @return {Jamon}				- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		replaceWith (subject) {
 			return insertNode(subject, this, NodeMethod.REPLACE, 1);
@@ -828,7 +833,7 @@
 		/**
 		 * Replace another Jamón element with the element
 		 * @param  {Jamon} target - The target to replace
-		 * @return {Jamon}		- The Jamón instance
+		 * @return {Jamon} - The Jamón instance
 		 */
 		replace (target) {
 			return insertNode(this, target, NodeMethod.REPLACE, 0);
@@ -837,7 +842,7 @@
 		/**
 		 * Clones the collection
 		 * @param {boolean} deep - Deep clone
-		 * @return {Jamon}	   - A new Jamón collection with the clones
+		 * @return {Jamon} - A new Jamón collection with the clones
 		 */
 		clone (deep) {
 			const clones = new Jamon();
