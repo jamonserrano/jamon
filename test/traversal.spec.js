@@ -228,4 +228,69 @@ describe("Traversal", function () {
 			expect(this.$el4.children()).to.be.empty;
 		});
 	});
+
+	describe("closest()", function () {
+		it("should return a Jamón instance", function () {
+			expect(this.$el2.closest("body")).to.be.an.instanceOf(Jamon);
+		});
+
+		it("should throw an error without arguments", function () {
+			expect(calling(this.$el2.closest).on(this.$empty).with()).to.throw(Error);
+
+		});
+
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.closest).on(this.$empty).with("body")).to.not.throw(Error);
+		});
+
+		it("should return the element itself if there's a match", function () {
+			var element = this.el2.firstElementChild;
+			var $element = Jamon.get(element);
+			var result = $element.closest("div");
+			
+			expect(result).to.have.lengthOf(1);
+			expect(result[0]).to.equal(element);
+		});
+
+		it("should return the closest ancestor if there's a match", function () {
+			var element = this.el2.firstElementChild;
+			var $element = Jamon.get(element);
+			var result = $element.closest("[id^=id]");
+			
+			expect(result).to.have.lengthOf(1);
+			expect(result[0]).to.equal(element.parentElement);
+		});
+
+		it("should work on multiple elements", function () {
+			var elements = [this.el2, this.el4]
+			var $elements = Jamon.getAll(elements);
+			var results = $elements.closest("div");
+			
+			expect(results).to.have.lengthOf(elements.length);
+			expect(results).to.include(this.el2);
+			expect(results).to.include(this.el4);
+		});
+
+		it("should not return duplicate elements", function () {
+			var results = this.$els.closest("body");
+			
+			expect(results).to.have.lengthOf(1);
+			expect(results[0]).to.equal(document.body);
+		});
+
+		it("should return an empty instance when the element doesn't have a 'closest' method", function () {
+			var $document = Jamon.get(document);
+			var result = $document.closest("div");
+			
+			expect(result).to.be.an.instanceOf(Jamon);
+			expect(result).to.be.empty;
+		});
+
+		it("should return an empty collection when there is no match", function () {
+			var detachedElement = Jamon.get(document.createElement("div"));
+			var parent = detachedElement.parent();
+			
+			expect(parent).to.be.empty;
+		});
+	});
 });

@@ -673,7 +673,7 @@
 		 * @todo Handle duplicates?
 		 */
 		findAll (selector) {
-			let results = new Jamon();
+			const results = new Jamon();
 
 			for (const element of this) {
 				// add results to the collection
@@ -691,18 +691,18 @@
 		 * @return {Jamon} - A new Jamón instance containing the parents
 		 */
 		parent () {
-			const parents = new Jamon();
+			const results = new Jamon();
 
 			for (const element of this) {
 				const parent = element.parentElement;
 				
-				// don't add nonexistent and duplicate items
-				if (parent && !parents.includes(parent)) {
-					parents.push(parent);
+				// skip nonexistent and duplicate items
+				if (parent && !results.includes(parent)) {
+					results.push(parent);
 				}
 			}
 
-			return parents;
+			return results;
 		}
 
 		/**
@@ -710,30 +710,38 @@
 		 * @return {Jamon} - A new Jamón instance containing the children
 		 */
 		children () {
-			const children = new Jamon();
+			const results = new Jamon();
 
 			for (const element of this) {
-				children.push(...(element.children));
+				results.push(...(element.children));
 			}
 
-			return children;
+			return results;
 		}
 		
 		/**
 		 * Get the first ancestor that matches the provided selector of each element
 		 * @param  {string} selector - The selector to match ancestors against
-		 * @return {Jamon}		   - A new Jamón instance containing the matched ancestors
+		 * @return {Jamon} - A new Jamón instance containing the matched ancestors
 		 */
 		closest (selector) {
-			const closests = new Jamon();
+			if (!isString(selector)) {
+				throw new TypeError();
+			}
+
+			const results = new Jamon();
 
 			for (const element of this) {
 				if (typeof element.closest === "function") {
-					closests.push(element.closest(selector));
+					const closest = element.closest(selector);
+					// skip nonexistent and duplicate items
+					if (closest && !results.includes(closest)) {
+						results.push(closest);
+					}
 				}
 			}
 
-			return closests;
+			return results;
 		}
 
 		/**
