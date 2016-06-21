@@ -16,7 +16,8 @@ describe("Traversal", function () {
 		this.el4 = document.getElementById("id4");
 		this.$el4 = Jamon.get(this.el4);
 		
-		this.$els = Jamon.getAll([this.el, this.el3]);
+		this.els = [this.el, this.el3]
+		this.$els = Jamon.getAll(this.els);
 	});
 
 	afterEach(function () {
@@ -24,6 +25,14 @@ describe("Traversal", function () {
 	});
 	
 	describe("findOne()", function () {
+		it("should return a Jamon instance", function () {
+			expect(this.$el.findOne("div")).to.be.an.instanceOf(Jamon);
+		});
+		
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.findOne).on(this.$empty).with()).to.not.throw(Error);
+		});
+		
 		it("should work on an element with id", function () {
 			var result = this.$el.findOne("#" + this.el2.id);
 			
@@ -42,7 +51,7 @@ describe("Traversal", function () {
 			var result = this.$el.findOne("invalid");
 			
 			expect(result).to.be.an.instanceOf(Jamon);
-			expect(result).to.have.lengthOf(0);
+			expect(result).to.be.empty;
 		});
 		
 		it("should find only one element", function () {
@@ -56,17 +65,17 @@ describe("Traversal", function () {
 		it("should only find a descendant of the element", function () {
 			var result = this.$el.findOne(".class3");
 			
-			expect(result).to.have.lengthOf(0);
+			expect(result).to.be.empty;
 			
 			result = this.$el.findOne("#id4");
 			
-			expect(result).to.have.lengthOf(0);
+			expect(result).to.be.empty;
 		});
 		
 		it("should not find the element itself", function () {
 			var result = this.$el.findOne("#" + this.el.id);
 			
-			expect(result).to.have.lengthOf(0);
+			expect(result).to.be.empty;
 		});
 		
 		it("should work on multiple elements", function () {
@@ -78,6 +87,14 @@ describe("Traversal", function () {
 	});
 	
 	describe("findAll()", function () {
+		it("should return a Jamon instance", function () {
+			expect(this.$el.findAll("div")).to.be.an.instanceOf(Jamon);
+		});
+		
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.findAll).on(this.$empty).with()).to.not.throw(Error);
+		});
+		
 		it("should work on an element with id", function () {
 			var results = this.$el.findAll("> .class5");
 			
@@ -102,7 +119,7 @@ describe("Traversal", function () {
 			var results = this.$el.findAll("invalid");
 			
 			expect(results).to.be.an.instanceOf(Jamon);
-			expect(results).to.have.lengthOf(0);
+			expect(results).to.be.empty;
 		});
 		
 		it("should find multiple elements", function () {
@@ -116,7 +133,7 @@ describe("Traversal", function () {
 			var results = this.$el.findAll("#" + this.el.id);
 			
 			expect(results).to.be.an.instanceOf(Jamon);
-			expect(results).to.have.lengthOf(0);
+			expect(results).to.be.empty;
 		});
 		
 		it("should work on multiple elements", function () {
@@ -131,22 +148,30 @@ describe("Traversal", function () {
 			expect(this.$el.parent()).to.be.an.instanceOf(Jamon);
 		});
 
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.parent).on(this.$empty).with()).to.not.throw(Error);
+		});
+
 		it("should return the parent of the element", function () {
 			var parent = this.$el.parent();
+			
 			expect(parent).to.have.lengthOf(1);
 			expect(parent[0]).to.equal(this.el.parentElement);
 		});
 
 		it("should return the parents of multiple elements", function () {
-			var $haveDistinctParents = Jamon.getAll([this.el2, this.el4]);
+			var elements = [this.el2, this.el4]
+			var $haveDistinctParents = Jamon.getAll(elements);
 			var parents = $haveDistinctParents.parent();
-			expect(parents).to.have.lengthOf(2);
+			
+			expect(parents).to.have.lengthOf(elements.length);
 			expect(parents).to.include(this.el2.parentElement);
 			expect(parents).to.include(this.el4.parentElement);
 		});
 
 		it("should not return duplicate elements", function () {
 			var parents = this.$els.parent();
+			
 			expect(parents).to.have.lengthOf(1);
 			expect(parents[0]).to.equal(this.el.parentElement);
 		});
@@ -154,13 +179,53 @@ describe("Traversal", function () {
 		it("should return an empty instance when the parent is null", function () {
 			var $document = Jamon.get(document);
 			var parent = $document.parent();
-			expect(parent).to.have.lengthOf(0);
+			
+			expect(parent).to.be.empty;
 		});
 
-		it("should return an empty instance when there is no parent", function () {
+		it("should return an empty collection when there is no parent", function () {
 			var detachedElement = Jamon.get(document.createElement("div"));
 			var parent = detachedElement.parent();
-			expect(parent).to.have.lengthOf(0);
+			
+			expect(parent).to.be.empty;
+		});
+	});
+
+	describe("children()", function () {
+		it("should return a Jamón instance", function () {
+			expect(this.$el.children()).to.be.an.instanceOf(Jamon);
+		});
+
+		it("should work on an empty collection", function () {
+			expect(calling(this.$empty.children).on(this.$empty).with()).to.not.throw(Error);
+		});
+
+
+		it("should return the children of the element", function () {
+			var $children = this.$el3.children();
+			
+			expect($children).to.have.lengthOf(this.el3.children.length);
+			for (var child of $children) {
+				expect(child.parentElement).to.equal(this.el3);
+			}
+		});
+
+		it("should return the children of multiple elements", function () {
+			var $children = this.$els.children();
+			var children = [];
+			for (var el of this.els) {
+				children.push(...(el.children));
+			}
+			var length = children.length;
+			
+			expect($children).to.have.lengthOf(length);
+			for (var child of $children) {
+				expect(children).to.include(child);
+			}
+		});
+
+		it("should return an empty collection when there are no children", function () {
+			expect(this.$el4.children()).to.be.empty;
 		});
 	});
 });
