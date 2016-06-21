@@ -507,7 +507,7 @@
 				// get
 				let first = this[0];
 				// getAttribute returns null for missing attributes
-				return (first && first.hasAttribute(attribute)) ? first.getAttribute(attribute) : undefined;
+				return first && first.hasAttribute(attribute) ? first.getAttribute(attribute) : undefined;
 			} else if (value !== null) {
 				// set
 				for (const element of this) {
@@ -694,7 +694,12 @@
 			const parents = new Jamon();
 
 			for (const element of this) {
-				parents.push(element.parentElement);
+				const parent = element.parentElement;
+				
+				// don't add nonexistent and duplicate items
+				if (parent && !parents.includes(parent)) {
+					parents.push(parent);
+				}
 			}
 
 			return parents;
@@ -723,7 +728,9 @@
 			const closests = new Jamon();
 
 			for (const element of this) {
-				closests.push(element.closest(selector));
+				if (typeof element.closest === "function") {
+					closests.push(element.closest(selector));
+				}
 			}
 
 			return closests;

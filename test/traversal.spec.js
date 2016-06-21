@@ -23,7 +23,7 @@ describe("Traversal", function () {
 		fixture.cleanup();
 	});
 	
-	describe("findOne", function () {
+	describe("findOne()", function () {
 		it("should work on an element with id", function () {
 			var result = this.$el.findOne("#" + this.el2.id);
 			
@@ -77,7 +77,7 @@ describe("Traversal", function () {
 		});
 	});
 	
-	describe("findAll", function () {
+	describe("findAll()", function () {
 		it("should work on an element with id", function () {
 			var results = this.$el.findAll("> .class5");
 			
@@ -123,6 +123,44 @@ describe("Traversal", function () {
 			var results = this.$els.findAll(".class5");
 			
 			expect(results).to.have.lengthOf(3);
+		});
+	});
+
+	describe("parent()", function () {
+		it("should return a Jamón instance", function () {
+			expect(this.$el.parent()).to.be.an.instanceOf(Jamon);
+		});
+
+		it("should return the parent of the element", function () {
+			var parent = this.$el.parent();
+			expect(parent).to.have.lengthOf(1);
+			expect(parent[0]).to.equal(this.el.parentElement);
+		});
+
+		it("should return the parents of multiple elements", function () {
+			var $haveDistinctParents = Jamon.getAll([this.el2, this.el4]);
+			var parents = $haveDistinctParents.parent();
+			expect(parents).to.have.lengthOf(2);
+			expect(parents).to.include(this.el2.parentElement);
+			expect(parents).to.include(this.el4.parentElement);
+		});
+
+		it("should not return duplicate elements", function () {
+			var parents = this.$els.parent();
+			expect(parents).to.have.lengthOf(1);
+			expect(parents[0]).to.equal(this.el.parentElement);
+		});
+
+		it("should return an empty instance when the parent is null", function () {
+			var $document = Jamon.get(document);
+			var parent = $document.parent();
+			expect(parent).to.have.lengthOf(0);
+		});
+
+		it("should return an empty instance when there is no parent", function () {
+			var detachedElement = Jamon.get(document.createElement("div"));
+			var parent = detachedElement.parent();
+			expect(parent).to.have.lengthOf(0);
 		});
 	});
 });
