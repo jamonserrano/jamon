@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run pack && karma start --single-run",
     "pack": "packer -i jamon.js -o jamon.min.js -s true",
-    "watch": "npm run test & onchange 'jamon.js' -- npm run pack"
+    "watch": "karma start & onchange 'jamon.js' -- npm run pack"
   },
   "repository": {
     "type": "git",
