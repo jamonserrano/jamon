@@ -30,7 +30,6 @@
 	/**
 	 * Enum for node operations
 	 * @private
-	 * @const
 	 * @enum {symbol}
 	 */
 	const NodeMethod = {
@@ -44,13 +43,22 @@
 	/**
 	 * Enum for class name operations
 	 * @private
-	 * @const
 	 * @enum {string}
 	 */
 	const ClassListMethod = {
 		ADD: "add",
 		REMOVE: "remove",
 		TOGGLE: "toggle"
+	};
+
+	/**
+	 * Enum for dimensions
+	 * @private
+	 * @enum {string}
+	 */
+	const Dimension = {
+		WIDTH: "width",
+		HEIGHT: "height"
 	};
 
 	/**
@@ -164,6 +172,20 @@
 		}
 
 		return collection;
+	}
+
+	/**
+	 * Get the width or height of the first element in the collection
+	 * @private
+	 * @param {Jamon} collection - The Jamón instance
+	 * @param {Dimension} dimension - The dimension to get
+	 * @return {number|undefined} - The result
+	 */
+	function getDimension (collection, dimension) {
+		const first = collection[0];
+		if (first && typeof first.getBoundingClientRect === "function") {
+			return first.getBoundingClientRect()[dimension];
+		}
 	}
 
 	/**
@@ -578,7 +600,7 @@
 		 * @return {number} - The width of the element
 		 */
 		width () {
-			return this[0].getBoundingClientRect().width;
+			return getDimension(this, Dimension.WIDTH);
 		}
 
 		/**
@@ -586,7 +608,7 @@
 		 * @return {number} - The height of the element
 		 */
 		height () {
-			return this[0].getBoundingClientRect().height;
+			return getDimension(this, Dimension.HEIGHT);
 		}
 
 		/**
@@ -594,10 +616,10 @@
 		 * @return {{left: number, top: number}} - The offset of the element
 		 */
 		offset () {
-			const element = this[0];
+			const first = this[0];
 			return {
-				left: element.offsetLeft,
-				top: element.offsetTop
+				left: first.offsetLeft,
+				top: first.offsetTop
 			};
 		}
 
@@ -608,7 +630,7 @@
 		 */
 		position (position) {
 			const rect = this[0].getBoundingClientRect();
-			if (!position) {
+			if (isUndefined(position)) {
 				return {
 					left: rect.left,
 					top: rect.top
@@ -632,7 +654,7 @@
 					// set position to relative so the page doesn't reflow
 					style.position = "relative";
 				} else {
-					// get the original position of relative positioned elements
+					// get the original position of relative and absolute positioned elements
 					originalLeft = element.offsetLeft - (parseFloat(computedStyle.left) || 0);
 					originalTop = element.offsetTop - (parseFloat(computedStyle.top) || 0);
 				}
