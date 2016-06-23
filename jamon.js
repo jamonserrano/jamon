@@ -18,14 +18,14 @@
 	 * @private
 	 * @type {symbol}
 	 */
-	const proxyProperty = Symbol("jamonProxies");
+	const proxyProperty = Symbol();
 
 	/**
 	 * Unique property name to store listeners on elements
 	 * @private
 	 * @type {symbol}
 	 */
-	const listenerProperty = Symbol("jamonListeners");
+	const listenerProperty = Symbol();
 
 	/**
 	 * Enum for node operations
