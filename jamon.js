@@ -372,47 +372,50 @@
 
 		/**
 		 * Get a single element
-		 * @param  {string|Element|Text|Document|Jamon} selector - The selector/element to use
+		 * @param  {string|Element|Text|Document|Jamon|Array|NodeList|HTMLCollection=} selector - The selector/element to use
 		 * @return {Jamon} - A new Jamón instance
 		 */
 		static get (selector) {
+			// empty collection
 			if (isUndefined(selector)) {
-				// empty collection
 				return new Jamon();
-			} else if (isString(selector)) {
-				// selector
+			}
+			// selector string
+			if (isString(selector)) {
 				return Jamon.of(document.querySelector(selector));
-			} else if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
-				// element node, text node, or document node
+			}
+			// Element, Text, Document
+			if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
 				return Jamon.of(selector);
-			} else if (selector[Symbol.iterator]) {
-				// other iterables
+			}
+			// iterables with ordered items (Jamon, Array, NodeList, HTMLCollection)
+			if (selector[Symbol.iterator]) {
+				// length is 0 or nonexistent -> empty collection
 				return selector.length ? Jamon.of(selector[0]) : new Jamon();
-			} else {
-				throw new TypeError();
 			}
 		}
 
 		/**
 		 * Get multiple elements
-		 * @param  {string|NodeList|HTMLCollection|Jamon} selector - The selector/element/collection to use
+		 * @param  {string|Jamon|Array|NodeList|HTMLCollection=} selector - The selector/element/collection to use
 		 * @return {Jamon} - A new Jamón instance
 		 */
 		static getAll (selector) {
+			// empty collection
 			if (isUndefined(selector)) {
-				// empty collection
 				return new Jamon();
-			} else if (isString(selector)) {
-				// selector string
+			} 
+			// selector string
+			if (isString(selector)) {
 				return Jamon.from(document.querySelectorAll(selector));
-			} else if (selector instanceof Jamon) {
-				// Jamon instance
+			}
+			// Jamon instance
+			if (selector instanceof Jamon) {
 				return selector;
-			} else if (selector[Symbol.iterator]) {
-				// other iterables
+			}
+			// iterables with ordered items (Array, NodeList, HTMLCollection)
+			if (selector[Symbol.iterator] && !isUndefined(selector.length)) {
 				return Jamon.from(selector);
-			} else {
-				throw new TypeError();
 			}
 		}
 		
@@ -752,10 +755,6 @@
 		 * @return {Jamon} - A new Jamón instance containing the matched elements
 		 */
 		closest (selector) {
-			if (!isString(selector)) {
-				throw new TypeError();
-			}
-
 			const results = new Jamon();
 
 			for (const element of this) {

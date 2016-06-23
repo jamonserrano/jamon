@@ -234,11 +234,6 @@ describe("Traversal", function () {
 			expect(this.$el2.closest("body")).to.be.an.instanceOf(Jamon);
 		});
 
-		it("should throw an error without arguments", function () {
-			expect(calling(this.$el2.closest).on(this.$empty).with()).to.throw(Error);
-
-		});
-
 		it("should work on an empty collection", function () {
 			expect(calling(this.$empty.closest).on(this.$empty).with("body")).to.not.throw(Error);
 		});

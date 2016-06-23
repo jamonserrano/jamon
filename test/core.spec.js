@@ -12,14 +12,13 @@ describe("Core", function () {
 	});
 	
 	describe("Jamon", function () {
-	   
-	   it("should exist", function () {
-		  expect(Jamon).to.not.be.undefined; 
-	   });
-	   
-	   it("should be a subclass of Array", function () {
-		   expect(Array.isArray(new Jamon())).to.be.true;
-	   }); 
+		it("should exist", function () {
+			expect(Jamon).to.not.be.undefined; 
+		});
+
+		it("should be a subclass of Array", function () {
+			expect(Array.isArray(new Jamon())).to.be.true;
+		}); 
 	});
 	
 	describe("Jamon.get", function () {
@@ -140,10 +139,6 @@ describe("Core", function () {
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(0);
 		});
-
-		it ("should throw an error with invalid parameter", function () {
-			expect(calling(Jamon.get).with({})).to.throw(TypeError);
-		});
 	});
 
 	describe("Jamon.getAll", function () {
@@ -248,10 +243,6 @@ describe("Core", function () {
 
 			expect(results).to.be.an.instanceof(Jamon);
 			expect(results).to.have.lengthOf(0);
-		});
-
-		it ("should throw an error with invalid parameter", function () {
-			expect(calling(Jamon.getAll).with({})).to.throw(TypeError);
 		});
 	});
 });
