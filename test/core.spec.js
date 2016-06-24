@@ -40,6 +40,15 @@ describe("Core", function () {
 			expect(result[0]).to.equal(qSResult);
 		});
 
+		it("should work with an unmatched selector string", function () {
+			var selector = "unmatchedSelector";
+			var qSResult = document.querySelector(selector);
+			var result = Jamon.get(selector);
+
+			expect(result).to.be.an.instanceof(Jamon);
+			expect(result).to.have.lengthOf(0);
+		});
+
 		it("should work with the document element", function () {
 			var result = Jamon.get(document);
 

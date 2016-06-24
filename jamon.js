@@ -382,7 +382,8 @@
 			}
 			// selector string
 			if (isString(selector)) {
-				return Jamon.of(document.querySelector(selector));
+				const result = document.querySelector(selector);
+				return result ? Jamon.of(result) : new Jamon();
 			}
 			// Element, Text, Document
 			if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
