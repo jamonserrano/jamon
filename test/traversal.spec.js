@@ -30,7 +30,7 @@ describe("Traversal", function () {
 		});
 		
 		it("should work on an empty collection", function () {
-			expect(calling(this.$empty.findOne).on(this.$empty).with()).to.not.throw(Error);
+			expect(calling(this.$empty.findOne).on(this.$empty)).to.not.throw(Error);
 		});
 		
 		it("should work on an element with id", function () {
@@ -92,7 +92,7 @@ describe("Traversal", function () {
 		});
 		
 		it("should work on an empty collection", function () {
-			expect(calling(this.$empty.findAll).on(this.$empty).with()).to.not.throw(Error);
+			expect(calling(this.$empty.findAll).on(this.$empty)).to.not.throw(Error);
 		});
 		
 		it("should work on an element with id", function () {
@@ -149,7 +149,7 @@ describe("Traversal", function () {
 		});
 
 		it("should work on an empty collection", function () {
-			expect(calling(this.$empty.parent).on(this.$empty).with()).to.not.throw(Error);
+			expect(calling(this.$empty.parent).on(this.$empty)).to.not.throw(Error);
 		});
 
 		it("should return the parent of the element", function () {
@@ -197,7 +197,7 @@ describe("Traversal", function () {
 		});
 
 		it("should work on an empty collection", function () {
-			expect(calling(this.$empty.children).on(this.$empty).with()).to.not.throw(Error);
+			expect(calling(this.$empty.children).on(this.$empty)).to.not.throw(Error);
 		});
 
 

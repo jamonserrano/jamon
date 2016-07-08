@@ -29,7 +29,7 @@
     "chai": "^3.5.0",
     "chai-dom": "~1.4.0",
     "karma": "^0.13.21",
-    "karma-calling": "^0.1.0",
+    "karma-calling": "^1.0.0",
     "karma-chai": "~0.1.0",
     "karma-chai-dom": "~1.1.0",
     "karma-chrome-launcher": "~0.2.2",

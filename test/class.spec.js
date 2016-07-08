@@ -248,7 +248,7 @@ describe("Classes", function () {
 	describe("hasClass()", function () {
 		
 		it("should not throw error without arguments", function () {
-			expect(calling(this.$el.hasClass).on(this.$el).with()).to.not.throw(Error);
+			expect(calling(this.$el.hasClass).on(this.$el)).to.not.throw(Error);
 		});
 		
 		it("should throw error with space character in argument", function () {
@@ -274,7 +274,7 @@ describe("Classes", function () {
 		});
 		
 		it("should work on multiple elements", function () {			
-			expect(calling(this.$els.hasClass).on(this.$els).with()).to.not.throw(Error);
+			expect(calling(this.$els.hasClass).on(this.$els)).to.not.throw(Error);
 		});
 		
 		it("should return the existence of the class name on the first element", function () {
@@ -291,7 +291,7 @@ describe("Classes", function () {
 	describe("show()", function () {
 		
 		it("should not throw error when called on an empty collection", function () {
-			expect(calling(this.empty.show).on(this.empty).with()).to.not.throw(Error);
+			expect(calling(this.empty.show).on(this.empty)).to.not.throw(Error);
 		});
 		
 		it("should remove the hidden class name from the element", function () {
@@ -320,7 +320,7 @@ describe("Classes", function () {
 	describe("hide()", function () {
 		
 		it("should not throw error when called on an empty collection", function () {
-			expect(calling(this.empty.hide).on(this.empty).with()).to.not.throw(Error);
+			expect(calling(this.empty.hide).on(this.empty)).to.not.throw(Error);
 		});
 
 		it("should add the hidden class name to the element", function () {
@@ -347,7 +347,7 @@ describe("Classes", function () {
 	 describe("toggle()", function () {
 		
 		it("should not throw error when called on an empty collection", function () {
-			expect(calling(this.empty.toggle).on(this.empty).with()).to.not.throw(Error);
+			expect(calling(this.empty.toggle).on(this.empty)).to.not.throw(Error);
 		});
 
 		it("should remove the hidden class name from the element", function () {
