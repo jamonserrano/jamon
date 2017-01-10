@@ -1,6 +1,6 @@
 # Jamón [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon) [![Coverage Status](https://coveralls.io/repos/github/jamonserrano/jamon/badge.svg?branch=master)](https://coveralls.io/github/jamonserrano/jamon)
 
-My take on a DOM library (aka jQuery, the good parts)
+Lightweight ES6 DOM library
 
 
 ## Usage
