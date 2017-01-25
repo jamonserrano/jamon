@@ -8,6 +8,13 @@ script: karma start karma.conf-sauce.js
 env:
     global:
     - NPM_CONFIG_PROGRESS="false"
+    - CXX=g++-4.8
 cache:
     directories:
     - node_modules
+addons:
+    apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-4.8
