@@ -16,7 +16,7 @@ module.exports = function(config) {
     }*/,
     sl_edge_latest: {
       base: 'SauceLabs',
-      browserName: 'edge',
+      browserName: 'microsoftedge',
       platform: 'Windows 10',
       version: 'latest'
     }
