@@ -3,31 +3,24 @@
 
 module.exports = function(config) {
   var customLaunchers = {
-     sl_chrome_latest: {
-        base: 'SauceLabs',
-        browserName: 'chrome',
-        platform: 'Windows 10',
-        version: 'latest'
-    },
-      sl_firefox: {
-        base: 'SauceLabs',
-        browserName: 'firefox',
-        platform: 'Windows 10',
-        version: 'latest'
+    sl_chrome_latest: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      version: 'latest'
   }/*,
-      sl_ios_safari: {
-        base: 'SauceLabs',
-        browserName: 'iphone',
-        platform: 'OS X 10.9',
-        version: '7.1'
-      },
-      sl_ie_11: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        platform: 'Windows 8.1',
-        version: '11'
+    sl_firefox_latest: {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      platform: 'Windows 10',
+      version: 'latest'
+    },
+    sl_edge_latest: {
+      base: 'SauceLabs',
+      browserName: 'edge',
+      platform: 'Windows 10',
+      version: 'latest'
     }*/
-    }
+  }
 
   config.set({
 
