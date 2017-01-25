@@ -8,12 +8,13 @@ module.exports = function(config) {
         browserName: 'chrome',
         platform: 'Windows 10',
         version: 'latest'
-    }/*,
+    },
       sl_firefox: {
         base: 'SauceLabs',
         browserName: 'firefox',
-        version: '30'
-      },
+        platform: 'Windows 10',
+        version: 'latest'
+  }/*,
       sl_ios_safari: {
         base: 'SauceLabs',
         browserName: 'iphone',
