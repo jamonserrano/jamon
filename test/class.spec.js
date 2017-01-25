@@ -251,12 +251,12 @@ describe("Classes", function () {
 			expect(calling(this.$el.hasClass).on(this.$el)).to.not.throw(Error);
 		});
 		
-		it("should throw error with space character in argument", function () {
-			expect(calling(this.$el.hasClass).on(this.$el).with(this.newClass1 + " ")).to.throw(Error);
+		it("should not throw error with space character in argument", function () {
+			expect(calling(this.$el.hasClass).on(this.$el).with(this.newClass1 + " ")).to.not.throw(Error);
 		});
 		
 		it("should not throw error with an empty string argument", function () {
-			expect(calling(this.$el.hasClass).on(this.$el).with("")).to.throw(Error);
+			expect(calling(this.$el.hasClass).on(this.$el).with("")).to.not.throw(Error);
 		});
 		
 		it("should not throw error when called on an empty collection", function () {
