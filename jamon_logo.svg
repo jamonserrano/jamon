@@ -1,18 +1,18 @@
-<svg width="874" height="428" viewBox="0 0 874 428" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:figma="http://www.figma.com/figma/ns">
+<svg width="732" height="272" viewBox="0 0 732 272" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:figma="http://www.figma.com/figma/ns">
   <title>
     jamon_logo
   </title>
   <desc>
     Created using Figma
   </desc>
-  <g transform="matrix(2 0 0 2 -966 -274)" figma:type="canvas">
+  <g transform="matrix(2 0 0 2 -1920 -296)" figma:type="canvas">
     <mask id="a">
-      <path d="M483 137h437v214H483V137z" fill="#FFF"/>
+      <path d="M960 148h366v136H960V148z" fill="#FFF"/>
     </mask>
     <g style="mix-blend-mode:normal" mask="url(#a)" figma:type="frame">
-      <path d="M483 137h437v214H483V137z" fill="#FFF"/>
-      <use xlink:href="#b" transform="translate(619 179)" fill="#333" style="mix-blend-mode:normal" figma:type="text"/>
-      <use xlink:href="#c" transform="translate(522 176)" fill="#D21717" style="mix-blend-mode:normal" figma:type="vector-operation"/>
+      <path d="M960 148h366v136H960V148z" fill="#FFF"/>
+      <use xlink:href="#b" transform="translate(1057 151)" fill="#333" style="mix-blend-mode:normal" figma:type="text"/>
+      <use xlink:href="#c" transform="translate(960 148)" fill="#D21717" style="mix-blend-mode:normal" figma:type="vector-operation"/>
     </g>
   </g>
   <defs>
