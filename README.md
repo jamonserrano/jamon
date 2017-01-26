@@ -1,4 +1,4 @@
-<img src="https://jamonserrano.github.io/jamon/jamon_logo.svg" alt="Jamon logo" width="437" height="214">
+<img src="https://jamonserrano.github.io/jamon/jamon_logo.svg" alt="Jamon logo" height="107">
 
 [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon) [![Coverage Status](https://coveralls.io/repos/github/jamonserrano/jamon/badge.svg?branch=master)](https://coveralls.io/github/jamonserrano/jamon)
 
