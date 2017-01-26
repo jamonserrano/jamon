@@ -1,6 +1,8 @@
-# Jamón [![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon) [![Coverage Status](https://coveralls.io/repos/github/jamonserrano/jamon/badge.svg?branch=master)](https://coveralls.io/github/jamonserrano/jamon)
+<img src="https://jamonserrano.github.io/jamon/jamon_logo.svg" alt="Jamon logo" width="437" height="214">
 
-Lightweight ES6 DOM library
+[![Build Status](https://travis-ci.org/jamonserrano/jamon.svg?branch=master)](https://travis-ci.org/jamonserrano/jamon) [![Coverage Status](https://coveralls.io/repos/github/jamonserrano/jamon/badge.svg?branch=master)](https://coveralls.io/github/jamonserrano/jamon)
+
+Jamón is a lightweight ES6 DOM library.
 
 
 ## Usage
