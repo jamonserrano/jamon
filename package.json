@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "npm run pack && karma start --single-run",
-    "pack": "packer -i jamon.js -o jamon.min.js -s true",
-    "watch": "karma start & onchange 'jamon.js' -- npm run pack"
+    "pack": "babili jamon.js --out-file jamon.min.js",
+    "start": "npm run pack -- --watch & karma start"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/jamonserrano/jamon",
   "devDependencies": {
+    "babili": "^0.0.10",
     "chai": "^3.5.0",
     "chai-dom": "~1.4.0",
     "karma": "^1.4.0",
@@ -43,7 +44,6 @@
     "karma-sauce-launcher": "~1.1.0",
     "mocha": "^3.2.0",
     "onchange": "~3.2.1",
-    "packer": "0.0.6",
     "pre-commit": "~1.2.2"
   },
   "eslintConfig": {
