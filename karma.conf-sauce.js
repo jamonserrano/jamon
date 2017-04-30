@@ -7,13 +7,12 @@ module.exports = function(config) {
       base: 'SauceLabs',
       browserName: 'chrome',
       version: 'latest'
-  }/*,
+  },
     sl_firefox_latest: {
       base: 'SauceLabs',
       browserName: 'firefox',
-      platform: 'Windows 10',
       version: 'latest'
-    },
+    }/*,
     sl_edge_latest: {
       base: 'SauceLabs',
       browserName: 'microsoftedge',
