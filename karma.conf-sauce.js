@@ -12,13 +12,13 @@ module.exports = function(config) {
       base: 'SauceLabs',
       browserName: 'firefox',
       version: 'latest'
-    }/*,
+    },
     sl_edge_latest: {
       base: 'SauceLabs',
       browserName: 'microsoftedge',
       platform: 'Windows 10',
       version: 'latest'
-    }*/
+    }
   }
 
   config.set({
