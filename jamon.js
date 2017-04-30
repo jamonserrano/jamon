@@ -62,15 +62,6 @@
 	};
 
 	/**
-	 * Cross-browser 'matches' method
-	 * @private
-	 * @const
-	 * @type {string}
-	 * @todo remove when Edge implements 'matches'
-	 */
-	const matchMethod = Element.prototype.msMatchesSelector ? "msMatchesSelector" : "matches";
-
-	/**
 	 * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
 	 * @private
 	 * @param  {string} property - CSS property name
@@ -274,7 +265,7 @@
 				proxy = function (e) {
 					const target = e.target;
 					// only call the listener if the target matches the selector
-					if (target[matchMethod](selector)) {
+					if (target.matches(selector)) {
 						listener.call(target, e);
 					}
 				}
