@@ -112,6 +112,15 @@
 	}
 
 	/**
+	 * @private
+	 * @param {*} value the value to check
+	 * @return {boolean}
+	 */
+	function isIterable (value) {
+		return Array.isArray(value) || value instanceof NodeList || value instanceof HTMLCollection;
+	}
+
+	/**
 	 * Add, remove, or toggle class names
 	 * @private
 	 * @param {Jamon} context - The Jamón instance
@@ -381,7 +390,7 @@
 				return Jamon.of(selector);
 			}
 			// iterables with ordered items (Jamon, Array, NodeList, HTMLCollection)
-			if (selector[Symbol.iterator]) {
+			if (isIterable(selector)) {
 				// length is 0 or nonexistent -> empty collection
 				return selector.length ? Jamon.of(selector[0]) : new Jamon();
 			}
@@ -406,8 +415,8 @@
 				return selector;
 			}
 			// iterables with ordered items (Array, NodeList, HTMLCollection)
-			if (selector[Symbol.iterator] && !isUndefined(selector.length)) {
-				return Jamon.from(selector);
+			if (isIterable(selector)) {
+				return selector.length ? Jamon.from(selector) : new Jamon();
 			}
 		}
 		
