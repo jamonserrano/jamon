@@ -50,27 +50,6 @@
 	};
 
 	/**
-	 * Enum for class name operations
-	 * @private
-	 * @enum {string}
-	 */
-	const ClassListMethod = {
-		ADD: "add",
-		REMOVE: "remove",
-		TOGGLE: "toggle"
-	};
-
-	/**
-	 * Enum for dimensions
-	 * @private
-	 * @enum {string}
-	 */
-	const Dimension = {
-		WIDTH: "width",
-		HEIGHT: "height"
-	};
-
-	/**
 	 * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
 	 * @private
 	 * @param  {string} property - CSS property name
@@ -134,7 +113,7 @@
 	 * @private
 	 * @param {Jamon} context - The Jamón instance
 	 * @param {string} className - Space-separated class names
-	 * @param {ClassListMethod} method - Method to use on the class name(s)
+	 * @param {string} method - Method to use on the class name(s)
 	 * @return {Jamon}
 	 */
 	function addRemoveToggleClass (context, className, method) {
@@ -143,7 +122,7 @@
 
 		if (classNames.length) {
 			for (const element of context) {
-				if (method !== ClassListMethod.TOGGLE) {
+				if (method !== "toggle") {
 					// 'add' and 'remove' accept multiple parameters…
 					element.classList[method](...classNames);
 				} else {
@@ -187,7 +166,7 @@
 	 * Get the width or height of the first element in the collection
 	 * @private
 	 * @param {Jamon} collection - The Jamón instance
-	 * @param {Dimension} dimension - The dimension to get
+	 * @param {string} dimension - The dimension to get
 	 * @return {number|undefined} - The result
 	 */
 	function getDimension (collection, dimension) {
@@ -445,7 +424,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		addClass (className) {
-			return addRemoveToggleClass(this, className, ClassListMethod.ADD);
+			return addRemoveToggleClass(this, className, "add");
 		}
 
 		/**
@@ -454,7 +433,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		removeClass (className) {
-			return addRemoveToggleClass(this, className, ClassListMethod.REMOVE);
+			return addRemoveToggleClass(this, className, "remove");
 		}
 
 		/**
@@ -463,7 +442,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		toggleClass (className) {
-			return addRemoveToggleClass(this, className, ClassListMethod.TOGGLE);
+			return addRemoveToggleClass(this, className, "toggle");
 		}
 
 		/**
@@ -481,7 +460,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		show () {
-			return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.REMOVE);
+			return addRemoveToggleClass(this, hiddenClassName, "remove");
 		}
 
 		/**
@@ -489,7 +468,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		hide () {
-			return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.ADD);
+			return addRemoveToggleClass(this, hiddenClassName, "add");
 		}
 
 		/**
@@ -497,7 +476,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		toggle () {
-			return addRemoveToggleClass(this, hiddenClassName, ClassListMethod.TOGGLE);
+			return addRemoveToggleClass(this, hiddenClassName, "toggle");
 		}
 
 		/**
@@ -614,7 +593,7 @@
 		 * @return {number} - The width of the element
 		 */
 		width () {
-			return getDimension(this, Dimension.WIDTH);
+			return getDimension(this, "width");
 		}
 
 		/**
@@ -622,7 +601,7 @@
 		 * @return {number} - The height of the element
 		 */
 		height () {
-			return getDimension(this, Dimension.HEIGHT);
+			return getDimension(this, "height");
 		}
 
 		/**
