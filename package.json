@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "karma start --single-run",
+    "test": "npm run pack && karma start --single-run",
     "pack": "babili jamon.js --out-file jamon.min.js",
-    "start": "karma start"
+    "start": "npm run pack -- --watch & karma start"
   },
   "repository": {
     "type": "git",
