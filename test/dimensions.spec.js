@@ -30,7 +30,7 @@ describe("Dimensions", function () {
 		});
 
 		it("should work on the document", function () {
-			expect($(document).width()).to.be.undefined;
+			expect(Jamon.get(document).width()).to.be.undefined;
 		});
 		
 		it("should return the width of the element", function () {
@@ -57,7 +57,7 @@ describe("Dimensions", function () {
 		});
 
 		it("should work on the document", function () {
-			expect($(document).height()).to.be.undefined;
+			expect(Jamon.get(document).height()).to.be.undefined;
 		});
 		
 		it("should return the height of the element", function () {

@@ -5,7 +5,16 @@
  */
 
 "use strict";
-{
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.Jamon = factory();
+  }
+}(this, function () {
+
 	/**
 	 * Class name used for hiding elements - can be overriden
 	 * @private
@@ -993,10 +1002,5 @@
 		}
 	}
 
-	// Exports
-	window.Jamon = Jamon;
-	if (isUndefined(window.$) && isUndefined(window.$$)) {
-		window.$ = Jamon.get;
-		window.$$ = Jamon.getAll;
-	}
-}
+	return Jamon;
+}));
