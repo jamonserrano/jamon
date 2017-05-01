@@ -374,7 +374,7 @@
 				return result ? Jamon.of(result) : new Jamon();
 			}
 			// Element, Text, Document, DocumentFragment
-			if (selector === window || (selector instanceof Node && [1, 3, 9].includes(selector.nodeType))) {
+			if (selector === window || (selector instanceof Node && [1, 3, 9, 11].includes(selector.nodeType))) {
 				return Jamon.of(selector);
 			}
 			// iterables with ordered items (Jamon, Array, NodeList, HTMLCollection)

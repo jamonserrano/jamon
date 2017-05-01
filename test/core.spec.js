@@ -155,6 +155,13 @@ describe("Core", function () {
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(window);
 		});
+		it("should work with a documentFragment", function () {
+			var fragment = document.createDocumentFragment();
+			var result = Jamon.get(fragment);
+			expect(result).to.be.an.instanceof(Jamon);
+			expect(result).to.have.lengthOf(1);
+			expect(result[0]).to.equal(fragment);
+		});
 	});
 
 	describe("Jamon.getAll", function () {
@@ -266,6 +273,14 @@ describe("Core", function () {
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(1);
 			expect(result[0]).to.equal(window);
+		});
+
+		it("should work with a documentFragment", function () {
+			var fragment = document.createDocumentFragment();
+			var result = Jamon.getAll(fragment);
+			expect(result).to.be.an.instanceof(Jamon);
+			expect(result).to.have.lengthOf(1);
+			expect(result[0]).to.equal(fragment);
 		});
 	});
 });
