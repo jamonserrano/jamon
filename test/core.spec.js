@@ -143,10 +143,17 @@ describe("Core", function () {
 		
 		it("should work with an empty Array", function () {
 			var arr = [];
-			var result = Jamon.getAll(arr);
+			var result = Jamon.get(arr);
 
 			expect(result).to.be.an.instanceof(Jamon);
 			expect(result).to.have.lengthOf(0);
+		});
+
+		it("should work with window", function () {
+			var result = Jamon.get(window);
+			expect(result).to.be.an.instanceof(Jamon);
+			expect(result).to.have.lengthOf(1);
+			expect(result[0]).to.equal(window);
 		});
 	});
 
@@ -252,6 +259,13 @@ describe("Core", function () {
 
 			expect(results).to.be.an.instanceof(Jamon);
 			expect(results).to.have.lengthOf(0);
+		});
+
+		it("should work with window", function () {
+			var result = Jamon.getAll(window);
+			expect(result).to.be.an.instanceof(Jamon);
+			expect(result).to.have.lengthOf(1);
+			expect(result[0]).to.equal(window);
 		});
 	});
 });

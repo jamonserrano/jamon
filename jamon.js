@@ -360,7 +360,7 @@
 
 		/**
 		 * Get a single element
-		 * @param  {string|Element|Text|Document|Jamon|Array|NodeList|HTMLCollection=} selector - The selector/element to use
+		 * @param  {string|Window|Element|Text|Document|Jamon|Array|NodeList|HTMLCollection=} selector - The selector/element to use
 		 * @return {Jamon} - A new Jamón instance
 		 */
 		static get (selector) {
@@ -373,8 +373,8 @@
 				const result = document.querySelector(selector);
 				return result ? Jamon.of(result) : new Jamon();
 			}
-			// Element, Text, Document
-			if (selector instanceof Node && [Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.TEXT_NODE].includes(selector.nodeType)) {
+			// Element, Text, Document, DocumentFragment
+			if (selector === window || (selector instanceof Node && [1, 3, 9].includes(selector.nodeType))) {
 				return Jamon.of(selector);
 			}
 			// iterables with ordered items (Jamon, Array, NodeList, HTMLCollection)
@@ -406,6 +406,8 @@
 			if (isIterable(selector)) {
 				return selector.length ? Jamon.from(selector) : new Jamon();
 			}
+			// one of something
+			return Jamon.of(selector);
 		}
 		
 		/**
