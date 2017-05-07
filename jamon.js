@@ -159,7 +159,7 @@
 	 * @private
 	 * @param {Jamon} collection - The Jamón instance
 	 * @param {string} dimension - The dimension to get
-	 * @return {number|undefined} - The result
+	 * @return {(number|undefined)} - The result
 	 */
 	function getDimension (collection, dimension) {
 		const first = collection[0];
@@ -278,8 +278,8 @@
 	 * @private
 	 * @param  {HTMLElement} element - The search context
 	 * @param  {string} selector - The selector to use in the query
-	 * @param  {boolean=} one - Do we want only one result?
-	 * @return {HTMLElement|NodeList} - The result of the query
+	 * @param  {boolean} [one] - Do we want only one result?
+	 * @return {(HTMLElement|NodeList)} - The result of the query
 	 */
 	function findInElement (element, selector, one) {
 		const method = one ? "querySelector" : "querySelectorAll";
@@ -309,16 +309,16 @@
 	}
 
 	/**
-	 * Jamón class definition
-	 * @extends {Array}
-	 * @unrestricted
+	 * Jamón collection
+	 * @extends Array
 	 */
 	class Jamon extends Array {
 		
 		/**
 		 * Create a new element
+		 * @static
 		 * @param  {string} type - Element type
-		 * @param  {Object=} properties - Properties
+		 * @param  {Object} [properties] - Properties
 		 * @return {Jamon} - The element wrapped in a Jamón instance
 		 */
 		static create (type, properties) {
@@ -338,6 +338,7 @@
 		/**
 		 * The class name used for hide(), show(), and toggle()
 		 * @type {string}
+		 * @static
 		 */
 		static get hiddenClassName () {
 			return hiddenClassName;
@@ -349,7 +350,8 @@
 
 		/**
 		 * Get a single element
-		 * @param  {string|Window|Element|Text|Document|Jamon|Array|NodeList|HTMLCollection=} selector - The selector/element to use
+		 * @static
+		 * @param  {string|Window|Element|Text|Document|Jamon|Array|NodeList|HTMLCollection} [selector] - The selector/element to use
 		 * @return {Jamon} - A new Jamón instance
 		 */
 		static get (selector) {
@@ -375,7 +377,8 @@
 
 		/**
 		 * Get multiple elements
-		 * @param  {string|Jamon|Array|NodeList|HTMLCollection=} selector - The selector/element/collection to use
+		 * @static
+		 * @param  {string|Jamon|Array|NodeList|HTMLCollection} [selector] - The selector/element/collection to use
 		 * @return {Jamon} - A new Jamón instance
 		 */
 		static getAll (selector) {
@@ -387,7 +390,7 @@
 			if (isString(selector)) {
 				return Jamon.from(document.querySelectorAll(selector));
 			}
-			// Jamon instance
+			// Jamón instance
 			if (selector instanceof Jamon) {
 				return selector;
 			}
@@ -401,7 +404,7 @@
 		
 		/**
 		 * An iterable that wraps each element in a Jamón instance
-		 * @return {iterable<Jamon>}
+		 * @return {Iterable.<Jamon>}
 		 */
 		* items () {
 			for (const element of this) {
@@ -472,8 +475,8 @@
 
 		/**
 		 * Get the value of the first element or set the values of the elements
-		 * @param  {string=} value - Value to set
-		 * @return {string|Jamon} - Value (get) or the Jamón instance (set)
+		 * @param  {string} [value] - Value to set
+		 * @return {(string|Jamon)} - Value (get) or the Jamón instance (set)
 		 */
 		val (value) {
 			return getSetRemoveProperty(this, "value", value);
@@ -481,8 +484,8 @@
 
 		/**
 		 * Get the html content of the first element or set the html content of the elements
-		 * @param  {string=} html - HTML content to set
-		 * @return {string|Jamon} - HTML content (get) or the Jamón instance (set)
+		 * @param  {string} [html] - HTML content to set
+		 * @return {(string|Jamon)} - HTML content (get) or the Jamón instance (set)
 		 */
 		html (html) {
 			return getSetRemoveProperty(this, "innerHTML", html !== null ? html : "");
@@ -490,8 +493,8 @@
 
 		/**
 		 * Get the text content of the first element or set the text content of the elements
-		 * @param  {string} text - Text content to set
-		 * @return {string|Jamon} - Text content (get) or the Jamón instance (set)
+		 * @param  {string} [text] - Text content to set
+		 * @return {(string|Jamon)} - Text content (get) or the Jamón instance (set)
 		 */
 		text (text) {
 			return getSetRemoveProperty(this, "textContent", text !== null ? text : "");
@@ -500,8 +503,8 @@
 		/**
 		 * Get a property of the first element or set a property of each element
 		 * @param  {string} property - Property name
-		 * @param  {string|null|undefined} value - Property value to set (null to remove property)
-		 * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
+		 * @param  {(string|null)} [value] - Property value to set (null to remove property)
+		 * @return {(string|Jamon)} - Property value (get) or the Jamón instance (set)
 		 */
 		prop (property, value) {
 			return getSetRemoveProperty(this, property, value);
@@ -510,8 +513,8 @@
 		/**
 		 * Get an attribute of the first element or set an attribute to each element
 		 * @param  {string} attribute - Attribute name
-		 * @param  {string|null|undefined} value - Attribute value to set (null to remove attribute)
-		 * @return {string|Jamon} - Attribute value (get) or the Jamón instance (set)
+		 * @param  {(string|null)} [value] - Attribute value to set (null to remove attribute)
+		 * @return {(string|Jamon)} - Attribute value (get) or the Jamón instance (set)
 		 */
 		attr (attribute, value) {
 			if (isUndefined(value)) {
@@ -536,8 +539,8 @@
 		/**
 		 * Get a single CSS property of the first element, or set one or more CSS properties on all elements
 		 * @param  {string} property - Property name
-		 * @param  {string} value - Property value
-		 * @return {string|Jamon} - Property value (get) or the Jamón instance (set)
+		 * @param  {string} [value] - Property value (set)
+		 * @return {(string|Jamon)} - Property value (get) or the Jamón instance (set)
 		 */
 		css (property, value) {				
 			if (isUndefined(value)) {
@@ -556,8 +559,8 @@
 		/**
 		 * Get a data attribute of the first element or set a data attribute on all elements
 		 * @param  {string} name - Attribute name
-		 * @param  {*=} value - Attribute value
-		 * @return {string|Jamon} - Attribute value (get) or the instance (set)
+		 * @param  {*} [value] - Attribute value
+		 * @return {(string|Jamon)} - Attribute value (get) or the instance (set)
 		 */
 		data (name, value) {
 			if (isUndefined(value)) {
@@ -609,7 +612,7 @@
 
 		/**
 		 * Get the absolute position of the first element or set the absolute position of all elements
-		 * @param  {{left: number, top: number}=} position - Position to set
+		 * @param  {{left: number, top: number}} [position] - Position to set
 		 * @return {{left: number, top: number}|Jamon} - Position (get) or the instance (set)
 		 */
 		position (position) {
@@ -753,7 +756,7 @@
 
 		/**
 		 * Prepend a Jamón element or string to the element
-		 * @param  {Jamon|string} subject - The element or string to prepend
+		 * @param  {(Jamon|string)} subject - The element or string to prepend
 		 * @return {Jamon} - The Jamón instance
 		 */
 		prepend (subjects) {
@@ -771,7 +774,7 @@
 
 		/**
 		 * Append a Jamón element or string to the element
-		 * @param  {Jamon|string} subject - The element or string to append
+		 * @param  {(Jamon|string)} subject - The element or string to append
 		 * @return {Jamon} - The Jamón instance
 		 */
 		append (subjects) {
@@ -789,7 +792,7 @@
 
 		/**
 		 * Insert another Jamón element before the element
-		 * @param  {Jamon|string} subject - The element or string to insert
+		 * @param  {(Jamon|string)} subject - The element or string to insert
 		 * @return {Jamon} - The Jamón instance
 		 */
 		before (subjects) {
@@ -807,7 +810,7 @@
 
 		/**
 		 * Insert another Jamón element after the element
-		 * @param  {Jamon|string} subject - The element or string to insert
+		 * @param  {(Jamon|string)} subject - The element or string to insert
 		 * @return {Jamon} - The Jamón instance
 		 */
 		after (subjects) {
@@ -825,7 +828,7 @@
 
 		/**
 		 * Replace the element with another Jamón element
-		 * @param  {Jamon|string} subject - The element or string to insert
+		 * @param  {(Jamon|string)} subject - The element or string to insert
 		 * @return {Jamon} - The Jamón instance
 		 */
 		replaceWith (subjects) {
@@ -843,7 +846,7 @@
 
 		/**
 		 * Clones the collection
-		 * @param {boolean} deep - Deep clone
+		 * @param {boolean} [deep] - Deep clone (true if omitted)
 		 * @return {Jamon} - A new Jamón collection with the clones
 		 */
 		clone (deep) {
@@ -867,7 +870,7 @@
 		/**
 		 * Add an event listener
 		 * @param {string} events - Space-separated list of events
-		 * @param {string=} selector - Selector to use for delegation
+		 * @param {string} [selector] - Selector to use for delegation
 		 * @param {function} listener - Listener function to add
 		 * @return {Jamon} - The Jamón instance
 		 */
@@ -916,7 +919,7 @@
 		/**
 		 * Remove an event listener
 		 * @param {string} events - Space-separated list of events
-		 * @param {string} selector - The selector used for delegation
+		 * @param {string} [selector] - The selector used for delegation
 		 * @param {function} listener - Listener function to remove
 		 * @return {Jamon} - The Jamón instance
 		 */
@@ -949,7 +952,7 @@
 		/**
 		 * Trigger an event
 		 * @param {string} type - Event type
-		 * @param {Object=} eventData - Event data
+		 * @param {Object} [eventData] - Event data
 		 * @return {Jamon} - The Jamón instance
 		 */
 		trigger (type, eventData = {}) {
