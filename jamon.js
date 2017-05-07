@@ -11,8 +11,13 @@
     } else if (typeof module === 'object' && module.exports) {
         module.exports = factory();
     } else {
-        root.Jamon = factory();
+		const Jamon = factory();
+        root.Jamon = Jamon;
+		if (typeof root.$ === 'undefined' && typeof root.$$ === 'undefined') {
+			root.$ = Jamon.get;
+			root.$$ = Jamon.getAll;
   }
+	}
 }(this, function () {
 
 	/**
