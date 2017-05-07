@@ -16,7 +16,7 @@
 		if (typeof root.$ === 'undefined' && typeof root.$$ === 'undefined') {
 			root.$ = Jamon.get;
 			root.$$ = Jamon.getAll;
-  }
+		}
 	}
 }(this, function () {
 
@@ -40,19 +40,6 @@
 	 * @type {symbol}
 	 */
 	const listenerKey = Symbol();
-
-	/**
-	 * Enum for node operations
-	 * @private
-	 * @enum {symbol}
-	 */
-	const NodeMethod = {
-		PREPEND: Symbol(),
-		APPEND: Symbol(),
-		BEFORE: Symbol(),
-		AFTER: Symbol(),
-		REPLACE: Symbol()
-	};
 
 	/**
 	 * Turn CSS property names into their JS counterparts (eg. margin-top --> marginTop)
@@ -182,62 +169,59 @@
 	}
 
 	/**
-	 * Handle all node insertion operations
+	 * Call node methods on multiple targets and with multiple subjects
 	 * @private
-	 * @param  {Jamon|string} subject - The element/string that we are using
-	 * @param  {Jamon} target - The target we are using the subject with
-	 * @param  {NodeMethod} operation - Name of the operation
-	 * @param  {number} contextIndex - Index of the paramater to be returned
-	 * @return {Jamon} - The Jamón instance (referenced by contextIndex)
-	 * @todo   Separate this monster into 4 parts
-	 * @todo   Support multiple subjects
+	 * @param {Jamon} targets
+	 * @param {Jamon} subjects
+	 * @param {string} method - node method to call
+	 * @param {boolean} returnTargets - return the targets?
+	 * @return {Jamon}
+	 * @todo jamonize both targets and subjects if needed
 	 */
-	function insertNode (subject, target, operation, contextIndex) {		
-		let subjectIsText = false;
-
-		if (isString(subject)) {
-			// if the subject is string, convert it into text node so we can insert it
-			subject = document.createTextNode(subject);
-			subjectIsText = true;
-		} else {
-			// only use the first element
-			subject = subject[0];
+	function callNodeMethod(targets, subjects, method, returnTargets) {
+		for (const target of targets) {
+			const subject = targets.indexOf(target) ? clone(subjects, true) : subjects;
+			
+			if (isIterable(subjects)) {
+				target[method](...subject);
+			} else {
+				target[method](subject);
+			}
+			
+			normalize(target);
 		}
 		
-		target = target[0];
+		return returnTargets ? targets : subjects;
+	}
 
-		if (operation === NodeMethod.BEFORE || operation === NodeMethod.AFTER) {
-			// before(), insertBefore(), after(), insertAfter()
-				target.parentElement.insertBefore(subject, operation === NodeMethod.BEFORE ? target : target.nextSibling);
-				// remove adjacent textNodes
-				if (subjectIsText && target.parentNode) {
-					target.parentNode.normalize();
-				}
-		} else if (operation === NodeMethod.PREPEND) {
-			// prepend(), prependTo()
-				target.insertBefore(subject, target.firstChild);
-				// remove adjacent textNodes
-				if (subjectIsText) {
-					target.normalize();
-				}
-		} else if (operation === NodeMethod.APPEND) {
-			// append(), appendTo()
-			target.appendChild(subject);
-				// remove adjacent textNodes
-				if (subjectIsText) {
-					target.normalize();
-				}
-		} else if (operation === NodeMethod.REPLACE) {
-			// replace(), replaceWith()
-			target.parentElement.replaceChild(subject, target);
-				// remove adjacent textNodes
-				if (subjectIsText) {
-					subject.parentNode.normalize();
-				}
+	/**
+	 * Normalize text nodes
+	 * @private
+	 * @param {Node} node
+	 * @param {string} method - node method that needs normalization
+	 */
+	function normalize(node, method) {
+		if (method === "prepend" || method === "append") {
+			node.normalize();
+		} else if (node.parentNode) {
+			node.parentNode.normalize();
 		}
-		
-		// return the subject or the target (whichever contextIndex points to)
-		return arguments[contextIndex];
+	}
+
+	/**
+	 * Clone each element in a collection
+	 * @private
+	 * @param {Jamon} collection
+	 * @param {boolean} [deep=true] - deep clone?
+	 * @return {Jamon} the cloned collection
+	 */
+	function clone(collection, deep = true) {
+		const clones = new Jamon();
+		for (const element of collection) {
+			clones.push(element.cloneNode(deep));
+		}
+
+		return clones;
 	}
 
 	/**
@@ -740,7 +724,7 @@
 			const results = new Jamon();
 
 			for (const element of this) {
-				results.push(...(element.children));
+				results.push(...element.children);
 			}
 
 			return results;
@@ -772,8 +756,8 @@
 		 * @param  {Jamon|string} subject - The element or string to prepend
 		 * @return {Jamon} - The Jamón instance
 		 */
-		prepend (subject) {
-			return insertNode(subject, this, NodeMethod.PREPEND, 1);
+		prepend (subjects) {
+			return callNodeMethod(this, subjects, "prepend", true);
 		}
 
 		/**
@@ -782,7 +766,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		prependTo (target) {
-			return insertNode(this, target, NodeMethod.PREPEND, 0);
+			return callNodeMethod(target, this, "prepend");
 		}
 
 		/**
@@ -790,8 +774,8 @@
 		 * @param  {Jamon|string} subject - The element or string to append
 		 * @return {Jamon} - The Jamón instance
 		 */
-		append (subject) {
-			return insertNode(subject, this, NodeMethod.APPEND, 1);
+		append (subjects) {
+			return callNodeMethod(this, subjects, "append", true);
 		}
 
 		/**
@@ -800,7 +784,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		appendTo (target) {
-			return insertNode(this, target, NodeMethod.APPEND, 0);
+			return callNodeMethod(target, this, "append");
 		}
 
 		/**
@@ -808,8 +792,8 @@
 		 * @param  {Jamon|string} subject - The element or string to insert
 		 * @return {Jamon} - The Jamón instance
 		 */
-		before (subject) {
-			return insertNode(subject, this, NodeMethod.BEFORE, 1);
+		before (subjects) {
+			return callNodeMethod(this, subjects, "before", true);
 		}
 
 		/**
@@ -818,7 +802,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		insertBefore (target) {
-			return insertNode(this, target, NodeMethod.BEFORE, 0);
+			return callNodeMethod(target, this, "before");
 		}
 
 		/**
@@ -826,8 +810,8 @@
 		 * @param  {Jamon|string} subject - The element or string to insert
 		 * @return {Jamon} - The Jamón instance
 		 */
-		after (subject) {
-			return insertNode(subject, this, NodeMethod.AFTER, 1);
+		after (subjects) {
+			return callNodeMethod(this, subjects, "after", true);
 		}
 
 		/**
@@ -836,7 +820,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		insertAfter (target) {
-			return insertNode(this, target, NodeMethod.AFTER, 0);
+			return callNodeMethod(target, this, "after");
 		}
 
 		/**
@@ -844,8 +828,8 @@
 		 * @param  {Jamon|string} subject - The element or string to insert
 		 * @return {Jamon} - The Jamón instance
 		 */
-		replaceWith (subject) {
-			return insertNode(subject, this, NodeMethod.REPLACE, 1);
+		replaceWith (subjects) {
+			return callNodeMethod(this, subjects, "replaceWith", true);
 		}
 
 		/**
@@ -854,7 +838,7 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		replace (target) {
-			return insertNode(this, target, NodeMethod.REPLACE, 0);
+			return callNodeMethod(target, this, "replaceWith");
 		}
 
 		/**
@@ -863,13 +847,7 @@
 		 * @return {Jamon} - A new Jamón collection with the clones
 		 */
 		clone (deep) {
-			const clones = new Jamon();
-
-			for (const element of this) {
-				clones.push(element.cloneNode(deep));
-			}
-
-			return clones;
+			return clone(this, deep);
 		}
 
 		/**
