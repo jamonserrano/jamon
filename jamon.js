@@ -293,10 +293,10 @@
 	 * @return {HTMLElement|NodeList} - The result of the query
 	 */
 	function findInElement (element, selector, one) {
-		let result,
-			temporaryId = false,
-			id = element.id;
 		const method = one ? "querySelector" : "querySelectorAll";
+		let id = element.id;
+		let temporaryId = false;
+		let result;
 
 		// Assign temporary ID if not present
 		if (!id) {
@@ -527,7 +527,7 @@
 		attr (attribute, value) {
 			if (isUndefined(value)) {
 				// get
-				let first = this[0];
+				const first = this[0];
 				// getAttribute returns null for missing attributes
 				return first && first.hasAttribute(attribute) ? first.getAttribute(attribute) : undefined;
 			} else if (value !== null) {
@@ -553,7 +553,7 @@
 		css (property, value) {				
 			if (isUndefined(value)) {
 				// get
-				let first = this[0];
+				const first = this[0];
 				return first ? window.getComputedStyle(first).getPropertyValue(toKebabCase(property)) : undefined;
 			} else {
 				// set
@@ -673,7 +673,7 @@
 		 * @return {Jamon} - A new Jamón instance containing the matched element
 		 */
 		findOne (selector) {
-			let result = new Jamon();
+			const result = new Jamon();
 
 			for (const element of this) {
 				const found = findInElement(element, selector, true);
