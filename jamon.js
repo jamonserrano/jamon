@@ -706,8 +706,8 @@
 		 */
 		children () {
 			const results = new Jamon();
-
-			this.forEach(element => results.push(...element.children));
+			// FIX for EDGE
+			this.forEach(element => results.push(...Array.from(element.children)));
 
 			return results;
 		}
