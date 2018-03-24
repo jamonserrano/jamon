@@ -33,7 +33,7 @@
     "karma-calling": "^1.0.0",
     "karma-chai": "~0.1.0",
     "karma-chai-dom": "~1.1.0",
-    "karma-chrome-launcher": "~2.0.0",
+    "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "^1.0.0",
     "karma-coveralls": "^1.1.2",
     "karma-eslint": "~2.2.0",
