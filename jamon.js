@@ -78,7 +78,7 @@
 	 * @return {boolean} - The undefinedness of the reference
 	 */
 	function isUndefined (reference) {
-		return typeof reference === "undefined";
+		return reference === undefined;
 	}
 
 	/**
@@ -113,18 +113,16 @@
 		const classNames = trimAndSplit(className);
 
 		if (classNames.length) {
-			for (const element of context) {
+			context.forEach(element => {
 				if (method !== "toggle") {
 					// 'add' and 'remove' accept multiple parameters…
 					element.classList[method](...classNames);
 				} else {
 					// while 'toggle' accepts only one
-					for (const className of classNames) {
-						element.classList.toggle(className);
+					classNames.forEach(className => element.classList.toggle(className))
 					}
+			});
 				}
-			}
-		}
 
 		return context;
 	}
@@ -142,14 +140,10 @@
 			// get property of first element if there is one
 			return collection[0] ? collection[0][property] : undefined;
 		} else if (value !== null) {
-			for (const element of collection) {
-				element[property] = value;
-			}
+			collection.forEach(element => element[property] = value)
 		} else {
-			for (const element of collection) {
-				delete element[property];
+			collection.forEach(element => delete element[property])
 			}
-		}
 
 		return collection;
 	}
@@ -179,7 +173,7 @@
 	 * @todo jamonize both targets and subjects if needed
 	 */
 	function callNodeMethod(targets, subjects, method, returnTargets) {
-		for (const target of targets) {
+		targets.forEach(target => {
 			const subject = targets.indexOf(target) ? clone(subjects, true) : subjects;
 			
 			if (isIterable(subjects)) {
@@ -189,7 +183,7 @@
 			}
 			
 			normalize(target);
-		}
+		});
 		
 		return returnTargets ? targets : subjects;
 	}
@@ -217,9 +211,8 @@
 	 */
 	function clone(collection, deep = true) {
 		const clones = new Jamon();
-		for (const element of collection) {
-			clones.push(element.cloneNode(deep));
-		}
+
+		collection.forEach(element => clones.push(element.cloneNode(deep)));
 
 		return clones;
 	}
@@ -327,9 +320,7 @@
 
 			// add properties
 			if (!isUndefined(properties)) {
-				for (const property of Object.keys(properties)) {
-					element[property] = properties[property];
-				}
+				Object.entries(properties).forEach(([key, value]) => element[key] = value)
 			}
 
 			return Jamon.of(element);
@@ -524,15 +515,11 @@
 				return first && first.hasAttribute(attribute) ? first.getAttribute(attribute) : undefined;
 			} else if (value !== null) {
 				// set
-				for (const element of this) {
-					element.setAttribute(attribute, value);
-				}
+				this.forEach(element => element.setAttribute(attribute, value));
 			} else {
 				// remove
-				for (const element of this) {
-					element.removeAttribute(attribute);
+				this.forEach(element => element.removeAttribute(attribute));
 				}
-			}
 			return this;
 		}
 
@@ -549,9 +536,7 @@
 				return first ? window.getComputedStyle(first).getPropertyValue(toKebabCase(property)) : undefined;
 			} else {
 				// set
-				for (const element of this) {
-					element.style[toCamelCase(property)] = String(value);
-				}
+				this.forEach(element => element.style[toCamelCase(property)] = String(value));
 				return this;
 			}
 		}
@@ -569,15 +554,11 @@
 				return first ? first.dataset[name] : undefined;
 			} else if (value !== null) {
 				// set value
-				for (const element of this) {
-					element.dataset[name] = value;
-				}
+				this.forEach(element => element.dataset[name] = value);
 				return this;
 			} else {
 				// remove value
-				for (const element of this) {
-					delete element.dataset[name];
-				}
+				this.forEach(element => delete element.dataset[name]);
 				return this;
 			}
 		}
@@ -624,7 +605,7 @@
 				};
 			}
 
-			for (const element of this) {
+			this.forEach(element => {
 				const offsetParent = element.offsetParent || document.body,
 					parentRect = offsetParent.getBoundingClientRect(),
 					computedStyle = getComputedStyle(element),
@@ -654,7 +635,7 @@
 				if (!isUndefined(top)) {
 					style.top = top - originalTop - parentRect.top + "px";
 				}
-			}
+			});
 			
 			return this;
 		}
@@ -667,15 +648,15 @@
 		findOne (selector) {
 			const result = new Jamon();
 
-			for (const element of this) {
+			this.some(element => {
 				const found = findInElement(element, selector, true);
 				
 				if (found) {
 					// break and return the first result
 					result.push(found);
-					break;
+					return true;
 				}
-			}
+			});
 			
 			return result;
 		}
@@ -689,13 +670,13 @@
 		findAll (selector) {
 			const results = new Jamon();
 
-			for (const element of this) {
+			this.forEach(element => {
 				// add results to the collection
 				const found = findInElement(element, selector);
 				if (found.length) {
 					results.push(...found);
 				}
-			}
+			});
 
 			return results;
 		}
@@ -707,14 +688,14 @@
 		parent () {
 			const results = new Jamon();
 
-			for (const element of this) {
+			this.forEach(element => {
 				const parent = element.parentElement;
 				
 				// skip nonexistent and duplicate items
 				if (parent && !results.includes(parent)) {
 					results.push(parent);
 				}
-			}
+			});
 
 			return results;
 		}
@@ -726,9 +707,7 @@
 		children () {
 			const results = new Jamon();
 
-			for (const element of this) {
-				results.push(...element.children);
-			}
+			this.forEach(element => results.push(...element.children));
 
 			return results;
 		}
@@ -741,15 +720,13 @@
 		closest (selector) {
 			const results = new Jamon();
 
-			for (const element of this) {
-				if (typeof element.closest === "function") {
-					const closest = element.closest(selector);
+			this.forEach(element => {
+					const closest = typeof element.closest === 'function' && element.closest(selector);
 					// skip nonexistent and duplicate items
 					if (closest && !results.includes(closest)) {
 						results.push(closest);
 					}
-				}
-			}
+			});
 
 			return results;
 		}
@@ -858,11 +835,15 @@
 		 * @return {Jamon} - The Jamón instance
 		 */
 		remove () {
-			for (const element of this) {
+			this.forEach(element => {
+				const parentNode = element.parentNode;
+				
 				element.remove();
 				// remove adjacent textNodes
-				element.parentNode.normalize();
-			}
+				if (parentNode) {
+					parentNode.normalize();
+				}
+			});
 
 			return this;
 		}
@@ -884,11 +865,11 @@
 				listener = getProxiedListener(listener, selector);
 			}
 						
-			for (const event of trimAndSplit(events)) {
+			trimAndSplit(events).forEach(event => {
 				// get event key for the event-selector combination
 				const eventKey = getEventKey(event, selector);
 
-				for (const element of this) {
+				this.forEach(element => {
 					// get or create listener storage on the element
 					let eventListeners = element[listenerKey];
 					if (isUndefined(eventListeners)) {
@@ -910,8 +891,8 @@
 						// add DOM event listener
 						element.addEventListener(event, listener);
 					}					
-				}
-			}
+				});
+			});
 
 			return this;
 		}
@@ -934,17 +915,17 @@
 				listener = listener[proxyKey].get(selector);
 			}
 
-			for (const event of trimAndSplit(events)) {
+			trimAndSplit(events).forEach(event => {
 				// get event key for the event-selector combination
 				const eventKey = getEventKey(event, selector);
 
-				for (const element of this) {
+				this.forEach(element => {
 					// remove reference from the listener group
 					element[listenerKey].get(eventKey).delete(listener);
 					// remove DOM event listener
 					element.removeEventListener(event, listener);
-				}
-			}
+				});
+			});
 
 			return this;
 		}
@@ -961,10 +942,7 @@
 				cancelable: true
 			});
 
-			for (const element of this) {
-				element.dispatchEvent(new CustomEvent(type, eventData));
-			}
-
+			this.forEach(element => element.dispatchEvent(new CustomEvent(type, eventData)));
 			return this;
 		}
 	}
