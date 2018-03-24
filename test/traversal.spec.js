@@ -214,7 +214,7 @@ describe("Traversal", function () {
 			var $children = this.$els.children();
 			var children = [];
 			for (var el of this.els) {
-				children.push(...(el.children));
+				children.push(...Array.from(el.children));
 			}
 			var length = children.length;
 			
