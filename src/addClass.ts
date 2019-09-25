@@ -5,12 +5,10 @@ export const addClass = (className: string) => (collection: Collection) => {
 	const classNames = trimAndSplit(className);
 
 	if (classNames.length) {
-		return collection.map(item => {
+		collection.forEach(item => {
 			if (item instanceof Element) {
 				item.classList.add(...classNames);
 			}
-			
-			return item;
 		});
 	}
 

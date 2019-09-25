@@ -5,11 +5,12 @@ export const toggleClass = (className: string) => (collection: Collection) => {
 	const classNames = trimAndSplit(className);
 
 	if (classNames.length) {
-		return collection.map(item => {
+		collection.forEach(item => {
 			if (item instanceof Element) {
-				classNames.forEach(className => item.classList.toggle(className))
+				classNames.forEach(className =>
+					item.classList.toggle(className)
+				)
 			}
-			return item;
 		});
 	}
 
