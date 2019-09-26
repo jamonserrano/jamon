@@ -13,5 +13,4 @@ export const addClass = (className: string) => (collection: Collection) => {
 	}
 
 	return collection;
-}
-	
+};

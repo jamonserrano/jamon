@@ -1,5 +1,4 @@
-import { toggleClass } from './toggleClass';
-import { getHiddenClassName } from './utils/hiddenClassName';
+import { toggleClass } from "./toggleClass";
+import { getHiddenClassName } from "./utils/hiddenClassName";
 
-export const toggle = () =>
-	toggleClass(getHiddenClassName());
+export const toggle = () => toggleClass(getHiddenClassName());

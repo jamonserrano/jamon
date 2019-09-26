@@ -13,5 +13,4 @@ export const removeClass = (className: string) => (collection: Collection) => {
 	}
 
 	return collection;
-}
-	
+};

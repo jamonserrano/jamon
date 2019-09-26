@@ -44,7 +44,8 @@
     "karma-sauce-launcher": "~1.1.0",
     "mocha": "^3.2.0",
     "onchange": "~3.2.1",
-    "pre-commit": "~1.2.2"
+    "pre-commit": "~1.2.2",
+    "prettier": "^1.18.2"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",

@@ -1,9 +1,16 @@
-import { Selector, Collection, isString, isUndefined, isIterable, isItem } from './utils/types';
+import {
+	Selector,
+	Collection,
+	isString,
+	isUndefined,
+	isIterable,
+	isItem
+} from "./utils/types";
 
 export const getAll = (selector: Selector): Collection => {
 	if (isUndefined(selector)) {
 		return [];
-	} 
+	}
 
 	if (isString(selector)) {
 		return [...document.querySelectorAll(selector)];
@@ -16,7 +23,6 @@ export const getAll = (selector: Selector): Collection => {
 	if (isIterable(selector)) {
 		return [...selector].filter(isItem);
 	}
-	
+
 	throw new TypeError();
-	
-}
+};

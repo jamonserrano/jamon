@@ -1,5 +1,4 @@
-import { addClass } from './addClass';
-import { getHiddenClassName } from './utils/hiddenClassName';
+import { addClass } from "./addClass";
+import { getHiddenClassName } from "./utils/hiddenClassName";
 
-export const hide = () =>
-	addClass(getHiddenClassName());
+export const hide = () => addClass(getHiddenClassName());

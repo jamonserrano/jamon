@@ -7,13 +7,10 @@ export const toggleClass = (className: string) => (collection: Collection) => {
 	if (classNames.length) {
 		collection.forEach(item => {
 			if (item instanceof Element) {
-				classNames.forEach(className =>
-					item.classList.toggle(className)
-				)
+				classNames.forEach(className => item.classList.toggle(className));
 			}
 		});
 	}
 
 	return collection;
-}
-	
+};

@@ -1,4 +1,11 @@
-import { Selector, Collection, isString, isUndefined, isIterable, isItem } from './utils/types';
+import {
+	Selector,
+	Collection,
+	isString,
+	isUndefined,
+	isIterable,
+	isItem
+} from "./utils/types";
 
 export const get = (selector: Selector): Collection => {
 	if (isUndefined(selector)) {
@@ -20,4 +27,4 @@ export const get = (selector: Selector): Collection => {
 	}
 
 	throw new TypeError();
-}
+};
