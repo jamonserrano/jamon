@@ -1,6 +1,5 @@
 import { Collection } from "./utils/types";
+import { wrap } from "./wrap";
 
-export const get = (selector: string): Collection => {
-	const result = document.querySelector(selector);
-	return result ? [result] : [];
-};
+export const get = (selector: string): Collection =>
+	wrap(document.querySelector(selector));
