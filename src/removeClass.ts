@@ -1,7 +1,5 @@
-import { Collection } from "./utils/types";
+export const removeClass = (className: string) => (item: Element) => {
+	item.classList.remove(className);
 
-export const removeClass = (className: string) => (collection: Collection) => {
-	collection.forEach(item => item.classList.remove(className));
-
-	return collection;
+	return item;
 };
