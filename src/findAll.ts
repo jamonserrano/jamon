@@ -1,18 +1,10 @@
-import { Collection } from "./utils/types";
 import { useNarrowSelector } from "./utils/useNarrowSelector";
+import { wrap } from "./wrap";
 
-const find = (item: Element, selector: string): Collection => {
+export const findAll = (selector: string) => (item: Element) => {
 	const [narrowSelector, cleanup] = useNarrowSelector(item, selector);
 	const result = item.querySelectorAll(narrowSelector);
 	cleanup();
-	return [...result];
-};
 
-export const findAll = (selector: string) => (collection: Collection) =>
-	collection.reduce(
-		(results: Collection, item: Element) =>
-			results.concat(
-				find(item, selector).filter(itemResult => !results.includes(itemResult))
-			),
-		[]
-	);
+	return wrap(result);
+};

@@ -1,5 +1,4 @@
-import { Collection } from "./utils/types";
+import { wrap } from "./wrap";
 
-export const create = (type: string, properties: object): Collection => [
-	Object.assign(document.createElement(type), properties)
-];
+export const create = (type: string, properties: object) =>
+	wrap(Object.assign(document.createElement(type), properties));

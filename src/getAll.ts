@@ -1,5 +1,4 @@
-import { Collection } from "./utils/types";
+import { wrap } from "./wrap";
 
-export const getAll = (selector: string): Collection => [
-	...document.querySelectorAll(selector)
-];
+export const getAll = (selector: string) =>
+	wrap(document.querySelectorAll(selector));
