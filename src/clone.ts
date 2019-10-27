@@ -1,1 +1,1 @@
-export const clone = (item: Element) => item.cloneNode();
+export const clone = (deep: boolean) => (item: Element) => item.cloneNode(deep);
