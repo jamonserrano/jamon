@@ -1,1 +1,3 @@
-export const children = (item: Element) => [...item.children];
+import { wrap } from "./wrap";
+
+export const children = (item: Element) => wrap(item.children);
