@@ -3,4 +3,4 @@ export const after = (subject: Element) => (item: Element) => {
 	item.parentNode && item.parentNode.normalize();
 
 	return item;
-}
+};
