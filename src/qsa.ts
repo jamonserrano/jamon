@@ -1,4 +1,4 @@
 import { wrap } from "./wrap";
 
-export const getAll = (selector: string) =>
+export const qsa = (selector: string) =>
 	wrap(document.querySelectorAll(selector));
