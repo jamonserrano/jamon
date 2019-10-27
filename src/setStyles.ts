@@ -1,4 +1,4 @@
-export const setStyle = (rules: { [name: string]: string }) => (
+export const setStyles = (rules: { [name: string]: string }) => (
 	item: Element
 ) => {
 	if (item instanceof HTMLElement) {

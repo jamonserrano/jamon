@@ -1,4 +1,4 @@
-const setPosition = ({ x, y }) => (item: Element) => {
+export const setPosition = ({ x, y }) => (item: Element) => {
 	if (!(item instanceof HTMLElement)) {
 		return;
 	}

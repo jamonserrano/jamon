@@ -1,3 +1,50 @@
-export { get as $ } from "./get";
-export { getAll as $$ } from "./getAll";
+export { addClass } from "./addClass";
+export { after } from "./after";
+export { append } from "./append";
+export { appendTo } from "./appendTo";
+export { before } from "./before";
+export { children } from "./children";
+export { clone } from "./clone";
+export { closest } from "./closest";
 export { create } from "./create";
+export { delegate } from "./delegate";
+export { findAll } from "./findAll";
+export { findOne } from "./findOne";
+export { get } from "./get";
+export { get as $ } from "./get";
+export { getAll } from "./getAll";
+export { getAll as $$ } from "./getAll";
+export { getAttribute } from "./getAttribute";
+export { getData } from "./getData";
+export { getOffset } from "./getOffset";
+export { getProperty } from "./getProperty";
+export { getStyle } from "./getStyle";
+export { hasClass } from "./hasClass";
+export { insertAfter } from "./insertAfter";
+export { insertBefore } from "./insertBefore";
+export { measure } from "./measure";
+export { off } from "./off";
+export { on } from "./on";
+export { parent } from "./parent";
+export { prepend } from "./prepend";
+export { prependTo } from "./prependTo";
+export { remove } from "./remove";
+export { removeAttribute } from "./removeAttribute";
+export { removeClass } from "./removeClass";
+export { removeData } from "./removeData";
+export { removeProperty } from "./removeProperty";
+export { replace } from "./replace";
+export { replaceWith } from "./replaceWith";
+export { setAttribute } from "./setAttribute";
+export { setData } from "./setData";
+export { setPosition } from "./setPosition";
+export { setProperty } from "./setProperty";
+export { setStyle } from "./setStyle";
+export { setStyles } from "./setStyles";
+export { toggleClass } from "./toggleClass";
+export { unwrap } from "./unwrap";
+export { wrap } from "./wrap";
+
+
+
+

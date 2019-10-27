@@ -1,4 +1,4 @@
-const getOffset = (item: Element) =>
+export const getOffset = (item: Element) =>
 	item instanceof HTMLElement
 		? {
 				left: item.offsetLeft,
