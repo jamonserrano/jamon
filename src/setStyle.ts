@@ -1,6 +1,13 @@
-export const setStyle = (name: string, value: string) => (item: Element) => {
+const toKebabCase = (str: string) =>
+	str.replace(/([A-Z])/g, match => `-${match.toLowerCase()}`);
+
+export const setStyle = (rules: { [name: string]: string }) => (
+	item: Element
+) => {
 	if (item instanceof HTMLElement) {
-		item.style.setProperty(name, value);
+		Object.entries(rules).forEach(([name, value]) =>
+			item.style.setProperty(toKebabCase(name), value)
+		);
 	}
 
 	return item;

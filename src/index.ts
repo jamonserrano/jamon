@@ -40,11 +40,6 @@ export { setData } from "./setData";
 export { setPosition } from "./setPosition";
 export { setProperty } from "./setProperty";
 export { setStyle } from "./setStyle";
-export { setStyles } from "./setStyles";
 export { toggleClass } from "./toggleClass";
 export { unwrap } from "./unwrap";
 export { wrap } from "./wrap";
-
-
-
-
