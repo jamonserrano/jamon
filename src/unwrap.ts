@@ -1,2 +1,2 @@
-export const unwrap = <T>(collection: T[] | T): T =>
-	Array.isArray(collection) ? unwrap(collection[0]) : collection;
+export const unwrap = <T>(collectionOrItem: T[] | T): T =>
+	Array.isArray(collectionOrItem) ? unwrap(collectionOrItem[0]) : collectionOrItem;
