@@ -1,5 +1,5 @@
 export const setProperty = (property: string, value: any) => (
-	item: Element
+	item: Text | Element | Document | DocumentFragment | Window
 ) => {
 	item[property] = value;
 

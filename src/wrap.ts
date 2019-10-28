@@ -1,11 +1,9 @@
-export const wrap = (
-	value: null | Element | NodeListOf<Element> | HTMLCollection
-) => {
+export const wrap = (value: any) => {
 	if (value === null) {
 		return [];
-	} else if (value instanceof Element) {
-		return [value];
-	} else {
+	} else if (typeof value[Symbol.iterator] === "function") {
 		return [...value];
+	} else {
+		return [value];
 	}
 };
